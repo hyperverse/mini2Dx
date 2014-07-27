@@ -1,13 +1,88 @@
 ---
 layout: default
-title: Your New Jekyll Site
+title: Home
 ---
 
-<div id="home">
-  <h1>Blog Posts</h1>
-  <ul class="posts">
-    {% for post in site.posts %}
-      <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
+<div class="row">
+    <div class="jumbotron banner">
+        <h2>2D GAME DEVELOPMENT.<br />SIMPLIFIED.</h2>
+        <p><a class="btn btn-primary btn-lg" role="button" href="/tutorials">Get Started</a>
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 center-text">
+        <h2>CROSS PLATFORM</h2>
+        <p>Built on top of LibGDX means you can write your code once and export it to Windows, Mac, Linux, Android, iOS and Ouya.</p>
+        <img src="images/green_arrow_down.png" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+        <div class="row feature">
+            <div class="col-xs-4">
+                <img src="images/easy_powerful.png"/>
+            </div>
+            <div class="col-xs-8">
+                <h4>Easy for beginners, powerful for masters</h4>
+                <p>Quick-start tutorials for beginners and powerful APIs for experienced developers.</p>
+            </div>
+        </div>
+        <div class="row feature">
+            <div class="col-xs-4">
+                <img src="images/screen_transitions.png"/>
+            </div>
+            <div class="col-xs-8">
+                <h4>Screen Transitions</h4>
+                <p>Seperate your game logic into multiple screens and use transition effects when switching between them.</p>
+            </div>
+        </div>
+        <div class="row feature">
+            <div class="col-xs-4">
+                <img src="images/tiled.png"/>
+            </div>
+            <div class="col-xs-8">
+                <h4>Tiled Support</h4>
+                <p>Easily implement your maps using Tiled and render them in-game using our built-in Tiled support.</p>
+            </div>
+        </div>
+    </div>
+    <div class="hidden-xs hidden-sm col-md-4 col-lg-4 center-text">
+        <br />
+        <img src="images/platforms.png"/>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+        <div class="row feature">
+            <div class="col-xs-4">
+                <img src="images/dependency_injection.png"/>
+            </div>
+            <div class="col-xs-8">
+                <h4>Dependency Injection</h4>
+                <p>Using built-in annotations and classes you can easily connect all your components together.</p>
+            </div>
+        </div>
+        <div class="row feature">
+            <div class="col-xs-4">
+                <img src="images/geometry.png"/>
+            </div>
+            <div class="col-xs-8">
+                <h4>Powerful geometry classes</h4>
+                <p>From Points to Rectangles to Intersections, the library provides everything needed for making games.</p>
+            </div>
+        </div>
+        <div class="row feature">
+            <div class="col-xs-4">
+                <img src="images/ecs.png"/>
+            </div>
+            <div class="col-xs-8">
+                <h4>Entity-Component-System framework</h4>
+                <p>The ECS software pattern commonly used in game development is built right into the library.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 center-text center-block">
+        <a href="/tutorials"><img class="img-responsive" src="images/start_creating.png" id="start-creating"/></a>
+    </div>
 </div>
