@@ -1,0 +1,6 @@
+.settings
+.gradle
+.classpath
+bin/
+build/
+Gemfile.lock

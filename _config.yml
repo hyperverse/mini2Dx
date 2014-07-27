@@ -1,0 +1,19 @@
+name: mini2Dx
+markdown: redcarpet
+pygments: true
+
+navigation:
+- text: Home
+  url: /
+- text: Blog
+  url: /blog/
+- text: Documentation
+  url: /documentation/
+- text: Tutorials
+  url: /tutorial/
+- text: Community
+  url: /community/
+- text: Source
+  url: http
+- text: Downloads
+  url: /downloads/
