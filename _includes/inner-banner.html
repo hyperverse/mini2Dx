@@ -1,3 +1,7 @@
 <div class="row inner-banner">
+    {% if page.path contains '_posts' %}
+    <h2>Blog</h2>
+    {% else %}
     <h2>{{ page.title }}</h2>
+    {% endif %}
 </div>

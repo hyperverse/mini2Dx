@@ -5,11 +5,25 @@ title: Blog
 
 {% include inner-banner.html %}
 
-<div id="home">
-  <h1>Blog Posts</h1>
-  <ul class="posts">
-    {% for post in site.posts %}
-      <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-8 col-md-8">
+        <div class="row feature">
+            <div class="col-xs-12">
+                {% for post in site.posts %}
+                <div class="row post">
+                    <div class="col-xs-12">
+                        <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+                        <p><small>{{ post.date | date_to_string }}</small></p>
+                        <p>{{ post.excerpt }}</p>
+                        <p><a href="{{ post.url }}" class="pull-right">Read more...</a></p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+    <div class="hidden-xs hidden-sm col-md-4 col-lg-4">
+        {% include sidebar.html %}
+    </div>
 </div>

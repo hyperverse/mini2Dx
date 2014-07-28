@@ -79,3 +79,9 @@ a:hover {
 .feature-icon {
     margin-top: 50%;
 }
+.post h3 a {
+    color: #333;
+}
+.post h3 a:hover {
+    color: #333;
+}
