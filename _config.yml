@@ -12,8 +12,8 @@ navigation:
 - text: Tutorials
   url: /tutorials/
 - text: Community
-  url: /community/
+  url: http://reddit.com/r/mini2Dx
 - text: Source
-  url: http
+  url: https://github.com/tomcashman/mini2Dx
 - text: Downloads
   url: /downloads/
