@@ -1,0 +1,79 @@
+--- 
+layout: default
+title: Blog
+---
+
+{% include inner-banner.html %}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-8 col-md-8">
+        <div class="row feature">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h3>Changelog</h3>
+                        <p>Below are the changes that have occurred between each version of mini2Dx.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h4>Version 0.9.2</h4>
+                        <ul>
+                            <li>[Enhancement] Desktop dependency injection now uses Reflections library</li>
+                            <li>[Fix] <a href="https://github.com/tomcashman/mini2Dx/issues/17">#17</a> Fixed restart method in Animation class not working</li>
+                            <li>[Fix] Fixed edge case in position tracking within RegionQuad</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h4>Version 0.9.1</h4>
+                        <ul>
+                            <li>[Enchancement] <a href="https://github.com/tomcashman/mini2Dx/issues/5">#5</a> Added tile property support to Tiled classes</li>
+                            <li>[Enchancement] Improved Quad/RegionQuad implementations</li>
+                            <li>[Enchancement] Added volume control to CrossFadingMusicLoop</li>
+                            <li>[Enchancement] Added rotation methods to Rectangle class</li>
+                            <li>[Enchancement] Added rotation methods to Animation class</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h4>Version 0.9.0</h4>
+                        <ul>
+                            <li>[Feature] Added Entity-Component-System framework via mini2Dx-ecs library</li>
+                            <li>[Feature] Added CrossFadingMusicLoop</li>
+                            <li>[Feature] Added RegionalQuadTree for building optimised collision maps</li>
+                            <li>[Feature] Added annotation-based dependency injection</li>
+                            <li>[Enhancement] API now enforces proper timestep implementation</li>
+                            <li>[Enhancement] Improved geometry classes (Point, Line, LineSegment, Rectangle, Shape)</li>
+                            <li>[Enhancement] Added pre/post transition in/out methods</li>
+                            <li>[Enhancement] Added getFrame(int index) to Animation</li>
+                            <li>[Enhancement] Rectangles now support rotation</li>
+                            <li>[Enhancement] Added clipping support to Graphics</li>
+                            <li>[Fix] Fixed lastGid calculation in Tileset</li>
+                            <li>[Fix] Fixed edge case when scaling and rotation of Graphics are combined</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h4>Version 0.8</h4>
+                        <ul>
+                            <li>Initial release</li>
+                            <li>Basic and screen-based game support</li>
+                            <li>Basic transition effects</li>
+                            <li>Singleton dependency injection</li>
+                            <li>Orthogonal Tiled Map Support</li>
+                            <li>Maven support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="hidden-xs hidden-sm col-md-4 col-lg-4">
+        {% include sidebar.html %}
+    </div>
+</div>
