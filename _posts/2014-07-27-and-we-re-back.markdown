@@ -27,4 +27,4 @@ I've moved the Maven repository hosting to <a href="http://maven.mini2dx.org">ma
 
 Since most people have been defaulting to <a href="http://www.reddit.com/r/mini2Dx">our Reddit page</a> for questions instead of the forums I'm moving all community interactions to there.
 
-In other news I've begun pushing towards 1.0.0 of mini2Dx. I'll be writing another blog post later this week detailing some of the coming changes and the plans for release. In the meantime, if you want to contribute any tutorials or documentation feel free to make a merge request to our gh-pages branch or contibute to the wiki.
+In other news I've begun pushing towards 1.0.0 of mini2Dx. I'll be writing another blog post later this week detailing some of the coming changes and the plans for release. In the meantime, if you want to contribute any tutorials or documentation feel free to make a merge request to our <a href="https://github.com/tomcashman/mini2Dx/tree/gh-pages">gh-pages branch</a> or contibute to the <a href="https://github.com/tomcashman/mini2Dx/wiki">wiki</a>.
