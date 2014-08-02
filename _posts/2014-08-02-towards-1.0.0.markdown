@@ -1,0 +1,22 @@
+---
+layout: post
+title:  "Towards 1.0.0"
+date:   2014-08-02 17:22:00
+categories: blog
+---
+
+I've been pushing the code towards the first major release '1.0.0' in recent weeks. Some of the changes I've made include:
+
+* Moved the source code repository ownership to the [mini2Dx Github Group](https://github.com/mini2Dx)
+* Changed the build system from Maven to Gradle
+* Updated to version 1.2.0 of LibGDX - no more 0.9.8 nightly dependency!
+* Lots of bugs fixes
+
+However there are still some items outstanding before I consider the release ready.
+
+* Particles support - this will be based on the [Pedigree particle editor](https://bitbucket.org/kevglass/slick/src/c0e4b96798d1c5b1969a26cb62eb7489d701ca6f/trunk/Slick/tools/org/newdawn/slick/tools/peditor/?at=default)
+* Support for isometric and hexagonal Tiled maps
+* Setup UI - A user interface for generating mini2Dx projects. This will be based on LibGDX's setup.jar
+* Tutorials & Samples - I want to add some tutorials to the website. Nothing too complex, just how to make some basic games.
+
+I've added a milestone for 1.0.0 and all the related tasks to the issue tracker. I'm hoping to release 1.0.0 around the end of September. In the meantime, feel free to contribute on Github! :)
