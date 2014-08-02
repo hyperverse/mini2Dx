@@ -1,6 +1,7 @@
 .settings
 .gradle
 .classpath
+.project
 bin/
 build/
 Gemfile.lock
