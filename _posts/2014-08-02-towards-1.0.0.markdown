@@ -19,4 +19,4 @@ However there are still some items outstanding before I consider the release rea
 * Setup UI - A user interface for generating mini2Dx projects. This will be based on LibGDX's setup.jar
 * Tutorials & Samples - I want to add some tutorials to the website. Nothing too complex, just how to make some basic games.
 
-I've added a milestone for 1.0.0 and all the related tasks to the issue tracker. I'm hoping to release 1.0.0 around the end of September. In the meantime, feel free to contribute on Github! :)
+I've added a milestone for 1.0.0 and all the related tasks to the [issue tracker](https://github.com/mini2Dx/mini2Dx/issues). I'm hoping to release 1.0.0 around the end of September. In the meantime, feel free to contribute on [Github](https://github.com/mini2Dx/mini2Dx)! :)
