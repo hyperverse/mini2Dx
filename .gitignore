@@ -5,3 +5,11 @@
 bin/
 build/
 Gemfile.lock
+docs/*
+desktop/*
+core/*
+ios/*
+android/*
+tiled/*
+uats/*
+rebel.xml

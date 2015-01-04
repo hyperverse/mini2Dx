@@ -17,6 +17,32 @@ title: Blog
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
+                        <h4>Version 0.10.0</h4>
+                        <ul>
+                            <li>[Feature] mini2Dx utilities now available through Mdx class - changes how mini2Dx games are initialised</li>
+                            <li>[Feature] Added Data interface for managing game saves, player preferences, etc.</li>
+                            <li>[Feature] Added shader program functions to Graphics</li>
+                            <li>[Feature] Added blending methods to Graphics</li>
+                            <li>[Enhancement] Graphics can now draw wrapped strings</li>
+                            <li>[Enhancement] Added flip method to Animation (Thanks RedSQ)</li>
+                            <li>[Enhancement] Significant performance improvements to Rectangle.contains</li>
+                            <li>[Enhancement] Optimised non-cached TileLayer rendering</li>
+                            <li>[Enhancement] TiledMap can now load tilesets and layer caches seperately</li>
+                            <li>[Enhancement] Added isFinished and setColor to Animation</li>
+                            <li>[Enhancement] Added line segment rendering</li>
+                            <li>[Enhancement] Added support for setting the origin of animations</li>
+                            <li>[Enhancement] Update steps now set to 60 FPS</li>
+                            <li>[Enhancement] Added fadeOutAndStop to CrossFadeMusicLoop</li>
+                            <li>[Enhancement] Added getWidth and getHeight to TileLayer</li>
+                            <li>[Fix] Fixed incorrect fades in CrossFadeMusicLoop. CrossFadeMusicLoop.update must be called on GameContainer thread</li>
+                            <li>[Fix] Fixed nullpointer when Animation has no frames</li>
+                            <li>[Fix] Fixed Rectangle not correctly tracking its origin</li>
+                            <li>[Fix] Fixed inaccuracy of RegionQuad.getElements</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
                         <h4>Version 0.9.2</h4>
                         <ul>
                             <li>[Enhancement] Desktop dependency injection now uses Reflections library</li>

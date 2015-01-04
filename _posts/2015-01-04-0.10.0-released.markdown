@@ -1,0 +1,21 @@
+---
+layout: post
+title:  "0.10.0 released!"
+date:   2015-01-04 17:22:00
+categories: blog
+---
+
+It's been a long time since we've had a release but here it is, version 0.10.0 which uses LibGDX 1.5.2. Unfortunately this is not 1.0.0 as it is still missing the Particle Emitter and certain features on Android and iOS.
+
+BUT!
+
+This marks the first release considered **production ready** for desktop video games. It has undergone a lot of testing by [Battlebard Games](https://battlebardgames.com) for their upcoming game 'Bard to the Future'.
+
+This release breaks the API if you are coming from 0.9.x but we do not expect any major changes again until after 1.0.0. We've updated our [versioning policy](https://github.com/mini2Dx/mini2Dx/wiki/mini2Dx-Versioning) to help indicate breaking changes in future releases.
+
+This release also marks the first release using Gradle. We recommend moving to a Gradle-based build system. We've updated the [Setting up your project](https://github.com/mini2Dx/mini2Dx/wiki/Setting-up-your-project) wiki page to reflect this.
+
+Finally, we've also added new major feature called the Data API which is designed to simplify game saves, user preferences, etc. See the [tutorial on the wiki](https://github.com/mini2Dx/mini2Dx/wiki/Storing-save-games-and-other-data) for more information.
+
+Check out the [changelog](https://github.com/mini2Dx/mini2Dx/releases/tag/0.10.0) to see all the changes or head on over the [Downloads section](/downloads) to download it now. If you're using Maven/Gradle, the release is available in our Maven repositories.
+
