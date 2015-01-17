@@ -1,0 +1,10 @@
+---
+layout: post
+title:  "0.10.1 released"
+date:   2015-01-04 17:22:00
+categories: blog
+---
+
+We've released a patch for the 0.10.x release series that fixes an issue with Rectangle objects determining their distance from Positionable objects.
+
+Check out the [changelog](https://github.com/mini2Dx/mini2Dx/releases/tag/0.10.1) to see all the changes or head on over the [Downloads section](/downloads) to download it now. If you're using Maven/Gradle, the release is available in our Maven repositories.
