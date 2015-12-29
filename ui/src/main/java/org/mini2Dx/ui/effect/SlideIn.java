@@ -1,127 +1,40 @@
 /**
- * Copyright (c) 2015 See AUTHORS file
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
- * Neither the name of the mini2Dx nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Copyright 2015 Thomas Cashman
  */
 package org.mini2Dx.ui.effect;
 
 import org.mini2Dx.core.engine.geom.CollisionBox;
 import org.mini2Dx.core.geom.Rectangle;
 import org.mini2Dx.core.graphics.Graphics;
-import org.mini2Dx.ui.UiContentContainer;
+import org.mini2Dx.ui.UiContainer;
 
 /**
  *
  */
 public class SlideIn implements UiEffect {
-	private static final float DEFAULT_SPEED = 8f;
-	
-	private final SlideDirection direction;
-	private final float speed;
-	
-	private boolean started = false;
-	private boolean finished = false;
-	
-	public SlideIn() {
-		this(DEFAULT_SPEED);
-	}
-	
-	public SlideIn(float speed) {
-		this(SlideDirection.UP, speed);
-	}
-	
-	public SlideIn(SlideDirection direction) {
-		this(direction, DEFAULT_SPEED);
-	}
-
-	public SlideIn(SlideDirection direction, float speed) {
-		this.direction = direction;
-		this.speed = speed;
-	}
 
 	@Override
-	public boolean update(UiContentContainer uiContainer, CollisionBox currentArea, Rectangle targetArea, float delta) {
-		if(finished) {
-			return true;
-		}
-		
-		float targetX = targetArea.x;
-		float targetY = targetArea.y;
-		
-		switch(direction) {
-		case UP:
-			if(!started) {
-				currentArea.forceTo(targetX, uiContainer.getRenderY() + uiContainer.getContentHeight() + 1f, targetArea.width, targetArea.height);
-				started = true;
-			}
-			if(currentArea.getY() > targetY) {
-				currentArea.setWidth(targetArea.width);
-				currentArea.setHeight(targetArea.height);
-				currentArea.setY(Math.max(targetY, currentArea.getY() - speed));
-			} else {
-				finished = true;
-			}
-			break;
-		case DOWN:
-			if(!started) {
-				currentArea.forceTo(targetX, uiContainer.getRenderY() - targetArea.height - 1f, targetArea.width, targetArea.height);
-				started = true;
-			}
-			if(currentArea.getY() < targetY) {
-				currentArea.setWidth(targetArea.width);
-				currentArea.setHeight(targetArea.height);
-				currentArea.setY(Math.min(targetY, currentArea.getY() + speed));
-			} else {
-				finished = true;
-			}
-			break;
-		case LEFT:
-			if(!started) {
-				currentArea.forceTo(uiContainer.getRenderX() + uiContainer.getContentWidth() + 1f, targetY, targetArea.width, targetArea.height);
-				started = true;
-			}
-			if(currentArea.getX() > targetX) {
-				currentArea.setWidth(targetArea.width);
-				currentArea.setHeight(targetArea.height);
-				currentArea.setX(Math.max(targetX, currentArea.getX() - speed));
-			} else {
-				finished = true;
-			}
-			break;
-		case RIGHT:
-			if(!started) {
-				currentArea.forceTo(uiContainer.getRenderX() - targetArea.width - 1f, targetY, targetArea.width, targetArea.height);
-				started = true;
-			}
-			if(currentArea.getX() < targetX) {
-				currentArea.setWidth(targetArea.width);
-				currentArea.setHeight(targetArea.height);
-				currentArea.setX(Math.min(targetX, currentArea.getX() + speed));
-			} else {
-				finished = true;
-			}
-			break;
-		}
-		return true;
+	public boolean update(UiContainer uiContainer, CollisionBox currentArea, Rectangle targetArea, float delta) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
 	public void preRender(Graphics g) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void postRender(Graphics g) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public boolean isFinished() {
-		return finished;
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

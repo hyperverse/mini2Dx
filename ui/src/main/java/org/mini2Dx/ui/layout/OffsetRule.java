@@ -6,10 +6,10 @@ package org.mini2Dx.ui.layout;
 /**
  *
  */
-public class SizeRule {
+public class OffsetRule {
 	private final int columns;
 	
-	public SizeRule(int columns) {
+	public OffsetRule(int columns) {
 		this.columns = columns;
 	}
 
