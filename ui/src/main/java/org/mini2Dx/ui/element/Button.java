@@ -9,72 +9,60 @@
  * Neither the name of the mini2Dx nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.mini2Dx.ui.layout;
+package org.mini2Dx.ui.element;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+
+import org.mini2Dx.ui.listener.ActionListener;
 
 /**
  *
  */
-public enum ScreenSize {
-	XS(0),
-	SM(768),
-	MD(992),
-	LG(1200),
-	XL(1600);
+public abstract class Button extends UiElement implements Actionable {
+	private List<ActionListener> actionListeners;
 	
-	private static final List<ScreenSize> smallestToLargest = new ArrayList<ScreenSize>() {
-		{
-			add(XS);
-			add(SM);
-			add(MD);
-			add(LG);
-			add(XL);
+	public Button() {
+		this(null);
+	}
+	
+	public Button(String id) {
+		super(id);
+	}
+	
+	@Override
+	public void notifyActionListenersOfBeginEvent() {
+		if(actionListeners == null) {
+			return;
 		}
-	};
-	private static final List<ScreenSize> largestToSmallest = new ArrayList<ScreenSize>() {
-		{
-			add(XL);
-			add(LG);
-			add(MD);
-			add(SM);
-			add(XS);
+		for(int i = actionListeners.size() - 1; i >= 0; i--) {
+			actionListeners.get(i).onActionBegin(this);
 		}
-	};
+	}
 	
-	private final int minSize;
+	@Override
+	public void notifyActionListenersOfEndEvent() {
+		if(actionListeners == null) {
+			return;
+		}
+		for(int i = actionListeners.size() - 1; i >= 0; i--) {
+			actionListeners.get(i).onActionEnd(this);
+		}
+	}
 	
-	private ScreenSize(int minSize) {
-		this.minSize = minSize;
+	@Override
+	public void addActionListener(ActionListener listener) {
+		if(actionListeners == null) {
+			actionListeners = new ArrayList<ActionListener>(1);
+		}
+		actionListeners.add(listener);
 	}
 
-	public int getMinSize() {
-		return minSize;
-	}
-	
-	public static Iterator<ScreenSize> smallestToLargest() {
-		return smallestToLargest.iterator();
-	}
-	
-	public static Iterator<ScreenSize> largestToSmallest() {
-		return largestToSmallest.iterator();
-	}
-	
-	public static ScreenSize fromString(String value) {
-		switch(value.toLowerCase()) {
-		case "xs":
-			return ScreenSize.XS;
-		case "sm":
-			return ScreenSize.SM;
-		case "md":
-			return ScreenSize.MD;
-		case "lg":
-			return ScreenSize.LG;
-		case "xl":
-			return ScreenSize.XL;
+	@Override
+	public void removeActionListener(ActionListener listener) {
+		if(actionListeners == null) {
+			return;
 		}
-		return ScreenSize.XS;
+		actionListeners.remove(listener);
 	}
 }

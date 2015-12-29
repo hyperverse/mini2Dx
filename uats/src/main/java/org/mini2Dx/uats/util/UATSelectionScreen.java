@@ -11,6 +11,8 @@
  */
 package org.mini2Dx.uats.util;
 
+import java.awt.event.ActionListener;
+
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
@@ -32,17 +34,14 @@ import org.mini2Dx.uats.OrthogonalTiledMapWithCachingUAT;
 import org.mini2Dx.uats.ParticleEffectsUAT;
 import org.mini2Dx.uats.UiUAT;
 import org.mini2Dx.ui.UiContainer;
-import org.mini2Dx.ui.UiElement;
 import org.mini2Dx.ui.effect.SlideIn;
 import org.mini2Dx.ui.element.Actionable;
-import org.mini2Dx.ui.element.Button;
 import org.mini2Dx.ui.element.Modal;
-import org.mini2Dx.ui.element.Label;
 import org.mini2Dx.ui.element.Row;
+import org.mini2Dx.ui.element.Visibility;
+import org.mini2Dx.ui.layout.LayoutRuleset;
 import org.mini2Dx.ui.layout.ScreenSize;
-import org.mini2Dx.ui.listener.ActionListener;
 import org.mini2Dx.ui.listener.ScreenSizeListener;
-import org.mini2Dx.ui.theme.UiTheme;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -118,7 +117,7 @@ public class UATSelectionScreen extends BasicGameScreen implements ScreenSizeLis
 
 	@Override
 	public void postTransitionOut(Transition transitionOut) {
-		uatsDialog.setVisible(false);
+		uatsDialog.setVisibility(Visibility.HIDDEN);
 	}
 
 	@Override
@@ -128,13 +127,12 @@ public class UATSelectionScreen extends BasicGameScreen implements ScreenSizeLis
 
 	private void initialiseUi() {
 		uatsDialog = new Modal();
-		uatsDialog.setXRules("auto");
-		uatsDialog.setWidthRules("xs-12 sm-10 md-8 lg-6");
+		uatsDialog.setLayout(new LayoutRuleset("xs-12 sm-10 md-8 lg-6"));
 
-		uatsDialog.addRow(Row.withElements(UiUtils.createHeader("Detected OS: " + Mdx.os)));
-		uatsDialog.addRow(Row.withElements(UiUtils.createHeader("")));
-		uatsDialog.addRow(Row.withElements(UiUtils.createHeader("User Acceptance Tests")));
-		uatsDialog.addRow(Row.withElements(UiUtils.createButton("Blending", "xs-0", "xs-12", new ActionListener() {
+		uatsDialog.add(Row.withElements(UiUtils.createHeader("Detected OS: " + Mdx.os)));
+		uatsDialog.add(Row.withElements(UiUtils.createHeader("")));
+		uatsDialog.add(Row.withElements(UiUtils.createHeader("User Acceptance Tests")));
+		uatsDialog.add(Row.withElements(UiUtils.createButton("Blending", "xs-0", "xs-12", new ActionListener() {
 			@Override
 			public void onActionBegin(Actionable source) {
 			}
@@ -256,7 +254,7 @@ public class UATSelectionScreen extends BasicGameScreen implements ScreenSizeLis
 	}
 
 	@Override
-	public void onScreenSizeChanged(ScreenSize screenSize, float screenWidth, float screenHeight) {
-		System.out.println("Current Screen Size: " + screenSize + " @ " + screenWidth + "," + screenHeight);
+	public void onScreenSizeChanged(ScreenSize screenSize) {
+		System.out.println("Current Screen Size: " + screenSize);
 	}
 }

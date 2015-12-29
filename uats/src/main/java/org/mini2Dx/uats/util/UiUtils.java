@@ -8,6 +8,7 @@ import org.mini2Dx.ui.element.Label;
 import org.mini2Dx.ui.element.Row;
 import org.mini2Dx.ui.element.Select;
 import org.mini2Dx.ui.element.TextBox;
+import org.mini2Dx.ui.element.TextButton;
 import org.mini2Dx.ui.listener.ActionListener;
 
 import com.badlogic.gdx.graphics.Color;
@@ -25,32 +26,26 @@ public class UiUtils {
 		return createLabel(text, xRules, widthRules, Label.COLOR_BLACK);
 	}
 
-	private static Label createLabel(String text, String xRules, String widthRules, Color color) {
-		Label label = new Label(text);
-		label.setXRules(xRules);
-		label.setWidthRules(widthRules);
-		label.setColor(color);
+	private static Label createLabel(String text, Color color) {
+		Label label = new Label();
+		label.setText(text);
 		return label;
 	}
 
-	public static Button createButton(String text, String xRules, String widthRules, ActionListener listener) {
-		Button button = new Button();
-		button.setXRules(xRules);
-		button.setWidthRules(widthRules);
+	public static TextButton createButton(String text, ActionListener listener) {
+		TextButton button = new TextButton();
+		button.setText(text);
 		button.addActionListener(listener);
-		button.addRow(Row.withElements(createLabel(text, "xs-0", "xs-12", Label.COLOR_WHITE)));
 		return button;
 	}
 	
-	public static TextBox createTextBox(String xRules, String widthRules, ActionListener listener) {
+	public static TextBox createTextBox(ActionListener listener) {
 		TextBox textBox = new TextBox();
-		textBox.setXRules(xRules);
-		textBox.setWidthRules(widthRules);
 		textBox.addActionListener(listener);
 		return textBox;
 	}
 	
-	public static Select<String> createSelect(String xRules, String widthRules, ActionListener listener) {
+	public static Select<String> createSelect(ActionListener listener) {
 		Select<String> select = new Select<String>();
 		select.setXRules(xRules);
 		select.setWidthRules(widthRules);
