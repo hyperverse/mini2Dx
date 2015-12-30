@@ -15,13 +15,14 @@ import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.ui.element.TextBox;
 import org.mini2Dx.ui.layout.LayoutState;
 import org.mini2Dx.ui.style.StyleRule;
+import org.mini2Dx.ui.style.TextBoxStyleRule;
 
 /**
  *
  */
-public class TextBoxRenderNode extends RenderNode<TextBox> {
+public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule> {
 
-	public TextBoxRenderNode(ParentRenderNode<?> parent, TextBox element) {
+	public TextBoxRenderNode(ParentRenderNode<?, ?> parent, TextBox element) {
 		super(parent, element);
 	}
 
@@ -56,7 +57,7 @@ public class TextBoxRenderNode extends RenderNode<TextBox> {
 	}
 
 	@Override
-	protected StyleRule determineStyleRule(LayoutState layoutState) {
+	protected TextBoxStyleRule determineStyleRule(LayoutState layoutState) {
 		// TODO Auto-generated method stub
 		return null;
 	}

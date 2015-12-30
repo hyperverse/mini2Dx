@@ -20,10 +20,10 @@ import org.mini2Dx.ui.style.StyleRule;
 /**
  *
  */
-public class ImageRenderNode extends RenderNode<Image> {
+public class ImageRenderNode extends RenderNode<Image, StyleRule> {
 	private TextureRegion textureRegion;
 
-	public ImageRenderNode(ParentRenderNode<?> parent, Image element) {
+	public ImageRenderNode(ParentRenderNode<?, ?> parent, Image element) {
 		super(parent, element);
 	}
 	

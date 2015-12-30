@@ -24,15 +24,17 @@ import org.mini2Dx.uats.util.ScreenIds;
 import org.mini2Dx.uats.util.UATSelectionScreen;
 import org.mini2Dx.uats.util.UiUtils;
 import org.mini2Dx.ui.UiContainer;
+import org.mini2Dx.ui.element.AbsoluteContainer;
 import org.mini2Dx.ui.element.Actionable;
-import org.mini2Dx.ui.element.Modal;
-import org.mini2Dx.ui.element.Frame;
 import org.mini2Dx.ui.element.Label;
+import org.mini2Dx.ui.element.Modal;
 import org.mini2Dx.ui.element.Row;
 import org.mini2Dx.ui.element.Select;
 import org.mini2Dx.ui.element.TextBox;
+import org.mini2Dx.ui.element.Visibility;
+import org.mini2Dx.ui.layout.LayoutRuleset;
 import org.mini2Dx.ui.listener.ActionListener;
-import org.mini2Dx.ui.theme.UiTheme;
+import org.mini2Dx.ui.style.UiTheme;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -44,7 +46,7 @@ public class UiUAT extends BasicGameScreen {
 	private final AssetManager assetManager;
 	
 	private UiContainer uiContainer;
-	private Frame topLeftFrame, bottomRightFrame;
+	private AbsoluteContainer topLeftFrame, bottomRightFrame;
 	private Modal modal;
 	
 	private Select<String> select;
@@ -86,7 +88,7 @@ public class UiUAT extends BasicGameScreen {
 	public void preTransitionIn(Transition transitionIn) {
 		nextScreenId = -1;
     	if(!uiContainer.isThemeApplied()) {
-    		uiContainer.applyTheme(UiTheme.DEFAULT_THEME_FILE);
+    		uiContainer.setTheme(assetManager.get(UiTheme.DEFAULT_THEME_FILENAME, UiTheme.class));
     	}
     	Gdx.input.setInputProcessor(uiContainer);
 	}
@@ -97,31 +99,29 @@ public class UiUAT extends BasicGameScreen {
 	}
 
 	private void initialiseUi() {
-		topLeftFrame = new Frame();
-		topLeftFrame.setXRules("xs-0");
-		topLeftFrame.setYRules("top");
-		topLeftFrame.setWidthRules("xs-12 sm-6 md-4 lg-3");
-		topLeftFrame.addRow(Row.withElements(UiUtils.createHeader("UI UAT")));
-		topLeftFrame.setVisible(true);
+		topLeftFrame = new AbsoluteContainer();
+		topLeftFrame.setLayout(new LayoutRuleset("xs-12 sm-6 md-4 lg-3"));
+		topLeftFrame.add(Row.withElements(UiUtils.createHeader("UI UAT")));
+		topLeftFrame.setVisibility(Visibility.VISIBLE);
 		uiContainer.add(topLeftFrame);
 		
-		textBox = UiUtils.createTextBox("xs-0", "xs-6", new ActionListener() {
+		textBox = UiUtils.createTextBox(new ActionListener() {
 			
 			@Override
 			public void onActionEnd(Actionable source) {
-				textBoxResult.setText(textBox.getText());
+				textBoxResult.setText(textBox.getValue());
 			}
 			
 			@Override
 			public void onActionBegin(Actionable source) {
 			}
 		});
-		textBoxResult = UiUtils.createLabel("", "xs-6", "xs-6");
-		select = UiUtils.createSelect("xs-3", "xs-6", new ActionListener() {
+		textBoxResult = UiUtils.createLabel("");
+		select = UiUtils.createSelect(new ActionListener() {
 			
 			@Override
 			public void onActionEnd(Actionable source) {
-				System.out.println("Selected value: " + select.getSelectedItem().getValue());
+				System.out.println("Selected value: " + select.getSelectedOption().getValue());
 			}
 			
 			@Override
@@ -133,14 +133,12 @@ public class UiUAT extends BasicGameScreen {
 		select.addOption("Item 3", "3");
 		
 		modal = new Modal();
-		modal.setXRules("auto");
-		modal.setYRules("auto");
-		modal.setWidthRules("xs-12 md-8 lg-6");
-		modal.addRow(Row.withElements(textBox, textBoxResult));
-		modal.addRow(Row.withElements(select));
-		modal.addRow(Row.withElements(UiUtils.createLabel("Not visible on XS screen size", "xs-0", "xs-0 sm-12")));
+		modal.setLayout(new LayoutRuleset("xs-12 md-8 lg-6"));
+		modal.add(Row.withElements(textBox, textBoxResult));
+		modal.add(Row.withElements(select));
+		modal.add(Row.withElements(UiUtils.createLabel("Not visible on XS screen size")));
 		
-		modal.addRow(Row.withElements(UiUtils.createButton("Return to UAT Selection Screen", "xs-0 md-4 xl-6", "xs-12 md-8 xl-6", new ActionListener() {
+		modal.add(Row.withElements(UiUtils.createButton("Return to UAT Selection Screen", new ActionListener() {
 			
 			@Override
 			public void onActionBegin(Actionable source) {}
@@ -153,16 +151,14 @@ public class UiUAT extends BasicGameScreen {
 		
 		modal.setNavigation(0, textBox);
 		modal.setNavigation(1, select);
-		modal.setVisible(true);
+		modal.setVisibility(Visibility.VISIBLE);
 		uiContainer.add(modal);
 		uiContainer.setActiveModal(modal);
 		
-		bottomRightFrame = new Frame();
-		bottomRightFrame.setXRules("xs-0 sm-6 md-8 lg-9");
-		bottomRightFrame.setYRules("bottom");
-		bottomRightFrame.setWidthRules("xs-12 sm-6 md-4 lg-3");
-		bottomRightFrame.setVisible(true);
-		bottomRightFrame.addRow(Row.withElements(UiUtils.createHeader("Detected OS: " + Mdx.os)));
+		bottomRightFrame = new AbsoluteContainer();
+		bottomRightFrame.setLayout(new LayoutRuleset("xs-12 sm-6 md-4 lg-3"));
+		bottomRightFrame.setVisibility(Visibility.VISIBLE);
+		bottomRightFrame.add(Row.withElements(UiUtils.createHeader("Detected OS: " + Mdx.os)));
 		uiContainer.add(bottomRightFrame);
 	}
 }

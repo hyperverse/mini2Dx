@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.mini2Dx.ui.layout.LayoutRuleset;
+import org.mini2Dx.ui.render.AbstractColumnRenderNode;
 import org.mini2Dx.ui.render.ColumnRenderNode;
 import org.mini2Dx.ui.render.ParentRenderNode;
 
@@ -23,7 +24,7 @@ import org.mini2Dx.ui.render.ParentRenderNode;
  */
 public class Column extends UiElement {
 	protected final List<UiElement> children = new ArrayList<UiElement>(1);
-	protected ColumnRenderNode renderNode;
+	protected AbstractColumnRenderNode<?> renderNode;
 	private LayoutRuleset layout = LayoutRuleset.DEFAULT_RULESET;
 	
 	public Column() {
@@ -50,7 +51,7 @@ public class Column extends UiElement {
 	}
 
 	@Override
-	public void attach(ParentRenderNode<?> parentRenderNode) {
+	public void attach(ParentRenderNode<?, ?> parentRenderNode) {
 		if(renderNode != null) {
 			return;
 		}
@@ -62,7 +63,7 @@ public class Column extends UiElement {
 	}
 	
 	@Override
-	public void detach(ParentRenderNode<?> parentRenderNode) {
+	public void detach(ParentRenderNode<?, ?> parentRenderNode) {
 		if(renderNode == null) {
 			return;
 		}

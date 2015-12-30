@@ -11,13 +11,18 @@
  */
 package org.mini2Dx.ui.element;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.mini2Dx.ui.listener.ActionListener;
 import org.mini2Dx.ui.render.ParentRenderNode;
 import org.mini2Dx.ui.render.TextBoxRenderNode;
 
 /**
  *
  */
-public class TextBox extends UiElement {
+public class TextBox extends UiElement implements Actionable {
+	private List<ActionListener> actionListeners;
 	private String value = "";
 	private boolean passwordField = false;
 	private TextBoxRenderNode renderNode;
@@ -31,7 +36,7 @@ public class TextBox extends UiElement {
 	}
 
 	@Override
-	public void attach(ParentRenderNode<?> parentRenderNode) {
+	public void attach(ParentRenderNode<?, ?> parentRenderNode) {
 		if(renderNode != null) {
 			return;
 		}
@@ -40,7 +45,7 @@ public class TextBox extends UiElement {
 	}
 
 	@Override
-	public void detach(ParentRenderNode<?> parentRenderNode) {
+	public void detach(ParentRenderNode<?, ?> parentRenderNode) {
 		if(renderNode == null) {
 			return;
 		}
@@ -94,5 +99,41 @@ public class TextBox extends UiElement {
 
 	public void setPasswordField(boolean passwordField) {
 		this.passwordField = passwordField;
+	}
+	
+	@Override
+	public void notifyActionListenersOfBeginEvent() {
+		if(actionListeners == null) {
+			return;
+		}
+		for(int i = actionListeners.size() - 1; i >= 0; i--) {
+			actionListeners.get(i).onActionBegin(this);
+		}
+	}
+	
+	@Override
+	public void notifyActionListenersOfEndEvent() {
+		if(actionListeners == null) {
+			return;
+		}
+		for(int i = actionListeners.size() - 1; i >= 0; i--) {
+			actionListeners.get(i).onActionEnd(this);
+		}
+	}
+	
+	@Override
+	public void addActionListener(ActionListener listener) {
+		if(actionListeners == null) {
+			actionListeners = new ArrayList<ActionListener>(1);
+		}
+		actionListeners.add(listener);
+	}
+
+	@Override
+	public void removeActionListener(ActionListener listener) {
+		if(actionListeners == null) {
+			return;
+		}
+		actionListeners.remove(listener);
 	}
 }

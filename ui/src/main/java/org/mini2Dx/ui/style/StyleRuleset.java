@@ -15,21 +15,30 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.mini2Dx.core.exception.MdxException;
 import org.mini2Dx.core.serialization.annotation.Field;
 import org.mini2Dx.ui.layout.ScreenSize;
+
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.utils.Array;
 
 /**
  *
  */
-public class StyleRuleset {
+public class StyleRuleset<T extends StyleRule> {
 	@Field
-	private Map<ScreenSize, StyleRule> rules;
+	private Map<ScreenSize, T> rules;
 	
-	public StyleRule getStyleRule(ScreenSize screenSize) {
+	public T getStyleRule(ScreenSize screenSize) {
 		Iterator<ScreenSize> screenSizes = ScreenSize.largestToSmallest();
 		while(screenSizes.hasNext()) {
 			ScreenSize nextSize = screenSizes.next();
 			if(nextSize.getMinSize() > screenSize.getMinSize()) {
+				continue;
+			}
+			if(!rules.containsKey(nextSize)) {
 				continue;
 			}
 			return rules.get(nextSize);
@@ -37,10 +46,31 @@ public class StyleRuleset {
 		return null;
 	}
 	
-	public void putStyleRule(ScreenSize screenSize, StyleRule rule) {
+	public void putStyleRule(ScreenSize screenSize, T rule) {
 		if(rules == null) {
-			rules = new HashMap<ScreenSize, StyleRule>();
+			rules = new HashMap<ScreenSize, T>();
 		}
 		rules.put(screenSize, rule);
+	}
+	
+	public void validate(UiTheme theme) {
+		if(!rules.containsKey(ScreenSize.XS)) {
+			throw new MdxException("XS screen size style required for all style rules");
+		}
+		for(T rule : rules.values()) {
+			rule.validate(theme);
+		}
+	}
+	
+	public void loadDependencies(UiTheme theme, Array<AssetDescriptor> dependencies) {
+		for(T rule : rules.values()) {
+			rule.loadDependencies(theme, dependencies);
+		}
+	}
+	
+	public void prepareAssets(UiTheme theme, FileHandleResolver fileHandleResolver, AssetManager assetManager) {
+		for(T rule : rules.values()) {
+			rule.prepareAssets(theme, fileHandleResolver, assetManager);
+		}
 	}
 }

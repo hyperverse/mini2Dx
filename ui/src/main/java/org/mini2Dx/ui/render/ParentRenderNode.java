@@ -16,16 +16,17 @@ import java.util.List;
 
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.ui.element.UiElement;
+import org.mini2Dx.ui.style.StyleRule;
 
 /**
  *
  */
-public abstract class ParentRenderNode<T extends UiElement> extends RenderNode<T> {
-	protected final List<RenderNode<?>> children = new ArrayList<RenderNode<?>>(1);
+public abstract class ParentRenderNode<T extends UiElement, S extends StyleRule> extends RenderNode<T, S> {
+	protected final List<RenderNode<?, ?>> children = new ArrayList<RenderNode<?, ?>>(1);
 	
 	protected boolean childDirty = false;
 
-	public ParentRenderNode(ParentRenderNode<?> parent, T element) {
+	public ParentRenderNode(ParentRenderNode<?, ?> parent, T element) {
 		super(parent, element);
 	}
 	
@@ -36,12 +37,12 @@ public abstract class ParentRenderNode<T extends UiElement> extends RenderNode<T
 		}
 	}
 	
-	public void addChild(RenderNode<?> child) {
+	public void addChild(RenderNode<?, ?> child) {
 		children.add(child);
 		setDirty(true);
 	}
 	
-	public void removeChild(RenderNode<?> child) {
+	public void removeChild(RenderNode<?, ?> child) {
 		children.remove(child);
 		setDirty(true);
 	}

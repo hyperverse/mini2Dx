@@ -13,13 +13,14 @@ package org.mini2Dx.ui.render;
 
 import org.mini2Dx.ui.element.ScrollBox;
 import org.mini2Dx.ui.layout.LayoutState;
+import org.mini2Dx.ui.style.StyleRule;
 
 /**
  *
  */
-public class ScrollBoxRenderNode extends ColumnRenderNode {
+public class ScrollBoxRenderNode extends AbstractColumnRenderNode<StyleRule> {
 	
-	public ScrollBoxRenderNode(ParentRenderNode<?> parent, ScrollBox row) {
+	public ScrollBoxRenderNode(ParentRenderNode<?, ?> parent, ScrollBox row) {
 		super(parent, row);
 	}
 
@@ -41,5 +42,11 @@ public class ScrollBoxRenderNode extends ColumnRenderNode {
 			return ((ScrollBox) element).getMaxHeight();
 		}
 		return result;
+	}
+
+	@Override
+	protected StyleRule determineStyleRule(LayoutState layoutState) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

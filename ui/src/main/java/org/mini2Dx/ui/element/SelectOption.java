@@ -11,48 +11,48 @@
  */
 package org.mini2Dx.ui.element;
 
-import org.mini2Dx.ui.render.ParentRenderNode;
-import org.mini2Dx.ui.render.ScrollBoxRenderNode;
-
 /**
  *
  */
-public class ScrollBox extends Column {
-	private float maxWidth, maxHeight;
+public class SelectOption<V> {
+	private final String label;
+	private final V value;
 	
-	public ScrollBox() {
-		this(null);
+	public SelectOption(String label, V value) {
+		this.label = label;
+		this.value = value;
 	}
-	
-	public ScrollBox(String id) {
-		super(id);
+
+	public String getLabel() {
+		return label;
 	}
-	
+
+	public V getValue() {
+		return value;
+	}
+
 	@Override
-	public void attach(ParentRenderNode<?, ?> parentRenderNode) {
-		if(renderNode != null) {
-			return;
-		}
-		renderNode = new ScrollBoxRenderNode(parentRenderNode, this);
-		for(int i = 0; i < children.size(); i++) {
-			children.get(i).attach(renderNode);
-		}
-		parentRenderNode.addChild(renderNode);
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
 	}
 
-	public float getMaxWidth() {
-		return maxWidth;
-	}
-
-	public void setMaxWidth(float maxWidth) {
-		this.maxWidth = maxWidth;
-	}
-
-	public float getMaxHeight() {
-		return maxHeight;
-	}
-
-	public void setMaxHeight(float maxHeight) {
-		this.maxHeight = maxHeight;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SelectOption other = (SelectOption) obj;
+		if (value == null) {
+			if (other.value != null)
+				return false;
+		} else if (!value.equals(other.value))
+			return false;
+		return true;
 	}
 }

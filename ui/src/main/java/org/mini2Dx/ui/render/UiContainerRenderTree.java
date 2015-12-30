@@ -27,7 +27,7 @@ import com.badlogic.gdx.assets.AssetManager;
 /**
  *
  */
-public class UiContainerRenderTree extends ParentRenderNode<UiContainer> implements GameResizeListener {
+public class UiContainerRenderTree extends ParentRenderNode<UiContainer, StyleRule> implements GameResizeListener {
 	private final GameContainer gc;
 	private final AssetManager assetManager;
 	
@@ -58,7 +58,7 @@ public class UiContainerRenderTree extends ParentRenderNode<UiContainer> impleme
 		yOffset = determineYOffset(layoutState);
 		
 		for (int i = 0; i < children.size(); i++) {
-			RenderNode<?> node = children.get(i);
+			RenderNode<?, ?> node = children.get(i);
 			node.layout(layoutState);
 			if(!node.isIncludedInLayout()) {
 				continue;

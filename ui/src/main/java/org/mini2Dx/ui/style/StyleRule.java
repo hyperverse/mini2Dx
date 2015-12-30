@@ -11,14 +11,33 @@
  */
 package org.mini2Dx.ui.style;
 
+import org.mini2Dx.core.serialization.annotation.Field;
+
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.utils.Array;
+
 /**
  *
  */
 public class StyleRule {
+	@Field
 	private int paddingTop, paddingBottom, paddingLeft, paddingRight;
+	@Field
 	private int marginTop, marginBottom, marginLeft, marginRight;
-	private int fontSize;
-	private String font;
+	
+	public void validate(UiTheme theme) {
+		
+	}
+	
+	public void loadDependencies(UiTheme theme, Array<AssetDescriptor> dependencies) {
+		
+	}
+	
+	public void prepareAssets(UiTheme theme, FileHandleResolver fileHandleResolver, AssetManager assetManager) {
+		
+	}
 	
 	public int getPaddingTop() {
 		return paddingTop;
@@ -83,20 +102,4 @@ public class StyleRule {
 	public void setMarginRight(int marginRight) {
 		this.marginRight = marginRight;
 	}
-	
-	public int getFontSize() {
-		return fontSize;
-	}
-	
-	public void setFontSize(int fontSize) {
-		this.fontSize = fontSize;
-	}
-	
-	public String getFont() {
-		return font;
-	}
-	
-	public void setFont(String font) {
-		this.font = font;
-	}	
 }

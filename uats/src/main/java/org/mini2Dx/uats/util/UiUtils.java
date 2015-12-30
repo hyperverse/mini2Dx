@@ -19,16 +19,17 @@ import com.badlogic.gdx.graphics.Color;
 public class UiUtils {
 
 	public static Label createHeader(String text) {
-		return createLabel(text, "xs-0", "xs-12", Label.COLOR_BLACK);
+		return createLabel(text, Label.COLOR_BLACK);
 	}
 	
-	public static Label createLabel(String text, String xRules, String widthRules) {
-		return createLabel(text, xRules, widthRules, Label.COLOR_BLACK);
+	public static Label createLabel(String text) {
+		return createLabel(text, Label.COLOR_BLACK);
 	}
 
 	private static Label createLabel(String text, Color color) {
 		Label label = new Label();
 		label.setText(text);
+		label.setColor(color);
 		return label;
 	}
 
@@ -47,8 +48,6 @@ public class UiUtils {
 	
 	public static Select<String> createSelect(ActionListener listener) {
 		Select<String> select = new Select<String>();
-		select.setXRules(xRules);
-		select.setWidthRules(widthRules);
 		select.addActionListener(listener);
 		return select;
 	}

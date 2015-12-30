@@ -13,17 +13,22 @@ package org.mini2Dx.ui.style;
 
 import java.util.Map;
 
+import org.mini2Dx.core.exception.MdxException;
 import org.mini2Dx.core.serialization.annotation.Field;
 import org.mini2Dx.ui.element.Button;
 import org.mini2Dx.ui.element.Column;
 import org.mini2Dx.ui.element.Container;
 import org.mini2Dx.ui.element.Image;
 import org.mini2Dx.ui.element.Label;
-import org.mini2Dx.ui.element.Row;
 import org.mini2Dx.ui.element.Select;
 import org.mini2Dx.ui.element.TextBox;
 import org.mini2Dx.ui.element.UiElement;
 import org.mini2Dx.ui.layout.ScreenSize;
+
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.utils.Array;
 
 /**
  *
@@ -31,70 +36,179 @@ import org.mini2Dx.ui.layout.ScreenSize;
 public class UiTheme {
 	public static final String DEFAULT_THEME_FILENAME = "default-mdx-theme.json";
 	public static final String DEFAULT_STYLE_ID = "default";
-	
+
 	@Field
 	private String id;
 	@Field
-	private Map<String, StyleRuleset> buttons;
+	private Map<String, StyleRuleset<ButtonStyleRule>> buttons;
 	@Field
-	private Map<String, StyleRuleset> columns;
+	private Map<String, StyleRuleset<StyleRule>> columns;
 	@Field
-	private Map<String, StyleRuleset> containers;
+	private Map<String, StyleRuleset<ContainerStyleRule>> containers;
 	@Field
-	private Map<String, StyleRuleset> images;
+	private Map<String, StyleRuleset<StyleRule>> images;
 	@Field
-	private Map<String, StyleRuleset> labels;
+	private Map<String, StyleRuleset<LabelStyleRule>> labels;
 	@Field
-	private Map<String, StyleRuleset> rows;
+	private Map<String, StyleRuleset<SelectStyleRule>> selects;
 	@Field
-	private Map<String, StyleRuleset> selects;
-	@Field
-	private Map<String, StyleRuleset> textboxes;
-	
-	public StyleRule getStyleRule(Button button, ScreenSize screenSize) {
-		return getStyleRule(button, screenSize, buttons);
+	private Map<String, StyleRuleset<TextBoxStyleRule>> textboxes;
+
+	public void validate() {
+		if (!buttons.containsKey(DEFAULT_STYLE_ID)) {
+			throw new MdxException("No style with id 'default' for buttons");
+		}
+		if (!columns.containsKey(DEFAULT_STYLE_ID)) {
+			throw new MdxException("No style with id 'default' for columns");
+		}
+		if (!containers.containsKey(DEFAULT_STYLE_ID)) {
+			throw new MdxException("No style with id 'default' for containers");
+		}
+		if (!images.containsKey(DEFAULT_STYLE_ID)) {
+			throw new MdxException("No style with id 'default' for images");
+		}
+		if (!labels.containsKey(DEFAULT_STYLE_ID)) {
+			throw new MdxException("No style with id 'default' for labels");
+		}
+		if (!selects.containsKey(DEFAULT_STYLE_ID)) {
+			throw new MdxException("No style with id 'default' for selects");
+		}
+		if (!textboxes.containsKey(DEFAULT_STYLE_ID)) {
+			throw new MdxException("No style with id 'default' for textboxes");
+		}
+
+		for (StyleRuleset<ButtonStyleRule> buttonRuleset : buttons.values()) {
+			buttonRuleset.validate(this);
+		}
+		for (StyleRuleset<StyleRule> columnRuleset : columns.values()) {
+			columnRuleset.validate(this);
+		}
+		for (StyleRuleset<ContainerStyleRule> containerRuleset : containers.values()) {
+			containerRuleset.validate(this);
+		}
+		for (StyleRuleset<StyleRule> imageRuleset : images.values()) {
+			imageRuleset.validate(this);
+		}
+		for (StyleRuleset<LabelStyleRule> labelRuleset : labels.values()) {
+			labelRuleset.validate(this);
+		}
+		for (StyleRuleset<SelectStyleRule> selectRuleset : selects.values()) {
+			selectRuleset.validate(this);
+		}
+		for (StyleRuleset<TextBoxStyleRule> textboxRuleset : textboxes.values()) {
+			textboxRuleset.validate(this);
+		}
 	}
-	
+
+	public void loadDependencies(Array<AssetDescriptor> dependencies) {
+		for (StyleRuleset<ButtonStyleRule> buttonRuleset : buttons.values()) {
+			buttonRuleset.loadDependencies(this, dependencies);
+		}
+		for (StyleRuleset<StyleRule> columnRuleset : columns.values()) {
+			columnRuleset.loadDependencies(this, dependencies);
+		}
+		for (StyleRuleset<ContainerStyleRule> containerRuleset : containers.values()) {
+			containerRuleset.loadDependencies(this, dependencies);
+		}
+		for (StyleRuleset<StyleRule> imageRuleset : images.values()) {
+			imageRuleset.loadDependencies(this, dependencies);
+		}
+		for (StyleRuleset<LabelStyleRule> labelRuleset : labels.values()) {
+			labelRuleset.loadDependencies(this, dependencies);
+		}
+		for (StyleRuleset<SelectStyleRule> selectRuleset : selects.values()) {
+			selectRuleset.loadDependencies(this, dependencies);
+		}
+		for (StyleRuleset<TextBoxStyleRule> textboxRuleset : textboxes.values()) {
+			textboxRuleset.loadDependencies(this, dependencies);
+		}
+	}
+
+	public void prepareAssets(FileHandleResolver fileHandleResolver, AssetManager assetManager) {
+		for (StyleRuleset<ButtonStyleRule> buttonRuleset : buttons.values()) {
+			buttonRuleset.prepareAssets(this, fileHandleResolver, assetManager);
+		}
+		for (StyleRuleset<StyleRule> columnRuleset : columns.values()) {
+			columnRuleset.prepareAssets(this, fileHandleResolver, assetManager);
+		}
+		for (StyleRuleset<ContainerStyleRule> containerRuleset : containers.values()) {
+			containerRuleset.prepareAssets(this, fileHandleResolver, assetManager);
+		}
+		for (StyleRuleset<StyleRule> imageRuleset : images.values()) {
+			imageRuleset.prepareAssets(this, fileHandleResolver, assetManager);
+		}
+		for (StyleRuleset<LabelStyleRule> labelRuleset : labels.values()) {
+			labelRuleset.prepareAssets(this, fileHandleResolver, assetManager);
+		}
+		for (StyleRuleset<SelectStyleRule> selectRuleset : selects.values()) {
+			selectRuleset.prepareAssets(this, fileHandleResolver, assetManager);
+		}
+		for (StyleRuleset<TextBoxStyleRule> textboxRuleset : textboxes.values()) {
+			textboxRuleset.prepareAssets(this, fileHandleResolver, assetManager);
+		}
+	}
+
+	public ButtonStyleRule getStyleRule(Button button, ScreenSize screenSize) {
+		StyleRuleset<ButtonStyleRule> ruleset = buttons.get(button.getStyleId());
+		if (ruleset == null) {
+			ruleset = buttons.get(DEFAULT_STYLE_ID);
+		}
+		return ruleset.getStyleRule(screenSize);
+	}
+
 	public StyleRule getStyleRule(Column column, ScreenSize screenSize) {
 		return getStyleRule(column, screenSize, columns);
 	}
-	
-	public StyleRule getStyleRule(Container container, ScreenSize screenSize) {
-		return getStyleRule(container, screenSize, containers);
+
+	public ContainerStyleRule getStyleRule(Container container, ScreenSize screenSize) {
+		StyleRuleset<ContainerStyleRule> ruleset = containers.get(container.getStyleId());
+		if (ruleset == null) {
+			ruleset = containers.get(DEFAULT_STYLE_ID);
+		}
+		return ruleset.getStyleRule(screenSize);
 	}
-	
-	public StyleRule getStyleRule(Label label, ScreenSize screenSize) {
-		return getStyleRule(label, screenSize, labels);
+
+	public LabelStyleRule getStyleRule(Label label, ScreenSize screenSize) {
+		StyleRuleset<LabelStyleRule> ruleset = labels.get(label.getStyleId());
+		if (ruleset == null) {
+			ruleset = labels.get(DEFAULT_STYLE_ID);
+		}
+		return ruleset.getStyleRule(screenSize);
 	}
-	
+
 	public StyleRule getStyleRule(Image image, ScreenSize screenSize) {
 		return getStyleRule(image, screenSize, images);
 	}
-	
-	public StyleRule getStyleRule(Row row, ScreenSize screenSize) {
-		return getStyleRule(row, screenSize, rows);
+
+	public SelectStyleRule getStyleRule(Select<?> select, ScreenSize screenSize) {
+		StyleRuleset<SelectStyleRule> ruleset = selects.get(select.getStyleId());
+		if (ruleset == null) {
+			ruleset = selects.get(DEFAULT_STYLE_ID);
+		}
+		return ruleset.getStyleRule(screenSize);
 	}
-	
-	public StyleRule getStyleRule(Select select, ScreenSize screenSize) {
-		return getStyleRule(select, screenSize, selects);
+
+	public TextBoxStyleRule getStyleRule(TextBox textbox, ScreenSize screenSize) {
+		StyleRuleset<TextBoxStyleRule> ruleset = textboxes.get(textbox.getStyleId());
+		if (ruleset == null) {
+			ruleset = textboxes.get(DEFAULT_STYLE_ID);
+		}
+		return ruleset.getStyleRule(screenSize);
 	}
-	
-	public StyleRule getStyleRule(TextBox textbox, ScreenSize screenSize) {
-		return getStyleRule(textbox, screenSize, textboxes);
-	}
-	
-	private StyleRule getStyleRule(UiElement element, ScreenSize screenSize, Map<String, StyleRuleset> rules) {
-		StyleRuleset ruleset = rules.get(element.getStyleId());
-		if(ruleset == null) {
+
+	private StyleRule getStyleRule(UiElement element, ScreenSize screenSize,
+			Map<String, StyleRuleset<StyleRule>> rules) {
+		StyleRuleset<?> ruleset = rules.get(element.getStyleId());
+		if (ruleset == null) {
 			ruleset = rules.get(DEFAULT_STYLE_ID);
 		}
 		return ruleset.getStyleRule(screenSize);
 	}
-	
+
 	public String getId() {
 		return id;
 	}
-	
+
 	public void setId(String id) {
 		this.id = id;
 	}

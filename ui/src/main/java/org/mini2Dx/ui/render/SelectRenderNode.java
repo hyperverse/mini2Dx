@@ -14,14 +14,15 @@ package org.mini2Dx.ui.render;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.ui.element.Select;
 import org.mini2Dx.ui.layout.LayoutState;
+import org.mini2Dx.ui.style.SelectStyleRule;
 import org.mini2Dx.ui.style.StyleRule;
 
 /**
  *
  */
-public class SelectRenderNode extends RenderNode<Select> {
+public class SelectRenderNode extends RenderNode<Select<?>, SelectStyleRule> {
 
-	public SelectRenderNode(ParentRenderNode<?> parent, Select element) {
+	public SelectRenderNode(ParentRenderNode<?, ?> parent, Select<?> element) {
 		super(parent, element);
 	}
 
@@ -56,7 +57,7 @@ public class SelectRenderNode extends RenderNode<Select> {
 	}
 
 	@Override
-	protected StyleRule determineStyleRule(LayoutState layoutState) {
+	protected SelectStyleRule determineStyleRule(LayoutState layoutState) {
 		// TODO Auto-generated method stub
 		return null;
 	}

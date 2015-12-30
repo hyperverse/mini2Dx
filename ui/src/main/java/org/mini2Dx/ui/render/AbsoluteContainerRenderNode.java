@@ -13,13 +13,14 @@ package org.mini2Dx.ui.render;
 
 import org.mini2Dx.ui.element.AbsoluteContainer;
 import org.mini2Dx.ui.layout.LayoutState;
+import org.mini2Dx.ui.style.ContainerStyleRule;
 
 /**
  *
  */
-public class AbsoluteContainerRenderNode extends ColumnRenderNode {
+public class AbsoluteContainerRenderNode extends AbstractColumnRenderNode<ContainerStyleRule> {
 	
-	public AbsoluteContainerRenderNode(ParentRenderNode<?> parent, AbsoluteContainer container) {
+	public AbsoluteContainerRenderNode(ParentRenderNode<?, ?> parent, AbsoluteContainer container) {
 		super(parent, container);
 	}
 
@@ -31,5 +32,11 @@ public class AbsoluteContainerRenderNode extends ColumnRenderNode {
 	@Override
 	protected float determineYOffset(LayoutState layoutState) {
 		return ((AbsoluteContainer) element).getY();
+	}
+
+	@Override
+	protected ContainerStyleRule determineStyleRule(LayoutState layoutState) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

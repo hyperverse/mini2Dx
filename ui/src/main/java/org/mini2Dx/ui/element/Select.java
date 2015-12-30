@@ -11,14 +11,20 @@
  */
 package org.mini2Dx.ui.element;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.mini2Dx.ui.render.ParentRenderNode;
 import org.mini2Dx.ui.render.SelectRenderNode;
 
 /**
  *
  */
-public class Select extends UiElement {
+public class Select<V> extends UiElement {
+	private final List<SelectOption<V>> options = new ArrayList<SelectOption<V>>(1);
+	
 	private SelectRenderNode renderNode;
+	private int selectedIndex = 0;
 	
 	public Select() {
 		this(null);
@@ -29,7 +35,7 @@ public class Select extends UiElement {
 	}
 
 	@Override
-	public void attach(ParentRenderNode<?> parentRenderNode) {
+	public void attach(ParentRenderNode<?, ?> parentRenderNode) {
 		if(renderNode != null) {
 			return;
 		}
@@ -38,7 +44,7 @@ public class Select extends UiElement {
 	}
 
 	@Override
-	public void detach(ParentRenderNode<?> parentRenderNode) {
+	public void detach(ParentRenderNode<?, ?> parentRenderNode) {
 		if(renderNode == null) {
 			return;
 		}
@@ -73,5 +79,47 @@ public class Select extends UiElement {
 		while(!effects.isEmpty()) {
 			renderNode.applyEffect(effects.poll());
 		}
+	}
+	
+	public void addOption(String label, V value) {
+		options.add(new SelectOption<V>(label, value));
+	}
+	
+	public void removeOption(SelectOption<V> option) {
+		options.remove(option);
+	}
+	
+	public void removeOptionByLabel(String label) {
+		for(int i = 0; i < options.size(); i++) {
+			if(options.get(i).getLabel().equals(label)) {
+				options.remove(i);
+				return;
+			}
+		}
+	}
+	
+	public void removeOptionByValue(V value) {
+		for(int i = 0; i < options.size(); i++) {
+			if(options.get(i).getValue().equals(value)) {
+				options.remove(i);
+				return;
+			}
+		}
+	}
+	
+	public SelectOption<V> getSelectedOption() {
+		return options.get(selectedIndex);
+	}
+	
+	public V getSelectedValue() {
+		return options.get(selectedIndex).getValue();
+	}
+	
+	public int getTotalOptions() {
+		return options.size();
+	}
+	
+	public int getSelectedIndex() {
+		return selectedIndex;
 	}
 }

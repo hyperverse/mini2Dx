@@ -25,12 +25,13 @@ import org.mini2Dx.ui.render.UiContainerRenderTree;
 import org.mini2Dx.ui.style.UiTheme;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 
 /**
  *
  */
-public class UiContainer extends UiElement {
+public class UiContainer extends UiElement implements InputProcessor {
 	private static final String LOGGING_TAG = UiContainer.class.getSimpleName();
 	
 	private final List<Container> children = new ArrayList<Container>(1);
@@ -79,21 +80,21 @@ public class UiContainer extends UiElement {
 		}
 	}
 	
-	public void addChild(Container container) {
+	public void add(Container container) {
 		container.attach(renderTree);
 		children.add(container);
 	}
 
-	public void removeChild(Container container) {
+	public void remove(Container container) {
 		children.remove(container);
 		container.detach(renderTree);
 	}
 	
 	@Override
-	public void attach(ParentRenderNode<?> parentRenderNode) {}
+	public void attach(ParentRenderNode<?, ?> parentRenderNode) {}
 
 	@Override
-	public void detach(ParentRenderNode<?> parentRenderNode) {}
+	public void detach(ParentRenderNode<?, ?> parentRenderNode) {}
 	
 	@Override
 	public void setVisibility(Visibility visibility) {
@@ -136,4 +137,52 @@ public class UiContainer extends UiElement {
 
 	@Override
 	public void setStyleId(String styleId) {}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

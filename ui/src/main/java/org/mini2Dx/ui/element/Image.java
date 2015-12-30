@@ -40,7 +40,7 @@ public class Image extends UiElement {
 	}
 
 	@Override
-	public void attach(ParentRenderNode<?> parentRenderNode) {
+	public void attach(ParentRenderNode<?, ?> parentRenderNode) {
 		if(renderNode != null) {
 			return;
 		}
@@ -49,7 +49,7 @@ public class Image extends UiElement {
 	}
 
 	@Override
-	public void detach(ParentRenderNode<?> parentRenderNode) {
+	public void detach(ParentRenderNode<?, ?> parentRenderNode) {
 		if(renderNode == null) {
 			return;
 		}

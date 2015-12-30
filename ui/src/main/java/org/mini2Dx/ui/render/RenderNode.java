@@ -26,20 +26,20 @@ import org.mini2Dx.ui.style.StyleRule;
 /**
  *
  */
-public abstract class RenderNode<T extends UiElement> {
+public abstract class RenderNode<T extends UiElement, S extends StyleRule> {
 	protected final List<UiEffect> effects = new ArrayList<UiEffect>(1);
 	protected final CollisionBox currentPosition = new CollisionBox();
 	protected final Rectangle targetPosition = new Rectangle();
-	protected final ParentRenderNode<?> parent;
+	protected final ParentRenderNode<?, ?> parent;
 	protected final T element;
 	
-	protected StyleRule style;
+	protected S style;
 	protected float preferredWidth, preferredHeight;
 	protected float xOffset, yOffset;
 	private float relativeX, relativeY;
 	private boolean dirty;
 	
-	public RenderNode(ParentRenderNode<?> parent, T element) {
+	public RenderNode(ParentRenderNode<?, ?> parent, T element) {
 		this.parent = parent;
 		this.element = element;
 		setDirty(true);
@@ -87,7 +87,7 @@ public abstract class RenderNode<T extends UiElement> {
 	
 	protected abstract void renderElement(Graphics g);
 	
-	protected abstract StyleRule determineStyleRule(LayoutState layoutState);
+	protected abstract S determineStyleRule(LayoutState layoutState);
 	
 	protected abstract float determinePreferredWidth(LayoutState layoutState);
 	

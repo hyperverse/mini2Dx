@@ -46,7 +46,7 @@ public class TextButton extends Button {
 	}
 
 	@Override
-	public void attach(ParentRenderNode<?> parentRenderNode) {
+	public void attach(ParentRenderNode<?, ?> parentRenderNode) {
 		if(renderNode != null) {
 			return;
 		}
@@ -55,7 +55,7 @@ public class TextButton extends Button {
 	}
 
 	@Override
-	public void detach(ParentRenderNode<?> parentRenderNode) {
+	public void detach(ParentRenderNode<?, ?> parentRenderNode) {
 		if(renderNode == null) {
 			return;
 		}

@@ -28,7 +28,7 @@ public class Row extends Column {
 	}
 
 	@Override
-	public void attach(ParentRenderNode<?> parentRenderNode) {
+	public void attach(ParentRenderNode<?, ?> parentRenderNode) {
 		if(renderNode != null) {
 			return;
 		}
@@ -37,5 +37,17 @@ public class Row extends Column {
 			children.get(i).attach(renderNode);
 		}
 		parentRenderNode.addChild(renderNode);
+	}
+	
+	public static Row withElements(UiElement ...elements) {
+		return withElements(null, elements);
+	}
+	
+	public static Row withElements(String rowId, UiElement ...elements) {
+		Row result = new Row(rowId);
+		for(int i = 0; i < elements.length; i++) {
+			result.add(elements[i]);
+		}
+		return result;
 	}
 }

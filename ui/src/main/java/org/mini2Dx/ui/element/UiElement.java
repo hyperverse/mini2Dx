@@ -42,9 +42,9 @@ public abstract class UiElement {
 	
 	public abstract void pushEffectsToRenderNode();
 	
-	public abstract void attach(ParentRenderNode<?> parentRenderNode);
+	public abstract void attach(ParentRenderNode<?, ?> parentRenderNode);
 	
-	public abstract void detach(ParentRenderNode<?> parentRenderNode);
+	public abstract void detach(ParentRenderNode<?, ?> parentRenderNode);
 	
 	public void applyEffect(UiEffect effect) {
 		effects.offer(effect);

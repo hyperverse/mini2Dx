@@ -29,7 +29,7 @@ public class AbsoluteContainer extends Container {
 	}
 	
 	@Override
-	public void attach(ParentRenderNode<?> parentRenderNode) {
+	public void attach(ParentRenderNode<?, ?> parentRenderNode) {
 		if(renderNode != null) {
 			return;
 		}

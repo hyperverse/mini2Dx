@@ -15,14 +15,18 @@ import org.mini2Dx.ui.layout.HorizontalAlignment;
 import org.mini2Dx.ui.render.LabelRenderNode;
 import org.mini2Dx.ui.render.ParentRenderNode;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.Color;
 
 /**
  *
  */
 public class Label extends UiElement {
+	public static final Color COLOR_WHITE = new Color(254f / 255f, 254f / 255f, 254f / 255f, 1f);
+	public static final Color COLOR_BLACK = new Color(1f / 255f, 1f / 255f, 1f / 255f, 1f);
+	
 	private LabelRenderNode renderNode;
 	private String text = "";
+	private Color color = COLOR_WHITE;
 	private HorizontalAlignment horizontalAlignment = HorizontalAlignment.LEFT;
 	
 	public Label() {
@@ -50,7 +54,7 @@ public class Label extends UiElement {
 	}
 
 	@Override
-	public void attach(ParentRenderNode<?> parentRenderNode) {
+	public void attach(ParentRenderNode<?, ?> parentRenderNode) {
 		if(renderNode != null) {
 			return;
 		}
@@ -59,7 +63,7 @@ public class Label extends UiElement {
 	}
 
 	@Override
-	public void detach(ParentRenderNode<?> parentRenderNode) {
+	public void detach(ParentRenderNode<?, ?> parentRenderNode) {
 		if(renderNode == null) {
 			return;
 		}
@@ -105,5 +109,13 @@ public class Label extends UiElement {
 			return;
 		}
 		this.horizontalAlignment = horizontalAlignment;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 }

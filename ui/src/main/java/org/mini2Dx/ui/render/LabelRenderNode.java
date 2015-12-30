@@ -14,6 +14,7 @@ package org.mini2Dx.ui.render;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.ui.element.Label;
 import org.mini2Dx.ui.layout.LayoutState;
+import org.mini2Dx.ui.style.LabelStyleRule;
 import org.mini2Dx.ui.style.StyleRule;
 
 import com.badlogic.gdx.graphics.Color;
@@ -23,13 +24,13 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 /**
  *
  */
-public class LabelRenderNode extends RenderNode<Label> {
+public class LabelRenderNode extends RenderNode<Label, LabelStyleRule> {
 	private static GlyphLayout glyphLayout = new GlyphLayout();
 	
 	private BitmapFont font = new BitmapFont(true);
 	private Color color = new Color(1f / 255f, 1f / 255f, 1f / 255f, 1f);
 
-	public LabelRenderNode(ParentRenderNode<?> parent, Label element) {
+	public LabelRenderNode(ParentRenderNode<?, ?> parent, Label element) {
 		super(parent, element);
 	}
 
@@ -68,7 +69,7 @@ public class LabelRenderNode extends RenderNode<Label> {
 	}
 	
 	@Override
-	protected StyleRule determineStyleRule(LayoutState layoutState) {
+	protected LabelStyleRule determineStyleRule(LayoutState layoutState) {
 		return layoutState.getTheme().getStyleRule(element, layoutState.getScreenSize());
 	}
 }

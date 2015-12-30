@@ -14,14 +14,15 @@ package org.mini2Dx.ui.render;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.ui.element.TextButton;
 import org.mini2Dx.ui.layout.LayoutState;
+import org.mini2Dx.ui.style.ButtonStyleRule;
 import org.mini2Dx.ui.style.StyleRule;
 
 /**
  *
  */
-public class TextButtonRenderNode extends RenderNode<TextButton> {
+public class TextButtonRenderNode extends RenderNode<TextButton, ButtonStyleRule> {
 
-	public TextButtonRenderNode(ParentRenderNode<?> parent, TextButton element) {
+	public TextButtonRenderNode(ParentRenderNode<?, ?> parent, TextButton element) {
 		super(parent, element);
 	}
 
@@ -53,7 +54,7 @@ public class TextButtonRenderNode extends RenderNode<TextButton> {
 	}
 
 	@Override
-	protected StyleRule determineStyleRule(LayoutState layoutState) {
+	protected ButtonStyleRule determineStyleRule(LayoutState layoutState) {
 		return layoutState.getTheme().getStyleRule(element, layoutState.getScreenSize());
 	}
 }
