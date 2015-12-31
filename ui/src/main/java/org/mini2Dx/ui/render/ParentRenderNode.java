@@ -37,6 +37,37 @@ public abstract class ParentRenderNode<T extends UiElement, S extends StyleRule>
 		}
 	}
 	
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		if(currentArea.contains(screenX, screenY)) {
+			setState(NodeState.HOVER);
+			boolean result = false;
+			for(int i = children.size() - 1; i >= 0; i--) {
+				if(children.get(i).mouseMoved(screenX, screenY)) {
+					result = true;
+				}
+			}
+			return result;
+		} else if(getState() != NodeState.NORMAL) {
+			setState(NodeState.NORMAL);
+		}
+		return false;
+	}
+	
+	@Override
+	public ActionableRenderNode mouseDown(int screenX, int screenY, int pointer, int button) {
+		if(!isIncludedInRender()) {
+			return null;
+		}
+		for(int i = children.size() - 1; i >= 0; i--) {
+			ActionableRenderNode result = children.get(i).mouseDown(screenX, screenY, pointer, button);
+			if(result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+	
 	public void addChild(RenderNode<?, ?> child) {
 		children.add(child);
 		setDirty(true);

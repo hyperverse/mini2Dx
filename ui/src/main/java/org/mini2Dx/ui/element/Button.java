@@ -15,12 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.mini2Dx.ui.listener.ActionListener;
+import org.mini2Dx.ui.listener.HoverListener;
 
 /**
  *
  */
 public abstract class Button extends UiElement implements Actionable {
 	private List<ActionListener> actionListeners;
+	private boolean enabled = true;
 	
 	public Button() {
 		this(null);
@@ -64,5 +66,15 @@ public abstract class Button extends UiElement implements Actionable {
 			return;
 		}
 		actionListeners.remove(listener);
+	}
+	
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
+	
+	@Override
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

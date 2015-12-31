@@ -11,10 +11,13 @@
  */
 package org.mini2Dx.ui.element;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import org.mini2Dx.ui.effect.UiEffect;
+import org.mini2Dx.ui.listener.HoverListener;
 import org.mini2Dx.ui.render.ParentRenderNode;
 import org.mini2Dx.ui.style.UiTheme;
 import org.mini2Dx.ui.util.IdAllocator;
@@ -22,10 +25,11 @@ import org.mini2Dx.ui.util.IdAllocator;
 /**
  *
  */
-public abstract class UiElement {
+public abstract class UiElement implements Hoverable {
 	private final String id;
 	protected final Queue<UiEffect> effects = new LinkedList<UiEffect>();
 	
+	private List<HoverListener> hoverListeners;
 	protected Visibility visibility = Visibility.HIDDEN;
 	protected String styleId = UiTheme.DEFAULT_STYLE_ID;
 	
@@ -65,6 +69,40 @@ public abstract class UiElement {
 	}
 
 	public abstract void setStyleId(String styleId);
+	
+	@Override
+	public void addHoverListener(HoverListener listener) {
+		if(hoverListeners == null) {
+			hoverListeners = new ArrayList<HoverListener>(1);
+		}
+		hoverListeners.add(listener);
+	}
+
+	@Override
+	public void removeHoverListener(HoverListener listener) {
+		if(hoverListeners == null) {
+			return;
+		}
+		hoverListeners.remove(listener);
+	}
+	
+	public void notifyHoverListenersOnBeginHover() {
+		if(hoverListeners == null) {
+			return;
+		}
+		for(int i = hoverListeners.size() - 1; i >= 0; i--) {
+			hoverListeners.get(i).onHoverBegin(this);
+		}
+	}
+	
+	public void notifyHoverListenersOnEndHover() {
+		if(hoverListeners == null) {
+			return;
+		}
+		for(int i = hoverListeners.size() - 1; i >= 0; i--) {
+			hoverListeners.get(i).onHoverEnd(this);
+		}
+	}
 
 	@Override
 	public int hashCode() {

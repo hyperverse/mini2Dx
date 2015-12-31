@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.mini2Dx.ui.listener.ActionListener;
+import org.mini2Dx.ui.listener.HoverListener;
 import org.mini2Dx.ui.render.ParentRenderNode;
 import org.mini2Dx.ui.render.TextBoxRenderNode;
 
@@ -22,7 +23,9 @@ import org.mini2Dx.ui.render.TextBoxRenderNode;
  *
  */
 public class TextBox extends UiElement implements Actionable {
+	private List<HoverListener> hoverListeners;
 	private List<ActionListener> actionListeners;
+	private boolean enabled = true;
 	private String value = "";
 	private boolean passwordField = false;
 	private TextBoxRenderNode renderNode;
@@ -135,5 +138,31 @@ public class TextBox extends UiElement implements Actionable {
 			return;
 		}
 		actionListeners.remove(listener);
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
+	
+	@Override
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	@Override
+	public void addHoverListener(HoverListener listener) {
+		if(hoverListeners == null) {
+			hoverListeners = new ArrayList<HoverListener>(1);
+		}
+		hoverListeners.add(listener);
+	}
+
+	@Override
+	public void removeHoverListener(HoverListener listener) {
+		if(hoverListeners == null) {
+			return;
+		}
+		hoverListeners.remove(listener);
 	}
 }

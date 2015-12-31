@@ -17,14 +17,18 @@ import java.util.List;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.ui.element.Container;
+import org.mini2Dx.ui.element.Modal;
 import org.mini2Dx.ui.element.UiElement;
 import org.mini2Dx.ui.element.Visibility;
 import org.mini2Dx.ui.listener.ScreenSizeListener;
+import org.mini2Dx.ui.render.ActionableRenderNode;
 import org.mini2Dx.ui.render.ParentRenderNode;
+import org.mini2Dx.ui.render.TextInputableRenderNode;
 import org.mini2Dx.ui.render.UiContainerRenderTree;
 import org.mini2Dx.ui.style.UiTheme;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 
@@ -39,6 +43,10 @@ public class UiContainer extends UiElement implements InputProcessor {
 	
 	private boolean themeWarningIssued;
 	private UiTheme theme;
+	
+	private Modal activeModal;
+	private ActionableRenderNode activeAction;
+	private TextInputableRenderNode activeTextInput;
 	
 	public UiContainer(GameContainer gc, AssetManager assetManager) {
 		renderTree = new UiContainerRenderTree(this, gc, assetManager);
@@ -139,50 +147,139 @@ public class UiContainer extends UiElement implements InputProcessor {
 	public void setStyleId(String styleId) {}
 
 	@Override
-	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+		if(activeTextInput != null && activeTextInput.mouseDown(screenX, screenY, pointer, button) == null) {
+			//Release textbox control
+			activeTextInput = null;
+			activeAction = null;
+		}
+		
+		ActionableRenderNode result = renderTree.mouseDown(screenX, screenY, pointer, button);
+		if(result != null) {
+			result.beginAction();
+			activeAction = result;
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
+		if(activeAction == null) {
+			return false;
+		}
+		activeAction.mouseUp(screenX, screenY, pointer, button);
+		return true;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		// TODO Auto-generated method stub
-		return false;
+		return renderTree.mouseMoved(screenX, screenY);
 	}
 
 	@Override
 	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public boolean keyTyped(char character) {
+		if(activeTextInput == null) {
+			return false;
+		}
+		activeTextInput.characterReceived(character);
+		return true;
+	}
+	
+	@Override
+	public boolean keyDown(int keycode) {
+		if(activeTextInput != null) {
+			return true;
+		}
+		if(handleModalKeyDown(keycode)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		if(handleTextInputKeyUp(keycode)) {
+			return true;
+		}
+		if(handleModalKeyUp(keycode)) {
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean handleModalKeyDown(int keycode) {
+		if(activeModal == null) {
+			return false;
+		}
+		ActionableRenderNode hotkeyAction = activeModal.hotkey(keycode);
+		if(hotkeyAction == null) {
+			return false;
+		}
+		hotkeyAction.beginAction();
+		return true;
+	}
+	
+	private boolean handleModalKeyUp(int keycode) {
+		if(activeModal == null) {
+			return false;
+		}
+		ActionableRenderNode hotkeyAction = activeModal.hotkey(keycode);
+		if(hotkeyAction == null) {
+			switch(keycode) {
+			case Keys.UP:
+				setCurrentAction(activeModal.goToPreviousActionable());
+				break;
+			case Keys.DOWN:
+				setCurrentAction(activeModal.goToNextActionable());
+				break;
+			}
+		} else {
+			hotkeyAction.endAction();
+		}
+		return true;
+	}
+	
+	private boolean handleTextInputKeyUp(int keycode) {
+		if(activeTextInput == null) {
+			return false;
+		}
+		if(activeTextInput.isReceivingInput()) {
+			switch(keycode) {
+			case Keys.BACKSPACE:
+				activeTextInput.backspace();
+				break;
+			case Keys.ENTER:
+				if(activeTextInput.enter()) {
+					activeTextInput = null;
+					activeAction = null;
+				}
+				break;
+			case Keys.RIGHT:
+				activeTextInput.moveCursorRight();
+				break;
+			case Keys.LEFT:
+				activeTextInput.moveCursorLeft();
+				break;
+			}
+			return true;
+		}
+		
+		switch(keycode) {
+		case Keys.ENTER:
+			activeTextInput.beginAction();
+			return true;
+		}
 		return false;
 	}
 }

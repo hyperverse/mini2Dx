@@ -17,15 +17,46 @@ import org.mini2Dx.ui.layout.LayoutState;
 import org.mini2Dx.ui.style.ButtonStyleRule;
 import org.mini2Dx.ui.style.StyleRule;
 
+import com.badlogic.gdx.Input.Buttons;
+
 /**
  *
  */
-public class TextButtonRenderNode extends RenderNode<TextButton, ButtonStyleRule> {
+public class TextButtonRenderNode extends RenderNode<TextButton, ButtonStyleRule> implements ActionableRenderNode {
 
 	public TextButtonRenderNode(ParentRenderNode<?, ?> parent, TextButton element) {
 		super(parent, element);
 	}
 
+	@Override
+	public ActionableRenderNode mouseDown(int screenX, int screenY, int pointer, int button) {
+		if(!isIncludedInRender()) {
+			return null;
+		}
+		if(button != Buttons.LEFT) {
+			return null;
+		}
+		if(currentArea.contains(screenX, screenY)) {
+			setState(NodeState.ACTION);
+			return this;
+		}
+		return null;
+	}
+	
+	
+	@Override
+	public void mouseUp(int screenX, int screenY, int pointer, int button) {
+		if(getState() != NodeState.ACTION) {
+			return;
+		}
+		if(currentArea.contains(screenX, screenY)) {
+			setState(NodeState.HOVER);
+		} else {
+			setState(NodeState.NORMAL);
+		}
+		endAction();
+	}
+	
 	@Override
 	protected void renderElement(Graphics g) {
 		// TODO Auto-generated method stub
@@ -56,5 +87,15 @@ public class TextButtonRenderNode extends RenderNode<TextButton, ButtonStyleRule
 	@Override
 	protected ButtonStyleRule determineStyleRule(LayoutState layoutState) {
 		return layoutState.getTheme().getStyleRule(element, layoutState.getScreenSize());
+	}
+
+	@Override
+	public void beginAction() {
+		element.notifyActionListenersOfBeginEvent();
+	}
+
+	@Override
+	public void endAction() {
+		element.notifyActionListenersOfEndEvent();
 	}
 }

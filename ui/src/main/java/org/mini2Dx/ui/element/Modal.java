@@ -11,12 +11,16 @@
  */
 package org.mini2Dx.ui.element;
 
+import java.util.Map;
+
 import org.mini2Dx.ui.layout.VerticalAlignment;
 
 /**
  *
  */
 public class Modal extends Container {
+	private Map<Integer, Actionable> keyboardHotkeys;
+	private Map<String, Actionable> controllerHotkeys;
 	private VerticalAlignment verticalAlignment = VerticalAlignment.MIDDLE;
 	
 	public Modal() {

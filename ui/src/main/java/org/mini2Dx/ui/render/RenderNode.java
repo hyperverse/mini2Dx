@@ -26,10 +26,10 @@ import org.mini2Dx.ui.style.StyleRule;
 /**
  *
  */
-public abstract class RenderNode<T extends UiElement, S extends StyleRule> {
+public abstract class RenderNode<T extends UiElement, S extends StyleRule> implements HoverableRenderNode {
 	protected final List<UiEffect> effects = new ArrayList<UiEffect>(1);
-	protected final CollisionBox currentPosition = new CollisionBox();
-	protected final Rectangle targetPosition = new Rectangle();
+	protected final CollisionBox currentArea = new CollisionBox();
+	protected final Rectangle targetArea = new Rectangle();
 	protected final ParentRenderNode<?, ?> parent;
 	protected final T element;
 	
@@ -38,6 +38,7 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> {
 	protected float xOffset, yOffset;
 	private float relativeX, relativeY;
 	private boolean dirty;
+	private NodeState state = NodeState.NORMAL;
 	
 	public RenderNode(ParentRenderNode<?, ?> parent, T element) {
 		this.parent = parent;
@@ -47,11 +48,11 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> {
 	
 	public void update(float delta) {
 		if(parent == null) {
-			targetPosition.set(relativeX, relativeY, preferredWidth, preferredHeight);
+			targetArea.set(relativeX, relativeY, preferredWidth, preferredHeight);
 		} else {
-			targetPosition.set(parent.getX() + relativeX, parent.getY() + relativeY, preferredWidth, preferredHeight);
+			targetArea.set(parent.getX() + relativeX, parent.getY() + relativeY, preferredWidth, preferredHeight);
 		}
-		currentPosition.preUpdate();
+		currentArea.preUpdate();
 		
 		element.pushEffectsToRenderNode();
 		
@@ -63,12 +64,12 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> {
 				continue;
 			}
 			
-			effect.update(null, currentPosition, targetPosition, delta);
+			effect.update(null, currentArea, targetArea, delta);
 		}
 	}
 	
 	public void interpolate(float alpha) {
-		currentPosition.interpolate(null, alpha);
+		currentArea.interpolate(null, alpha);
 	}
 	
 	public void render(Graphics g) {
@@ -83,6 +84,36 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> {
 		for(int i = 0; i < effects.size(); i++) {
 			effects.get(i).postRender(g);
 		}
+	}
+	
+	public boolean mouseMoved(int screenX, int screenY) {
+		if(currentArea.contains(screenX, screenY)) {
+			beginHover();
+			return true;
+		} else if(state != NodeState.NORMAL) {
+			endHover();
+		}
+		return false;
+	}
+	
+	public ActionableRenderNode mouseDown(int screenX, int screenY, int pointer, int button) {
+		return null;
+	}
+	
+	public void mouseUp(int screenX, int screenY, int pointer, int button) {}
+	
+	public boolean contains(float screenX, float screenY) {
+		return currentArea.contains(screenX, screenY);
+	}
+	
+	public void beginHover() {
+		state = NodeState.HOVER;
+		element.notifyHoverListenersOnBeginHover();
+	}
+	
+	public void endHover() {
+		state = NodeState.NORMAL;
+		element.notifyHoverListenersOnEndHover();
 	}
 	
 	protected abstract void renderElement(Graphics g);
@@ -176,34 +207,50 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> {
 	}
 	
 	public float getX() {
-		return currentPosition.getX();
+		return currentArea.getX();
 	}
 	
 	public float getY() {
-		return currentPosition.getY();
+		return currentArea.getY();
 	}
 	
 	public float getWidth() {
-		return currentPosition.getWidth();
+		return currentArea.getWidth();
 	}
 	
 	public float getHeight() {
-		return currentPosition.getHeight();
+		return currentArea.getHeight();
 	}
 	
 	public int getRenderX() {
-		return currentPosition.getRenderX();
+		return currentArea.getRenderX();
 	}
 	
 	public int getRenderY() {
-		return currentPosition.getRenderY();
+		return currentArea.getRenderY();
 	}
 	
 	public int getRenderWidth() {
-		return currentPosition.getRenderWidth();
+		return currentArea.getRenderWidth();
 	}
 	
 	public int getRenderHeight() {
-		return currentPosition.getRenderHeight();
+		return currentArea.getRenderHeight();
+	}
+	
+	public NodeState getState() {
+		return state;
+	}
+	
+	public void setState(NodeState state) {
+		NodeState previousState = this.state;
+		this.state = state;
+		if(previousState != state) {
+			if(state == NodeState.HOVER) {
+				element.notifyHoverListenersOnBeginHover();
+			} else if(previousState == NodeState.HOVER) {
+				element.notifyHoverListenersOnEndHover();
+			}
+		}
 	}
 }

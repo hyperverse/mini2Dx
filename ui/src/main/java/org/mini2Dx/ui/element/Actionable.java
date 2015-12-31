@@ -16,11 +16,15 @@ import org.mini2Dx.ui.listener.ActionListener;
 /**
  *
  */
-public interface Actionable {
-
+public interface Actionable extends Hoverable {
+	
 	public void notifyActionListenersOfBeginEvent();
 	
 	public void notifyActionListenersOfEndEvent();
+	
+	public boolean isEnabled();
+	
+	public void setEnabled(boolean enabled);
 	
 	public void addActionListener(ActionListener listener);
 	

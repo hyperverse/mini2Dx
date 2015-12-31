@@ -11,19 +11,50 @@
  */
 package org.mini2Dx.ui.render;
 
+import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.ui.element.TextBox;
 import org.mini2Dx.ui.layout.LayoutState;
-import org.mini2Dx.ui.style.StyleRule;
 import org.mini2Dx.ui.style.TextBoxStyleRule;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.utils.Clipboard;
 
 /**
  *
  */
-public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule> {
-
+public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule> implements TextInputableRenderNode {
+	private static final float CURSOR_VISIBLE_DURATION = 0.5f;
+	
+	private final Clipboard clipboard = Gdx.app.getClipboard();
+	private final GlyphLayout glyphLayout = new GlyphLayout();
+	
+	private int cursor;
+	private float cursorTimer = 1.0f;
+	private boolean cursorVisible;
+	private float renderCursorX;
+	private float renderCursorHeight;
+	
 	public TextBoxRenderNode(ParentRenderNode<?, ?> parent, TextBox element) {
 		super(parent, element);
+	}
+	
+	@Override
+	public void update(float delta) {
+		super.update(delta);
+		
+		if(cursorTimer <= CURSOR_VISIBLE_DURATION) {
+			cursorVisible = true;
+		} else {
+			cursorVisible = false;
+		}
+		if(cursorTimer <= 0f) {
+			cursorTimer += CURSOR_VISIBLE_DURATION * 2f;
+		}
+		cursorTimer -= delta;
 	}
 
 	@Override
@@ -58,7 +89,261 @@ public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule> {
 
 	@Override
 	protected TextBoxStyleRule determineStyleRule(LayoutState layoutState) {
-		// TODO Auto-generated method stub
-		return null;
+		return layoutState.getTheme().getStyleRule(element, layoutState.getScreenSize());
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		switch (getState()) {
+		case ACTION:
+			return false;
+		case NORMAL:
+			if (currentArea.contains(screenX, screenY)) {
+				super.setState(NodeState.HOVER);
+			}
+			break;
+		case HOVER:
+			if (!currentArea.contains(screenX, screenY)) {
+				super.setState(NodeState.NORMAL);
+			}
+			break;
+		}
+		return false;
+	}
+	
+	@Override
+	public ActionableRenderNode mouseDown(int screenX, int screenY, int pointer, int button) {
+		if (!isIncludedInRender()) {
+			return null;
+		}
+		if (!element.isEnabled()) {
+			return null;
+		}
+		if (button != Buttons.LEFT) {
+			return null;
+		}
+		switch(getState()) {
+		case ACTION:
+			if (!currentArea.contains(screenX, screenY)) {
+				endAction();
+				return null;
+			}
+			return this;
+		default:
+			if (currentArea.contains(screenX, screenY)) {
+				return this;
+			}
+			return null;
+		}
+	}
+	
+	@Override
+	public void mouseUp(int screenX, int screenY, int pointer, int button) {
+		if(!isIncludedInRender()) {
+			return;
+		}
+		switch(getState()) {
+		case ACTION:
+			if (currentArea.contains(screenX, screenY)) {
+				setCursorIndex(screenX, screenY);
+			} else {
+				endAction();
+			}
+			break;
+		default:
+			if (currentArea.contains(screenX, screenY)) {
+				beginAction();
+				switch(Mdx.os) {
+				case ANDROID:
+				case IOS:
+					Gdx.input.setOnscreenKeyboardVisible(true);
+					break;
+				default:
+					break;
+				}
+			} else {
+				super.setState(NodeState.NORMAL);
+			}
+			break;
+		}
+	}
+
+	@Override
+	public void beginAction() {
+		super.setState(NodeState.ACTION);
+		element.notifyActionListenersOfBeginEvent();
+	}
+
+	@Override
+	public void endAction() {
+		super.setState(NodeState.NORMAL);
+		element.notifyActionListenersOfEndEvent();
+	}
+
+	@Override
+	public void characterReceived(char c) {
+		if (!isValidCharacter(c)) {
+			return;
+		}
+		switch (cursor) {
+		case 0:
+			element.setValue(c + element.getValue());
+			break;
+		default:
+			if (cursor == element.getValue().length()) {
+				element.setValue(element.getValue() + c);
+			} else {
+				element.setValue(element.getValue().substring(0, cursor) + c + element.getValue().substring(cursor));
+			}
+			break;
+		}
+		cursor++;
+		setCursorRenderX();
+	}
+
+	@Override
+	public void backspace() {
+		switch (cursor) {
+		case 0:
+			return;
+		case 1:
+			element.setValue(element.getValue().substring(1));
+			break;
+		default:
+			if (cursor == element.getValue().length() - 1) {
+				element.setValue(element.getValue().substring(0, element.getValue().length() - 1));
+			} else {
+				element.setValue(element.getValue().substring(0, cursor - 1) + element.getValue().substring(cursor));
+			}
+			break;
+		}
+		cursor--;
+		setCursorRenderX();
+	}
+
+	@Override
+	public boolean enter() {
+		endAction();
+		setState(NodeState.HOVER);
+		return true;
+	}
+	
+	@Override
+	public void moveCursorRight() {
+		if(cursor == element.getValue().length() - 1) {
+			return;
+		}
+		cursor++;
+		setCursorRenderX();
+	}
+
+	@Override
+	public void moveCursorLeft() {
+		if(cursor == 0) {
+			return;
+		}
+		cursor--;
+		setCursorRenderX();
+	}
+
+	@Override
+	public void cut() {
+		if (clipboard == null) {
+			return;
+		}
+		clipboard.setContents(element.getValue());
+		element.setValue("");
+	}
+
+	@Override
+	public void copy() {
+		if (clipboard == null) {
+			return;
+		}
+		clipboard.setContents(element.getValue());
+	}
+
+	@Override
+	public void paste() {
+		if (clipboard == null) {
+			return;
+		}
+		element.setValue(clipboard.getContents());
+	}
+
+	@Override
+	public boolean isReceivingInput() {
+		return getState() == NodeState.ACTION;
+	}
+	
+	protected boolean isValidCharacter (char c) {
+		if(c == '\n') {
+			return false;
+		}
+		if(c == '\t') {
+			return false;
+		}
+		if(c == '\r') {
+			return false;
+		}
+		if(c == '\b') {
+			return false;
+		}
+		if(Character.getName(c).equals("NULL")) {
+			return false;
+		}
+		if(Character.getName(c).contains("PRIVATE USE")) {
+			return false;
+		}
+		return true;
+	}
+	
+	private void setCursorIndex(float screenX, float screenY) {
+		if (element.getValue().length() == 0) {
+			cursor = 0;
+			setCursorRenderX();
+			return;
+		}
+		if (style == null || style.getBitmapFont() == null) {
+			cursor = 0;
+			setCursorRenderX();
+			return;
+		}
+		BitmapFont font = style.getBitmapFont();
+
+		float clickX = screenX - getRenderX() - style.getPaddingLeft();
+
+		for (int i = 0; i < element.getValue().length(); i++) {
+			glyphLayout.setText(font, element.getValue().substring(0, i + 1));
+			if (clickX < glyphLayout.width) {
+				float result = glyphLayout.width;
+				glyphLayout.setText(font, element.getValue().charAt(i) + "");
+				result -= glyphLayout.width;
+				cursor = i;
+				setCursorRenderX(result - 1f);
+				return;
+			}
+		}
+		setCursorRenderX(glyphLayout.width + 1f);
+	}
+
+	private void setCursorRenderX() {
+		switch (cursor) {
+		case 0:
+			renderCursorX = 0f;
+			return;
+		default:
+			if (style == null || style.getBitmapFont() == null) {
+				return;
+			}
+			BitmapFont font = style.getBitmapFont();
+			glyphLayout.setText(font, element.getValue().substring(0, cursor));
+			setCursorRenderX(glyphLayout.width + 1f);
+			break;
+		}
+	}
+
+	private void setCursorRenderX(float renderX) {
+		this.renderCursorX = renderX;
 	}
 }
