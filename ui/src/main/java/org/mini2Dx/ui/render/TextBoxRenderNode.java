@@ -19,39 +19,41 @@ import org.mini2Dx.ui.style.TextBoxStyleRule;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.utils.Clipboard;
 
 /**
  *
  */
-public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule> implements TextInputableRenderNode {
+public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule>implements TextInputableRenderNode {
 	private static final float CURSOR_VISIBLE_DURATION = 0.5f;
-	
+
 	private final Clipboard clipboard = Gdx.app.getClipboard();
 	private final GlyphLayout glyphLayout = new GlyphLayout();
-	
+
 	private int cursor;
 	private float cursorTimer = 1.0f;
 	private boolean cursorVisible;
 	private float renderCursorX;
 	private float renderCursorHeight;
-	
+
 	public TextBoxRenderNode(ParentRenderNode<?, ?> parent, TextBox element) {
 		super(parent, element);
 	}
-	
+
 	@Override
 	public void update(float delta) {
 		super.update(delta);
-		
-		if(cursorTimer <= CURSOR_VISIBLE_DURATION) {
+
+		if (cursorTimer <= CURSOR_VISIBLE_DURATION) {
 			cursorVisible = true;
 		} else {
 			cursorVisible = false;
 		}
-		if(cursorTimer <= 0f) {
+		if (cursorTimer <= 0f) {
 			cursorTimer += CURSOR_VISIBLE_DURATION * 2f;
 		}
 		cursorTimer -= delta;
@@ -59,20 +61,56 @@ public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule> imp
 
 	@Override
 	protected void renderElement(Graphics g) {
-		// TODO Auto-generated method stub
-		
+		BitmapFont font = style.getBitmapFont();
+		if (font == null) {
+			return;
+		}
+
+		NinePatch ninePatch = style.getNormalNinePatch();
+		if (element.isEnabled()) {
+			switch (getState()) {
+			case ACTION:
+				ninePatch = style.getActionNinePatch();
+				break;
+			case HOVER:
+				ninePatch = style.getHoverNinePatch();
+				break;
+			default:
+				break;
+			}
+		} else {
+			ninePatch = style.getDisabledNinePatch();
+		}
+
+		float textRenderX = getRenderX() + style.getPaddingLeft();
+		float textRenderY = getRenderY() + style.getPaddingTop();
+
+		g.drawNinePatch(ninePatch, getRenderX(), getRenderY(), getRenderWidth(), getRenderHeight());
+
+		BitmapFont previousFont = g.getFont();
+		Color previousColor = g.getColor();
+
+		g.setFont(font);
+		g.setColor(style.getColor());
+
+		g.drawString(element.getValue(), textRenderX, textRenderY);
+		if (cursorVisible) {
+			g.drawLineSegment(textRenderX + renderCursorX, textRenderY, textRenderX + renderCursorX,
+					textRenderY + renderCursorHeight);
+		}
+
+		g.setFont(previousFont);
+		g.setColor(previousColor);
 	}
 
 	@Override
 	protected float determinePreferredWidth(LayoutState layoutState) {
-		// TODO Auto-generated method stub
-		return 0;
+		return layoutState.getParentWidth();
 	}
 
 	@Override
 	protected float determinePreferredHeight(LayoutState layoutState) {
-		// TODO Auto-generated method stub
-		return 0;
+		return style.getPaddingTop() + style.getPaddingBottom() + style.getFontSize();
 	}
 
 	@Override
@@ -110,7 +148,7 @@ public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule> imp
 		}
 		return false;
 	}
-	
+
 	@Override
 	public ActionableRenderNode mouseDown(int screenX, int screenY, int pointer, int button) {
 		if (!isIncludedInRender()) {
@@ -122,7 +160,7 @@ public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule> imp
 		if (button != Buttons.LEFT) {
 			return null;
 		}
-		switch(getState()) {
+		switch (getState()) {
 		case ACTION:
 			if (!currentArea.contains(screenX, screenY)) {
 				endAction();
@@ -136,13 +174,13 @@ public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule> imp
 			return null;
 		}
 	}
-	
+
 	@Override
 	public void mouseUp(int screenX, int screenY, int pointer, int button) {
-		if(!isIncludedInRender()) {
+		if (!isIncludedInRender()) {
 			return;
 		}
-		switch(getState()) {
+		switch (getState()) {
 		case ACTION:
 			if (currentArea.contains(screenX, screenY)) {
 				setCursorIndex(screenX, screenY);
@@ -153,7 +191,7 @@ public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule> imp
 		default:
 			if (currentArea.contains(screenX, screenY)) {
 				beginAction();
-				switch(Mdx.os) {
+				switch (Mdx.os) {
 				case ANDROID:
 				case IOS:
 					Gdx.input.setOnscreenKeyboardVisible(true);
@@ -227,10 +265,10 @@ public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule> imp
 		setState(NodeState.HOVER);
 		return true;
 	}
-	
+
 	@Override
 	public void moveCursorRight() {
-		if(cursor == element.getValue().length() - 1) {
+		if (cursor == element.getValue().length() - 1) {
 			return;
 		}
 		cursor++;
@@ -239,7 +277,7 @@ public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule> imp
 
 	@Override
 	public void moveCursorLeft() {
-		if(cursor == 0) {
+		if (cursor == 0) {
 			return;
 		}
 		cursor--;
@@ -275,29 +313,29 @@ public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule> imp
 	public boolean isReceivingInput() {
 		return getState() == NodeState.ACTION;
 	}
-	
-	protected boolean isValidCharacter (char c) {
-		if(c == '\n') {
+
+	protected boolean isValidCharacter(char c) {
+		if (c == '\n') {
 			return false;
 		}
-		if(c == '\t') {
+		if (c == '\t') {
 			return false;
 		}
-		if(c == '\r') {
+		if (c == '\r') {
 			return false;
 		}
-		if(c == '\b') {
+		if (c == '\b') {
 			return false;
 		}
-		if(Character.getName(c).equals("NULL")) {
+		if (Character.getName(c).equals("NULL")) {
 			return false;
 		}
-		if(Character.getName(c).contains("PRIVATE USE")) {
+		if (Character.getName(c).contains("PRIVATE USE")) {
 			return false;
 		}
 		return true;
 	}
-	
+
 	private void setCursorIndex(float screenX, float screenY) {
 		if (element.getValue().length() == 0) {
 			cursor = 0;
@@ -320,17 +358,17 @@ public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule> imp
 				glyphLayout.setText(font, element.getValue().charAt(i) + "");
 				result -= glyphLayout.width;
 				cursor = i;
-				setCursorRenderX(result - 1f);
+				setCursorRender(result - 1f, glyphLayout.height);
 				return;
 			}
 		}
-		setCursorRenderX(glyphLayout.width + 1f);
+		setCursorRender(glyphLayout.width + 1f, glyphLayout.height);
 	}
 
 	private void setCursorRenderX() {
 		switch (cursor) {
 		case 0:
-			renderCursorX = 0f;
+			setCursorRender(0f, style.getFontSize());
 			return;
 		default:
 			if (style == null || style.getBitmapFont() == null) {
@@ -338,12 +376,13 @@ public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule> imp
 			}
 			BitmapFont font = style.getBitmapFont();
 			glyphLayout.setText(font, element.getValue().substring(0, cursor));
-			setCursorRenderX(glyphLayout.width + 1f);
+			setCursorRender(glyphLayout.width + 1f, glyphLayout.height);
 			break;
 		}
 	}
 
-	private void setCursorRenderX(float renderX) {
+	private void setCursorRender(float renderX, float renderHeight) {
 		this.renderCursorX = renderX;
+		this.renderCursorHeight = renderHeight;
 	}
 }

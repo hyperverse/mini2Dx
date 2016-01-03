@@ -14,7 +14,7 @@ import org.mini2Dx.ui.style.ContainerStyleRule;
 /**
  *
  */
-public class ModalRenderNode extends AbstractColumnRenderNode<ContainerStyleRule> {
+public class ModalRenderNode extends ContainerRenderNode {
 	private Map<Integer, ActionableRenderNode> keyboardHotkeys;
 	private Map<String, ActionableRenderNode> controllerHotkeys;
 

@@ -11,13 +11,14 @@
  */
 package org.mini2Dx.ui.style;
 
-import org.mini2Dx.core.exception.MdxException;
 import org.mini2Dx.core.serialization.annotation.Field;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.utils.Array;
 
@@ -33,8 +34,16 @@ public class ButtonStyleRule extends StyleRule {
 	private String action;
 	@Field
 	private String disabled;
+	@Field
+	private int fontSize;
+	@Field
+	private String font;
+	@Field
+	private String textColor;
 
 	private NinePatch normalNinePatch, hoverNinePatch, actionNinePatch, disabledNinePatch;
+	private BitmapFont bitmapFont;
+	private Color color;
 	
 	@Override
 	public void validate(UiTheme theme) {}
@@ -73,5 +82,13 @@ public class ButtonStyleRule extends StyleRule {
 
 	public NinePatch getDisabledNinePatch() {
 		return disabledNinePatch;
+	}
+
+	public BitmapFont getBitmapFont() {
+		return bitmapFont;
+	}
+
+	public Color getColor() {
+		return color;
 	}
 }

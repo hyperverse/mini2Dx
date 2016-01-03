@@ -11,32 +11,23 @@
  */
 package org.mini2Dx.ui.render;
 
-import org.mini2Dx.ui.element.AbsoluteContainer;
-import org.mini2Dx.ui.layout.LayoutState;
+import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.ui.element.Column;
 import org.mini2Dx.ui.style.ContainerStyleRule;
 
 /**
  *
  */
-public class AbsoluteContainerRenderNode extends ContainerRenderNode {
+public abstract class ContainerRenderNode extends AbstractColumnRenderNode<ContainerStyleRule> {
+
+	public ContainerRenderNode(ParentRenderNode<?, ?> parent, Column column) {
+		super(parent, column);
+	}
 	
-	public AbsoluteContainerRenderNode(ParentRenderNode<?, ?> parent, AbsoluteContainer container) {
-		super(parent, container);
-	}
-
 	@Override
-	protected float determineXOffset(LayoutState layoutState) {
-		return ((AbsoluteContainer) element).getX();
-	}
-
-	@Override
-	protected float determineYOffset(LayoutState layoutState) {
-		return ((AbsoluteContainer) element).getY();
-	}
-
-	@Override
-	protected ContainerStyleRule determineStyleRule(LayoutState layoutState) {
-		// TODO Auto-generated method stub
-		return null;
+	protected void renderElement(Graphics g) {
+		g.drawNinePatch(style.getBackgroundNinePatch(), getRenderX(), getRenderY(),
+				getRenderWidth(), getRenderHeight());
+		super.renderElement(g);
 	}
 }

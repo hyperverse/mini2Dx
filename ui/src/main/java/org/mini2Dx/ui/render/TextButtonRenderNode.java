@@ -18,11 +18,14 @@ import org.mini2Dx.ui.style.ButtonStyleRule;
 import org.mini2Dx.ui.style.StyleRule;
 
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 
 /**
  *
  */
-public class TextButtonRenderNode extends RenderNode<TextButton, ButtonStyleRule> implements ActionableRenderNode {
+public class TextButtonRenderNode extends RenderNode<TextButton, ButtonStyleRule>implements ActionableRenderNode {
 
 	public TextButtonRenderNode(ParentRenderNode<?, ?> parent, TextButton element) {
 		super(parent, element);
@@ -30,37 +33,65 @@ public class TextButtonRenderNode extends RenderNode<TextButton, ButtonStyleRule
 
 	@Override
 	public ActionableRenderNode mouseDown(int screenX, int screenY, int pointer, int button) {
-		if(!isIncludedInRender()) {
+		if (!isIncludedInRender()) {
 			return null;
 		}
-		if(button != Buttons.LEFT) {
+		if (button != Buttons.LEFT) {
 			return null;
 		}
-		if(currentArea.contains(screenX, screenY)) {
+		if (currentArea.contains(screenX, screenY)) {
 			setState(NodeState.ACTION);
 			return this;
 		}
 		return null;
 	}
-	
-	
+
 	@Override
 	public void mouseUp(int screenX, int screenY, int pointer, int button) {
-		if(getState() != NodeState.ACTION) {
+		if (getState() != NodeState.ACTION) {
 			return;
 		}
-		if(currentArea.contains(screenX, screenY)) {
+		if (currentArea.contains(screenX, screenY)) {
 			setState(NodeState.HOVER);
 		} else {
 			setState(NodeState.NORMAL);
 		}
 		endAction();
 	}
-	
+
 	@Override
 	protected void renderElement(Graphics g) {
-		// TODO Auto-generated method stub
-		
+		NinePatch ninePatch = style.getNormalNinePatch();
+		if (element.isEnabled()) {
+			switch (getState()) {
+			case ACTION:
+				ninePatch = style.getActionNinePatch();
+				break;
+			case HOVER:
+				ninePatch = style.getHoverNinePatch();
+				break;
+			default:
+				break;
+			}
+		} else {
+			ninePatch = style.getDisabledNinePatch();
+		}
+
+		g.drawNinePatch(ninePatch, getRenderX(), getRenderY(), getRenderWidth(), getRenderHeight());
+
+		float textRenderX = getRenderX() + style.getPaddingLeft();
+		float textRenderY = getRenderY() + style.getPaddingTop();
+		float textRenderWidth = getRenderWidth() - style.getPaddingLeft() - style.getPaddingRight();
+
+		BitmapFont tmpFont = g.getFont();
+		Color tmpColor = g.getColor();
+
+		g.setFont(style.getBitmapFont());
+		g.setColor(style.getColor());
+		g.drawString(element.getText(), textRenderX, textRenderY, textRenderWidth,
+				element.getTextAlignment().getAlignValue());
+		g.setColor(tmpColor);
+		g.setFont(tmpFont);
 	}
 
 	@Override

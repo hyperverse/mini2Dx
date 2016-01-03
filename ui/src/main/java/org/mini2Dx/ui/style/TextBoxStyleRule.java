@@ -39,7 +39,7 @@ public class TextBoxStyleRule extends StyleRule {
 	private int fontSize;
 	@Field
 	private String font;
-	@Field(optional=true)
+	@Field
 	private String textColor;
 	
 	private NinePatch normalNinePatch, hoverNinePatch, actionNinePatch, disabledNinePatch;
@@ -67,9 +67,7 @@ public class TextBoxStyleRule extends StyleRule {
 				getPaddingRight(), getPaddingTop(), getPaddingBottom());
 		disabledNinePatch = new NinePatch(assetManager.get(disabled, Texture.class), getPaddingLeft(),
 				getPaddingRight(), getPaddingTop(), getPaddingBottom());
-		if(textColor != null) {
-			color = ColorUtils.rgbToColor(textColor);
-		}
+		color = ColorUtils.rgbToColor(textColor);
 	}
 	
 	public NinePatch getNormalNinePatch() {
@@ -94,5 +92,9 @@ public class TextBoxStyleRule extends StyleRule {
 
 	public Color getColor() {
 		return color;
+	}
+
+	public int getFontSize() {
+		return fontSize;
 	}
 }

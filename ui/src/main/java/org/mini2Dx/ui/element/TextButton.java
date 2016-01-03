@@ -11,6 +11,7 @@
  */
 package org.mini2Dx.ui.element;
 
+import org.mini2Dx.ui.layout.HorizontalAlignment;
 import org.mini2Dx.ui.listener.HoverListener;
 import org.mini2Dx.ui.render.NodeState;
 import org.mini2Dx.ui.render.ParentRenderNode;
@@ -22,6 +23,7 @@ import org.mini2Dx.ui.render.TextButtonRenderNode;
 public class TextButton extends Button {
 	private String text = "";
 	private TextButtonRenderNode renderNode;
+	private HorizontalAlignment textAlignment = HorizontalAlignment.CENTER;
 	
 	public TextButton() {
 		this(null);
@@ -92,5 +94,16 @@ public class TextButton extends Button {
 		while(!effects.isEmpty()) {
 			renderNode.applyEffect(effects.poll());
 		}
+	}
+
+	public HorizontalAlignment getTextAlignment() {
+		return textAlignment;
+	}
+
+	public void setTextAlignment(HorizontalAlignment textAlignment) {
+		if(textAlignment == null) {
+			return;
+		}
+		this.textAlignment = textAlignment;
 	}
 }
