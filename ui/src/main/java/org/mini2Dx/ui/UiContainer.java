@@ -22,6 +22,7 @@ import org.mini2Dx.ui.element.UiElement;
 import org.mini2Dx.ui.element.Visibility;
 import org.mini2Dx.ui.listener.ScreenSizeListener;
 import org.mini2Dx.ui.render.ActionableRenderNode;
+import org.mini2Dx.ui.render.ModalRenderNode;
 import org.mini2Dx.ui.render.ParentRenderNode;
 import org.mini2Dx.ui.render.TextInputableRenderNode;
 import org.mini2Dx.ui.render.UiContainerRenderTree;
@@ -236,14 +237,7 @@ public class UiContainer extends UiElement implements InputProcessor {
 		}
 		ActionableRenderNode hotkeyAction = activeModal.hotkey(keycode);
 		if(hotkeyAction == null) {
-			switch(keycode) {
-			case Keys.UP:
-				setCurrentAction(activeModal.goToPreviousActionable());
-				break;
-			case Keys.DOWN:
-				setCurrentAction(activeModal.goToNextActionable());
-				break;
-			}
+			activeAction = activeModal.getNavigation().navigate(keycode);
 		} else {
 			hotkeyAction.endAction();
 		}

@@ -11,16 +11,27 @@
  */
 package org.mini2Dx.ui.element;
 
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.Queue;
 
+import org.mini2Dx.core.controller.button.ControllerButton;
+import org.mini2Dx.ui.input.ControllerHotKeyOperation;
+import org.mini2Dx.ui.input.KeyboardHotKeyOperation;
+import org.mini2Dx.ui.input.LinearUiNavigation;
+import org.mini2Dx.ui.input.UiNavigation;
 import org.mini2Dx.ui.layout.VerticalAlignment;
+import org.mini2Dx.ui.render.ActionableRenderNode;
+import org.mini2Dx.ui.render.ModalRenderNode;
+import org.mini2Dx.ui.render.ParentRenderNode;
 
 /**
  *
  */
 public class Modal extends Container {
-	private Map<Integer, Actionable> keyboardHotkeys;
-	private Map<String, Actionable> controllerHotkeys;
+	private final Queue<ControllerHotKeyOperation> controllerHotKeyOperations = new LinkedList<ControllerHotKeyOperation>();
+	private final Queue<KeyboardHotKeyOperation> keyboardHotKeyOperations = new LinkedList<KeyboardHotKeyOperation>();
+	
+	private UiNavigation navigation = new LinearUiNavigation();
 	private VerticalAlignment verticalAlignment = VerticalAlignment.MIDDLE;
 	
 	public Modal() {
@@ -30,6 +41,48 @@ public class Modal extends Container {
 	public Modal(String id) {
 		super(id);
 	}
+	
+	@Override
+	public void attach(ParentRenderNode<?, ?> parentRenderNode) {
+		if(renderNode != null) {
+			return;
+		}
+		renderNode = new ModalRenderNode(parentRenderNode, this);
+		for(int i = 0; i < children.size(); i++) {
+			children.get(i).attach(renderNode);
+		}
+		parentRenderNode.addChild(renderNode);
+	}
+	
+	public ActionableRenderNode hotkey(int keycode) {
+		if(renderNode == null) {
+			return null;
+		}
+		return ((ModalRenderNode) renderNode).hotkey(keycode);
+	}
+	
+	public ActionableRenderNode hotkey(ControllerButton button) {
+		if(renderNode == null) {
+			return null;
+		}
+		return ((ModalRenderNode) renderNode).hotkey(button);
+	}
+	
+	public void setHotkey(ControllerButton button, Actionable actionable) {
+		controllerHotKeyOperations.offer(new ControllerHotKeyOperation(button, actionable, true));
+	}
+	
+	public void setHotkey(int keycode, Actionable actionable) {
+		keyboardHotKeyOperations.offer(new KeyboardHotKeyOperation(keycode, actionable, true));
+	}
+	
+	public void unsetHotkey(ControllerButton button, Actionable actionable) {
+		controllerHotKeyOperations.offer(new ControllerHotKeyOperation(button, actionable, false));
+	}
+	
+	public void unsetHotkey(int keycode, Actionable actionable) {
+		keyboardHotKeyOperations.offer(new KeyboardHotKeyOperation(keycode, actionable, false));
+	}
 
 	public VerticalAlignment getVerticalAlignment() {
 		return verticalAlignment;
@@ -37,5 +90,21 @@ public class Modal extends Container {
 
 	public void setVerticalAlignment(VerticalAlignment verticalAlignment) {
 		this.verticalAlignment = verticalAlignment;
+	}
+
+	public UiNavigation getNavigation() {
+		return navigation;
+	}
+
+	public void setNavigation(UiNavigation navigation) {
+		if(navigation == null) {
+			return;
+		}
+		this.navigation = navigation;
+		
+		if(renderNode == null) {
+			return;
+		}
+		renderNode.setDirty(true);
 	}
 }
