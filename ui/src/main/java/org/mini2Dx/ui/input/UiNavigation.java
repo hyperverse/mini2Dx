@@ -3,19 +3,19 @@
  */
 package org.mini2Dx.ui.input;
 
-import org.mini2Dx.core.controller.button.ControllerButton;
-import org.mini2Dx.ui.render.ActionableRenderNode;
+import org.mini2Dx.ui.element.Actionable;
+import org.mini2Dx.ui.layout.ScreenSize;
 
 /**
  *
  */
 public interface UiNavigation {
+	
+	public void layout(ScreenSize screenSize);
 
 	public void resetCursor();
 	
-	public void set(int index, ActionableRenderNode actionable);
+	public void set(int index, Actionable actionable);
 	
-	public ActionableRenderNode navigate(int keycode);
-	
-	public ActionableRenderNode navigate(ControllerButton button);
+	public Actionable navigate(int keycode);
 }

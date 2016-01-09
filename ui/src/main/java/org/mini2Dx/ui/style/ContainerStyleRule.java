@@ -46,4 +46,12 @@ public class ContainerStyleRule extends StyleRule {
 	public NinePatch getBackgroundNinePatch() {
 		return backgroundNinePatch;
 	}
+
+	public String getBackground() {
+		return background;
+	}
+
+	public void setBackground(String background) {
+		this.background = background;
+	}
 }

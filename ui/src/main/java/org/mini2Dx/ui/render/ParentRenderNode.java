@@ -94,4 +94,17 @@ public abstract class ParentRenderNode<T extends UiElement, S extends StyleRule>
 		}
 		this.childDirty = childDirty;
 	}
+	
+	public RenderNode<?, ?> getElementById(String id) {
+		if(element.getId().equals(id)) {
+			return this;
+		}
+		for(RenderNode<?, ?> child : children) {
+			RenderNode<?, ?> result = child.getElementById(id);
+			if(result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
 }

@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -66,6 +67,11 @@ public class ButtonStyleRule extends StyleRule {
 				getPaddingRight(), getPaddingTop(), getPaddingBottom());
 		disabledNinePatch = new NinePatch(assetManager.get(disabled, Texture.class), getPaddingLeft(),
 				getPaddingRight(), getPaddingTop(), getPaddingBottom());
+		
+		FreeTypeFontParameter fontParameter = new  FreeTypeFontParameter();
+		fontParameter.size = fontSize;
+		fontParameter.flip = true;
+		bitmapFont = theme.getFont(font).getFontGenerator().generateFont(fontParameter);
 	}
 
 	public NinePatch getNormalNinePatch() {
@@ -90,5 +96,61 @@ public class ButtonStyleRule extends StyleRule {
 
 	public Color getColor() {
 		return color;
+	}
+
+	public String getNormal() {
+		return normal;
+	}
+
+	public void setNormal(String normal) {
+		this.normal = normal;
+	}
+
+	public String getHover() {
+		return hover;
+	}
+
+	public void setHover(String hover) {
+		this.hover = hover;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public String getDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(String disabled) {
+		this.disabled = disabled;
+	}
+
+	public int getFontSize() {
+		return fontSize;
+	}
+
+	public void setFontSize(int fontSize) {
+		this.fontSize = fontSize;
+	}
+
+	public String getFont() {
+		return font;
+	}
+
+	public void setFont(String font) {
+		this.font = font;
+	}
+
+	public String getTextColor() {
+		return textColor;
+	}
+
+	public void setTextColor(String textColor) {
+		this.textColor = textColor;
 	}
 }

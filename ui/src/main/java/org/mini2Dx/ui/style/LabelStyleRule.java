@@ -17,6 +17,8 @@ import org.mini2Dx.core.util.ColorUtils;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 /**
  *
@@ -29,6 +31,7 @@ public class LabelStyleRule extends StyleRule {
 	@Field(optional=true)
 	private String textColor;
 	
+	private BitmapFont bitmapFont;
 	private Color color;
 	
 	@Override
@@ -36,9 +39,42 @@ public class LabelStyleRule extends StyleRule {
 		if(textColor != null) {
 			color = ColorUtils.rgbToColor(textColor);
 		}
+		
+		FreeTypeFontParameter fontParameter = new  FreeTypeFontParameter();
+		fontParameter.size = fontSize;
+		fontParameter.flip = true;
+		bitmapFont = theme.getFont(font).getFontGenerator().generateFont(fontParameter);
 	}
 
 	public Color getColor() {
 		return color;
+	}
+
+	public BitmapFont getBitmapFont() {
+		return bitmapFont;
+	}
+
+	public int getFontSize() {
+		return fontSize;
+	}
+
+	public void setFontSize(int fontSize) {
+		this.fontSize = fontSize;
+	}
+
+	public String getFont() {
+		return font;
+	}
+
+	public void setFont(String font) {
+		this.font = font;
+	}
+
+	public String getTextColor() {
+		return textColor;
+	}
+
+	public void setTextColor(String textColor) {
+		this.textColor = textColor;
 	}
 }

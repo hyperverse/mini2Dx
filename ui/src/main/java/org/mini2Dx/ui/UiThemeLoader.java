@@ -56,10 +56,10 @@ public class UiThemeLoader extends AsynchronousAssetLoader<UiTheme, UiThemeParam
 			if(theme == null) {
 				theme = Mdx.json.fromJson(file, UiTheme.class);
 			}
-			theme.loadDependencies(dependencies);
 		} catch (SerializationException e) {
 			throw new MdxException(e.getMessage(), e);
 		}
+		theme.loadDependencies(dependencies);
 		return dependencies;
 	}
 	

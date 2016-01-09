@@ -149,8 +149,8 @@ public class UiUAT extends BasicGameScreen {
 			}
 		})));
 		
-		modal.setNavigation(0, textBox);
-		modal.setNavigation(1, select);
+		modal.getNavigation().set(0, textBox);
+		modal.getNavigation().set(1, select);
 		modal.setVisibility(Visibility.VISIBLE);
 		uiContainer.add(modal);
 		uiContainer.setActiveModal(modal);

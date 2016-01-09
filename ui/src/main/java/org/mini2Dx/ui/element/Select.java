@@ -14,15 +14,19 @@ package org.mini2Dx.ui.element;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mini2Dx.ui.listener.ActionListener;
+import org.mini2Dx.ui.listener.HoverListener;
 import org.mini2Dx.ui.render.ParentRenderNode;
 import org.mini2Dx.ui.render.SelectRenderNode;
 
 /**
  *
  */
-public class Select<V> extends UiElement {
+public class Select<V> extends UiElement implements Actionable {
 	private final List<SelectOption<V>> options = new ArrayList<SelectOption<V>>(1);
+	private List<ActionListener> actionListeners;
 	
+	private boolean enabled = true;
 	private SelectRenderNode renderNode;
 	private int selectedIndex = 0;
 	
@@ -121,5 +125,51 @@ public class Select<V> extends UiElement {
 	
 	public int getSelectedIndex() {
 		return selectedIndex;
+	}
+
+	@Override
+	public void notifyActionListenersOfBeginEvent() {
+		if(actionListeners == null) {
+			return;
+		}
+		for(int i = actionListeners.size() - 1; i >= 0; i--) {
+			actionListeners.get(i).onActionBegin(this);
+		}
+	}
+	
+	@Override
+	public void notifyActionListenersOfEndEvent() {
+		if(actionListeners == null) {
+			return;
+		}
+		for(int i = actionListeners.size() - 1; i >= 0; i--) {
+			actionListeners.get(i).onActionEnd(this);
+		}
+	}
+
+	@Override
+	public void addActionListener(ActionListener listener) {
+		if(actionListeners == null) {
+			actionListeners = new ArrayList<ActionListener>(1);
+		}
+		actionListeners.add(listener);
+	}
+
+	@Override
+	public void removeActionListener(ActionListener listener) {
+		if(actionListeners == null) {
+			return;
+		}
+		actionListeners.remove(listener);
+	}
+	
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

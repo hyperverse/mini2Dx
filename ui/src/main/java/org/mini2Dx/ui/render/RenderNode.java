@@ -253,4 +253,11 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 			}
 		}
 	}
+	
+	public RenderNode<?, ?> getElementById(String id) {
+		if(element.getId().equals(id)) {
+			return this;
+		}
+		return null;
+	}
 }

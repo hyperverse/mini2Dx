@@ -237,7 +237,7 @@ public class UiContainer extends UiElement implements InputProcessor {
 		}
 		ActionableRenderNode hotkeyAction = activeModal.hotkey(keycode);
 		if(hotkeyAction == null) {
-			activeAction = activeModal.getNavigation().navigate(keycode);
+			activeAction = activeModal.navigate(keycode);
 		} else {
 			hotkeyAction.endAction();
 		}
@@ -275,5 +275,9 @@ public class UiContainer extends UiElement implements InputProcessor {
 			return true;
 		}
 		return false;
+	}
+
+	public void setActiveModal(Modal activeModal) {
+		this.activeModal = activeModal;
 	}
 }

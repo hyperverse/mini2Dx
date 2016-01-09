@@ -23,7 +23,6 @@ import org.mini2Dx.ui.render.TextBoxRenderNode;
  *
  */
 public class TextBox extends UiElement implements Actionable {
-	private List<HoverListener> hoverListeners;
 	private List<ActionListener> actionListeners;
 	private boolean enabled = true;
 	private String value = "";
@@ -148,21 +147,5 @@ public class TextBox extends UiElement implements Actionable {
 	@Override
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
-	}
-
-	@Override
-	public void addHoverListener(HoverListener listener) {
-		if(hoverListeners == null) {
-			hoverListeners = new ArrayList<HoverListener>(1);
-		}
-		hoverListeners.add(listener);
-	}
-
-	@Override
-	public void removeHoverListener(HoverListener listener) {
-		if(hoverListeners == null) {
-			return;
-		}
-		hoverListeners.remove(listener);
 	}
 }

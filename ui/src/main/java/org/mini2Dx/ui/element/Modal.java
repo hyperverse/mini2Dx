@@ -17,7 +17,7 @@ import java.util.Queue;
 import org.mini2Dx.core.controller.button.ControllerButton;
 import org.mini2Dx.ui.input.ControllerHotKeyOperation;
 import org.mini2Dx.ui.input.KeyboardHotKeyOperation;
-import org.mini2Dx.ui.input.LinearUiNavigation;
+import org.mini2Dx.ui.input.VerticalUiNavigation;
 import org.mini2Dx.ui.input.UiNavigation;
 import org.mini2Dx.ui.layout.VerticalAlignment;
 import org.mini2Dx.ui.render.ActionableRenderNode;
@@ -31,7 +31,7 @@ public class Modal extends Container {
 	private final Queue<ControllerHotKeyOperation> controllerHotKeyOperations = new LinkedList<ControllerHotKeyOperation>();
 	private final Queue<KeyboardHotKeyOperation> keyboardHotKeyOperations = new LinkedList<KeyboardHotKeyOperation>();
 	
-	private UiNavigation navigation = new LinearUiNavigation();
+	private UiNavigation navigation = new VerticalUiNavigation();
 	private VerticalAlignment verticalAlignment = VerticalAlignment.MIDDLE;
 	
 	public Modal() {
@@ -52,6 +52,13 @@ public class Modal extends Container {
 			children.get(i).attach(renderNode);
 		}
 		parentRenderNode.addChild(renderNode);
+	}
+	
+	public ActionableRenderNode navigate(int keycode) {
+		if(renderNode == null) {
+			return null;
+		}
+		return ((ModalRenderNode) renderNode).navigate(keycode);
 	}
 	
 	public ActionableRenderNode hotkey(int keycode) {
@@ -101,10 +108,5 @@ public class Modal extends Container {
 			return;
 		}
 		this.navigation = navigation;
-		
-		if(renderNode == null) {
-			return;
-		}
-		renderNode.setDirty(true);
 	}
 }

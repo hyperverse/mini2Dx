@@ -6,6 +6,7 @@ package org.mini2Dx.ui.render;
 import java.util.Map;
 
 import org.mini2Dx.core.controller.button.ControllerButton;
+import org.mini2Dx.ui.element.Actionable;
 import org.mini2Dx.ui.element.Column;
 import org.mini2Dx.ui.element.Modal;
 import org.mini2Dx.ui.layout.LayoutState;
@@ -20,6 +21,12 @@ public class ModalRenderNode extends ContainerRenderNode {
 
 	public ModalRenderNode(ParentRenderNode<?, ?> parent, Column column) {
 		super(parent, column);
+	}
+	
+	@Override
+	public void layout(LayoutState layoutState) {
+		((Modal) element).getNavigation().layout(layoutState.getScreenSize());
+		super.layout(layoutState);
 	}
 	
 	public ActionableRenderNode hotkey(int keycode) {
@@ -37,11 +44,8 @@ public class ModalRenderNode extends ContainerRenderNode {
 	}
 	
 	public ActionableRenderNode navigate(int keycode) {
-		return ((Modal) element).getNavigation().navigate(keycode);
-	}
-	
-	public ActionableRenderNode navigate(ControllerButton button) {
-		return ((Modal) element).getNavigation().navigate(button);
+		Actionable actionable = ((Modal) element).getNavigation().navigate(keycode);
+		return (ActionableRenderNode) getElementById(actionable.getId());
 	}
 
 	@Override

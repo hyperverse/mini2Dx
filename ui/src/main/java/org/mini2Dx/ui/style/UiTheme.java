@@ -11,6 +11,7 @@
  */
 package org.mini2Dx.ui.style;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.mini2Dx.core.exception.MdxException;
@@ -25,6 +26,7 @@ import org.mini2Dx.ui.element.TextBox;
 import org.mini2Dx.ui.element.UiElement;
 import org.mini2Dx.ui.layout.ScreenSize;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
@@ -34,6 +36,8 @@ import com.badlogic.gdx.utils.Array;
  *
  */
 public class UiTheme {
+	private static final String LOGGING_TAG = UiTheme.class.getSimpleName();
+	
 	public static final String DEFAULT_THEME_FILENAME = "default-mdx-theme.json";
 	public static final String DEFAULT_STYLE_ID = "default";
 
@@ -45,6 +49,8 @@ public class UiTheme {
 	private Map<String, StyleRuleset<StyleRule>> columns;
 	@Field
 	private Map<String, StyleRuleset<ContainerStyleRule>> containers;
+	@Field
+	private Map<String, UiFont> fonts;
 	@Field
 	private Map<String, StyleRuleset<StyleRule>> images;
 	@Field
@@ -101,30 +107,47 @@ public class UiTheme {
 	}
 
 	public void loadDependencies(Array<AssetDescriptor> dependencies) {
-		for (StyleRuleset<ButtonStyleRule> buttonRuleset : buttons.values()) {
+		for (String id : buttons.keySet()) {
+			StyleRuleset<ButtonStyleRule> buttonRuleset = buttons.get(id);
 			buttonRuleset.loadDependencies(this, dependencies);
+			Gdx.app.log(LOGGING_TAG, "[Theme: " + id + ", Button Ruleset: " + id + "] Dependencies loaded");
 		}
-		for (StyleRuleset<StyleRule> columnRuleset : columns.values()) {
+		for (String id : columns.keySet()) {
+			StyleRuleset<StyleRule> columnRuleset = columns.get(id);
 			columnRuleset.loadDependencies(this, dependencies);
+			Gdx.app.log(LOGGING_TAG, "[Theme: " + id + ", Column Ruleset: " + id + "] Dependencies loaded");
 		}
-		for (StyleRuleset<ContainerStyleRule> containerRuleset : containers.values()) {
+		for (String id : containers.keySet()) {
+			StyleRuleset<ContainerStyleRule> containerRuleset = containers.get(id);
 			containerRuleset.loadDependencies(this, dependencies);
+			Gdx.app.log(LOGGING_TAG, "[Theme: " + id + ", Container Ruleset: " + id + "] Dependencies loaded");
 		}
-		for (StyleRuleset<StyleRule> imageRuleset : images.values()) {
+		for (String id : images.keySet()) {
+			StyleRuleset<StyleRule> imageRuleset = images.get(id);
 			imageRuleset.loadDependencies(this, dependencies);
+			Gdx.app.log(LOGGING_TAG, "[Theme: " + id + ", Image Ruleset: " + id + "] Dependencies loaded");
 		}
-		for (StyleRuleset<LabelStyleRule> labelRuleset : labels.values()) {
+		for (String id : labels.keySet()) {
+			StyleRuleset<LabelStyleRule> labelRuleset = labels.get(id);
 			labelRuleset.loadDependencies(this, dependencies);
+			Gdx.app.log(LOGGING_TAG, "[Theme: " + id + ", Label Ruleset: " + id + "] Dependencies loaded");
 		}
-		for (StyleRuleset<SelectStyleRule> selectRuleset : selects.values()) {
+		for (String id : selects.keySet()) {
+			StyleRuleset<SelectStyleRule> selectRuleset = selects.get(id);
 			selectRuleset.loadDependencies(this, dependencies);
+			Gdx.app.log(LOGGING_TAG, "[Theme: " + id + ", Select Ruleset: " + id + "] Dependencies loaded");
 		}
-		for (StyleRuleset<TextBoxStyleRule> textboxRuleset : textboxes.values()) {
+		for (String id : textboxes.keySet()) {
+			StyleRuleset<TextBoxStyleRule> textboxRuleset = textboxes.get(id);
 			textboxRuleset.loadDependencies(this, dependencies);
+			Gdx.app.log(LOGGING_TAG, "[Theme: " + id + ", TextBox Ruleset: " + id + "] Dependencies loaded");
 		}
 	}
 
 	public void prepareAssets(FileHandleResolver fileHandleResolver, AssetManager assetManager) {
+		for (UiFont font : fonts.values()) {
+			font.prepareAssets(fileHandleResolver);
+		}
 		for (StyleRuleset<ButtonStyleRule> buttonRuleset : buttons.values()) {
 			buttonRuleset.prepareAssets(this, fileHandleResolver, assetManager);
 		}
@@ -203,6 +226,68 @@ public class UiTheme {
 			ruleset = rules.get(DEFAULT_STYLE_ID);
 		}
 		return ruleset.getStyleRule(screenSize);
+	}
+	
+	public UiFont getFont(String id) {
+		return fonts.get(id);
+	}
+	
+	public void putButtonStyleRuleset(String rulesetId, StyleRuleset<ButtonStyleRule> ruleset) {
+		if(buttons == null) {
+			buttons = new HashMap<String, StyleRuleset<ButtonStyleRule>>();
+		}
+		buttons.put(rulesetId, ruleset);
+	}
+	
+	public void putColumnStyleRuleset(String rulesetId, StyleRuleset<StyleRule> ruleset) {
+		if(columns == null) {
+			columns = new HashMap<String, StyleRuleset<StyleRule>>();
+		}
+		columns.put(rulesetId, ruleset);
+	}
+	
+	public void putContainerStyleRuleset(String rulesetId, StyleRuleset<ContainerStyleRule> ruleset) {
+		if(containers == null) {
+			containers = new HashMap<String, StyleRuleset<ContainerStyleRule>>();
+		}
+		containers.put(rulesetId, ruleset);
+	}
+	
+	public void putImageStyleRuleset(String rulesetId, StyleRuleset<StyleRule> ruleset) {
+		if(images == null) {
+			images = new HashMap<String, StyleRuleset<StyleRule>>();
+		}
+		images.put(rulesetId, ruleset);
+	}
+	
+	public void putLabelStyleRuleset(String rulesetId, StyleRuleset<LabelStyleRule> ruleset) {
+		if(labels == null) {
+			labels = new HashMap<String, StyleRuleset<LabelStyleRule>>();
+		}
+		labels.put(rulesetId, ruleset);
+	}
+	
+	public void putSelectStyleRuleset(String rulesetId, StyleRuleset<SelectStyleRule> ruleset) {
+		if(selects == null) {
+			selects = new HashMap<String, StyleRuleset<SelectStyleRule>>();
+		}
+		selects.put(rulesetId, ruleset);
+	}
+	
+	public void putTextBoxStyleRuleset(String rulesetId, StyleRuleset<TextBoxStyleRule> ruleset) {
+		if(textboxes == null) {
+			textboxes = new HashMap<String, StyleRuleset<TextBoxStyleRule>>();
+		}
+		textboxes.put(rulesetId, ruleset);
+	}
+	
+	public void putFont(String id, String path) {
+		if(fonts == null) {
+			fonts = new HashMap<String, UiFont>();
+		}
+		UiFont font = new UiFont();
+		font.setPath(path);
+		fonts.put(id, font);
 	}
 
 	public String getId() {

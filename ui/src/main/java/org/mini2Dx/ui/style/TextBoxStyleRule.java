@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -68,6 +69,11 @@ public class TextBoxStyleRule extends StyleRule {
 		disabledNinePatch = new NinePatch(assetManager.get(disabled, Texture.class), getPaddingLeft(),
 				getPaddingRight(), getPaddingTop(), getPaddingBottom());
 		color = ColorUtils.rgbToColor(textColor);
+		
+		FreeTypeFontParameter fontParameter = new  FreeTypeFontParameter();
+		fontParameter.size = fontSize;
+		fontParameter.flip = true;
+		bitmapFont = theme.getFont(font).getFontGenerator().generateFont(fontParameter);
 	}
 	
 	public NinePatch getNormalNinePatch() {
@@ -96,5 +102,57 @@ public class TextBoxStyleRule extends StyleRule {
 
 	public int getFontSize() {
 		return fontSize;
+	}
+
+	public String getNormal() {
+		return normal;
+	}
+
+	public void setNormal(String normal) {
+		this.normal = normal;
+	}
+
+	public String getHover() {
+		return hover;
+	}
+
+	public void setHover(String hover) {
+		this.hover = hover;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public String getDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(String disabled) {
+		this.disabled = disabled;
+	}
+
+	public String getFont() {
+		return font;
+	}
+
+	public void setFont(String font) {
+		this.font = font;
+	}
+
+	public String getTextColor() {
+		return textColor;
+	}
+
+	public void setTextColor(String textColor) {
+		this.textColor = textColor;
+	}
+
+	public void setFontSize(int fontSize) {
+		this.fontSize = fontSize;
 	}
 }
