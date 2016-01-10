@@ -219,6 +219,14 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 	public float getPreferredHeight() {
 		return preferredHeight;
 	}
+	
+	public float getPreferredContentWidth() {
+		return preferredWidth - style.getPaddingLeft() - style.getPaddingRight();
+	}
+	
+	public float getPreferredContentHeight() {
+		return preferredHeight - style.getPaddingTop() - style.getPaddingBottom();
+	}
 
 	public float getXOffset() {
 		return xOffset;

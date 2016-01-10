@@ -115,14 +115,12 @@ public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule>impl
 
 	@Override
 	protected float determineXOffset(LayoutState layoutState) {
-		// TODO Auto-generated method stub
-		return 0;
+		return 0f;
 	}
 
 	@Override
 	protected float determineYOffset(LayoutState layoutState) {
-		// TODO Auto-generated method stub
-		return 0;
+		return 0f;
 	}
 
 	@Override

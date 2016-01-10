@@ -33,10 +33,10 @@ public abstract class AbstractColumnRenderNode<S extends StyleRule> extends Pare
 		style = determineStyleRule(layoutState);
 		xOffset = determineXOffset(layoutState);
 		preferredWidth = determinePreferredWidth(layoutState);
-		layoutState.setParentWidth(preferredWidth);
+		layoutState.setParentWidth(getPreferredContentWidth());
 
-		float startX = 0f;
-		float startY = 0f;
+		float startX = style.getPaddingLeft();
+		float startY = style.getPaddingTop();
 		for (int i = 0; i < children.size(); i++) {
 			RenderNode<?, ?> node = children.get(i);
 			node.layout(layoutState);
@@ -48,7 +48,7 @@ public abstract class AbstractColumnRenderNode<S extends StyleRule> extends Pare
 			node.setRelativeY(startY + node.getYOffset());
 
 			startX += node.getPreferredWidth() + node.getXOffset();
-			if (startX >= preferredWidth) {
+			if (startX >= getPreferredContentWidth()) {
 				float maxHeight = 0f;
 				for (int j = i; j >= 0; j--) {
 					RenderNode<?, ?> previousNode = children.get(j);
@@ -60,7 +60,7 @@ public abstract class AbstractColumnRenderNode<S extends StyleRule> extends Pare
 					}
 				}
 				startY += maxHeight;
-				startX = 0f;
+				startX = style.getPaddingLeft();
 			}
 		}
 		layoutState.setParentWidth(parentWidth);
@@ -82,7 +82,7 @@ public abstract class AbstractColumnRenderNode<S extends StyleRule> extends Pare
 				maxHeight = height;
 			}
 		}
-		return maxHeight;
+		return maxHeight + style.getPaddingTop() + style.getPaddingBottom();
 	}
 
 	@Override
