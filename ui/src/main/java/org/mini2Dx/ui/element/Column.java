@@ -14,6 +14,7 @@ package org.mini2Dx.ui.element;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mini2Dx.core.exception.MdxException;
 import org.mini2Dx.ui.layout.LayoutRuleset;
 import org.mini2Dx.ui.render.AbstractColumnRenderNode;
 import org.mini2Dx.ui.render.ColumnRenderNode;
@@ -36,6 +37,9 @@ public class Column extends UiElement {
 	}
 	
 	public void add(UiElement element) {
+		if(element == null) {
+			throw new MdxException("Cannot add null element to Column");
+		}
 		children.add(element);
 		if(renderNode == null) {
 			return;

@@ -33,6 +33,7 @@ import org.mini2Dx.ui.element.Select;
 import org.mini2Dx.ui.element.TextBox;
 import org.mini2Dx.ui.element.Visibility;
 import org.mini2Dx.ui.layout.LayoutRuleset;
+import org.mini2Dx.ui.layout.VerticalAlignment;
 import org.mini2Dx.ui.listener.ActionListener;
 import org.mini2Dx.ui.style.UiTheme;
 
@@ -68,6 +69,7 @@ public class UiUAT extends BasicGameScreen {
 	@Override
 	public void update(GameContainer gc, ScreenManager<? extends GameScreen> screenManager, float delta) {
 		uiContainer.update(delta);
+		bottomRightFrame.set(gc.getWidth() - bottomRightFrame.getWidth(), gc.getHeight() - bottomRightFrame.getHeight());
 		if (nextScreenId > -1) {
 			screenManager.enterGameScreen(nextScreenId, new FadeOutTransition(), new FadeInTransition());
 			nextScreenId = -1;
@@ -99,13 +101,13 @@ public class UiUAT extends BasicGameScreen {
 	}
 
 	private void initialiseUi() {
-		topLeftFrame = new AbsoluteContainer();
+		topLeftFrame = new AbsoluteContainer("top-left-frame");
 		topLeftFrame.setLayout(new LayoutRuleset("xs-12 sm-6 md-4 lg-3"));
-		topLeftFrame.add(Row.withElements(UiUtils.createHeader("UI UAT")));
+		topLeftFrame.add(Row.withElements("top-left-header", UiUtils.createHeader("UI UAT")));
 		topLeftFrame.setVisibility(Visibility.VISIBLE);
 		uiContainer.add(topLeftFrame);
 		
-		textBox = UiUtils.createTextBox(new ActionListener() {
+		textBox = UiUtils.createTextBox("textbox", new ActionListener() {
 			
 			@Override
 			public void onActionEnd(Actionable source) {
@@ -116,8 +118,7 @@ public class UiUAT extends BasicGameScreen {
 			public void onActionBegin(Actionable source) {
 			}
 		});
-		textBoxResult = UiUtils.createLabel("");
-		select = UiUtils.createSelect(new ActionListener() {
+		select = UiUtils.createSelect("select", new ActionListener() {
 			
 			@Override
 			public void onActionEnd(Actionable source) {
@@ -128,17 +129,20 @@ public class UiUAT extends BasicGameScreen {
 			public void onActionBegin(Actionable source) {
 			}
 		});
+		textBoxResult = UiUtils.createLabel("");
+		
 		select.addOption("Item 1", "1");
 		select.addOption("Item 2", "2");
 		select.addOption("Item 3", "3");
 		
-		modal = new Modal();
-		modal.setLayout(new LayoutRuleset("xs-12 md-8 lg-6"));
-		modal.add(Row.withElements(textBox, textBoxResult));
-		modal.add(Row.withElements(select));
-		modal.add(Row.withElements(UiUtils.createLabel("Not visible on XS screen size")));
+		modal = new Modal("main-modal");
+		modal.setLayout(new LayoutRuleset("xs-12 md-8 lg-6 md-offset-2 lg-offset-3"));
+		modal.setVerticalAlignment(VerticalAlignment.MIDDLE);
+		modal.add(Row.withElements("row-textbox", textBox, textBoxResult));
+		modal.add(Row.withElements("row-select", select));
+		modal.add(Row.withElements("row-not-visible-xs", UiUtils.createLabel("Not visible on XS screen size")));
 		
-		modal.add(Row.withElements(UiUtils.createButton("Return to UAT Selection Screen", new ActionListener() {
+		modal.add(Row.withElements("row-return-button", UiUtils.createButton("Return to UAT Selection Screen", new ActionListener() {
 			
 			@Override
 			public void onActionBegin(Actionable source) {}
@@ -155,10 +159,10 @@ public class UiUAT extends BasicGameScreen {
 		uiContainer.add(modal);
 		uiContainer.setActiveModal(modal);
 		
-		bottomRightFrame = new AbsoluteContainer();
+		bottomRightFrame = new AbsoluteContainer("bottom-right-frame");
 		bottomRightFrame.setLayout(new LayoutRuleset("xs-12 sm-6 md-4 lg-3"));
 		bottomRightFrame.setVisibility(Visibility.VISIBLE);
-		bottomRightFrame.add(Row.withElements(UiUtils.createHeader("Detected OS: " + Mdx.os)));
+		bottomRightFrame.add(Row.withElements("row-os", UiUtils.createHeader("Detected OS: " + Mdx.os)));
 		uiContainer.add(bottomRightFrame);
 	}
 }

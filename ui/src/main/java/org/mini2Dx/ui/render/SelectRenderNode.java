@@ -34,31 +34,26 @@ public class SelectRenderNode extends RenderNode<Select<?>, SelectStyleRule> {
 
 	@Override
 	protected float determinePreferredWidth(LayoutState layoutState) {
-		// TODO Auto-generated method stub
-		return 0;
+		return layoutState.getParentWidth();
 	}
 
 	@Override
 	protected float determinePreferredHeight(LayoutState layoutState) {
-		// TODO Auto-generated method stub
-		return 0;
+		return 0f;
 	}
 
 	@Override
 	protected float determineXOffset(LayoutState layoutState) {
-		// TODO Auto-generated method stub
-		return 0;
+		return 0f;
 	}
 
 	@Override
 	protected float determineYOffset(LayoutState layoutState) {
-		// TODO Auto-generated method stub
-		return 0;
+		return 0f;
 	}
 
 	@Override
 	protected SelectStyleRule determineStyleRule(LayoutState layoutState) {
-		// TODO Auto-generated method stub
-		return null;
+		return layoutState.getTheme().getStyleRule(element, layoutState.getScreenSize());
 	}
 }

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.mini2Dx.core.engine.geom.CollisionBox;
+import org.mini2Dx.core.exception.MdxException;
 import org.mini2Dx.core.geom.Rectangle;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.ui.effect.UiEffect;
@@ -49,6 +50,9 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 	}
 
 	public void update(UiContainerRenderTree uiContainer, float delta) {
+		if(style == null) {
+			throw new MdxException("No style found for element: " + getId());
+		}
 		if (parent == null) {
 			targetArea.set(relativeX + style.getMarginLeft(), relativeY + style.getMarginTop(), preferredWidth,
 					preferredHeight);
@@ -62,7 +66,7 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 
 		boolean visible = isIncludedInRender();
 		if (effects.size() == 0) {
-			currentArea.set(targetArea);
+			currentArea.forceTo(targetArea);
 		} else {
 			for (int i = 0; i < effects.size(); i++) {
 				UiEffect effect = effects.get(i);

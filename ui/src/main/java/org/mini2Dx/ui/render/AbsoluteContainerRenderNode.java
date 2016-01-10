@@ -12,6 +12,7 @@
 package org.mini2Dx.ui.render;
 
 import org.mini2Dx.ui.element.AbsoluteContainer;
+import org.mini2Dx.ui.element.Modal;
 import org.mini2Dx.ui.layout.LayoutState;
 import org.mini2Dx.ui.style.ContainerStyleRule;
 
@@ -36,7 +37,6 @@ public class AbsoluteContainerRenderNode extends ContainerRenderNode {
 
 	@Override
 	protected ContainerStyleRule determineStyleRule(LayoutState layoutState) {
-		// TODO Auto-generated method stub
-		return null;
+		return layoutState.getTheme().getStyleRule(((AbsoluteContainer) element), layoutState.getScreenSize());
 	}
 }

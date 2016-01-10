@@ -49,15 +49,15 @@ public class UiUtils {
 		return button;
 	}
 	
-	public static TextBox createTextBox(ActionListener listener) {
-		TextBox textBox = new TextBox();
+	public static TextBox createTextBox(String id, ActionListener listener) {
+		TextBox textBox = new TextBox(id);
 		textBox.addActionListener(listener);
 		textBox.setVisibility(Visibility.VISIBLE);
 		return textBox;
 	}
 	
-	public static Select<String> createSelect(ActionListener listener) {
-		Select<String> select = new Select<String>();
+	public static Select<String> createSelect(String id, ActionListener listener) {
+		Select<String> select = new Select<String>(id);
 		select.addActionListener(listener);
 		select.setVisibility(Visibility.VISIBLE);
 		return select;

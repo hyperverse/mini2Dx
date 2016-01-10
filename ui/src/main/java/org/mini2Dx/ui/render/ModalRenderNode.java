@@ -29,6 +29,18 @@ public class ModalRenderNode extends ContainerRenderNode {
 		super.layout(layoutState);
 	}
 	
+	@Override
+	protected float determineYOffset(LayoutState layoutState) {
+		switch(((Modal) element).getVerticalAlignment()) {
+		case BOTTOM:
+			return layoutState.getUiContainer().getHeight() - determinePreferredHeight(layoutState);
+		case MIDDLE:
+			return (layoutState.getUiContainer().getHeight() / 2f) - (determinePreferredHeight(layoutState) / 2f);
+		default:
+			return 0f;
+		}
+	}
+	
 	public ActionableRenderNode hotkey(int keycode) {
 		if(keyboardHotkeys == null) {
 			return null;

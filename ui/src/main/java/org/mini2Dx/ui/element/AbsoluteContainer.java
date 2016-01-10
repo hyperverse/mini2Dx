@@ -75,4 +75,18 @@ public class AbsoluteContainer extends Container {
 		}
 		renderNode.setDirty(true);
 	}
+	
+	public float getWidth() {
+		if(renderNode == null) {
+			return 0f;
+		}
+		return renderNode.getWidth();
+	}
+	
+	public float getHeight() {
+		if(renderNode == null) {
+			return 0f;
+		}
+		return renderNode.getHeight();
+	}
 }

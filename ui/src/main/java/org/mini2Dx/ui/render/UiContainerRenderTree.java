@@ -22,12 +22,15 @@ import org.mini2Dx.ui.layout.ScreenSize;
 import org.mini2Dx.ui.listener.ScreenSizeListener;
 import org.mini2Dx.ui.style.StyleRule;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 
 /**
  *
  */
 public class UiContainerRenderTree extends ParentRenderNode<UiContainer, StyleRule> implements GameResizeListener {
+	private static final String LOGGING_TAG = UiContainerRenderTree.class.getSimpleName();
+	
 	private final GameContainer gc;
 	private final AssetManager assetManager;
 	
@@ -48,7 +51,7 @@ public class UiContainerRenderTree extends ParentRenderNode<UiContainer, StyleRu
 	}
 	
 	public void layout() {
-		layout(new LayoutState(assetManager, element.getTheme(), currentScreenSize, 12, gc.getWidth()));
+		layout(new LayoutState(this, assetManager, element.getTheme(), currentScreenSize, 12, gc.getWidth()));
 	}
 	
 	@Override
@@ -56,11 +59,15 @@ public class UiContainerRenderTree extends ParentRenderNode<UiContainer, StyleRu
 		if(!isDirty()) {
 			return;
 		}
+		if(element.isDebugEnabled()) {
+			Gdx.app.log(LOGGING_TAG, "Layout triggered");
+		}
 		style = determineStyleRule(layoutState);
 		preferredWidth = determinePreferredWidth(layoutState);
 		preferredHeight = determinePreferredHeight(layoutState);
 		xOffset = determineXOffset(layoutState);
 		yOffset = determineYOffset(layoutState);
+		currentArea.forceTo(xOffset, yOffset, preferredWidth, preferredHeight);
 		
 		for (int i = 0; i < children.size(); i++) {
 			RenderNode<?, ?> node = children.get(i);
@@ -74,6 +81,7 @@ public class UiContainerRenderTree extends ParentRenderNode<UiContainer, StyleRu
 		}
 		
 		setDirty(false);
+		childDirty = false;
 	}
 
 	@Override

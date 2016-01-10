@@ -11,6 +11,7 @@
  */
 package org.mini2Dx.ui.layout;
 
+import org.mini2Dx.ui.render.UiContainerRenderTree;
 import org.mini2Dx.ui.style.UiTheme;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.assets.AssetManager;
  *
  */
 public class LayoutState {
+	private final UiContainerRenderTree uiContainer;
 	private final AssetManager assetManager;
 	private final UiTheme theme;
 	private final ScreenSize screenSize;
@@ -26,8 +28,9 @@ public class LayoutState {
 	private float parentWidth;
 	private float columnWidth;
 
-	public LayoutState(AssetManager assetManager, UiTheme theme, ScreenSize screenSize, int totalColumns,
-			float parentWidth) {
+	public LayoutState(UiContainerRenderTree uiContainer, AssetManager assetManager, UiTheme theme,
+			ScreenSize screenSize, int totalColumns, float parentWidth) {
+		this.uiContainer = uiContainer;
 		this.assetManager = assetManager;
 		this.theme = theme;
 		this.screenSize = screenSize;
@@ -62,6 +65,10 @@ public class LayoutState {
 
 	public UiTheme getTheme() {
 		return theme;
+	}
+
+	public UiContainerRenderTree getUiContainer() {
+		return uiContainer;
 	}
 
 	@Override

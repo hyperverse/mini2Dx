@@ -50,6 +50,7 @@ public class UiContainer extends UiElement implements InputProcessor {
 	private TextInputableRenderNode activeTextInput;
 	
 	public UiContainer(GameContainer gc, AssetManager assetManager) {
+		super("ui-container-root");
 		renderTree = new UiContainerRenderTree(this, gc, assetManager);
 		setVisibility(Visibility.VISIBLE);
 	}
