@@ -26,6 +26,7 @@ import org.mini2Dx.uats.util.UiUtils;
 import org.mini2Dx.ui.UiContainer;
 import org.mini2Dx.ui.element.AbsoluteContainer;
 import org.mini2Dx.ui.element.Actionable;
+import org.mini2Dx.ui.element.Column;
 import org.mini2Dx.ui.element.Label;
 import org.mini2Dx.ui.element.Modal;
 import org.mini2Dx.ui.element.Row;
@@ -152,7 +153,7 @@ public class UiUAT extends BasicGameScreen {
 		modal.setVerticalAlignment(VerticalAlignment.MIDDLE);
 		modal.add(Row.withElements("row-textbox", textBox, textBoxResult));
 		modal.add(Row.withElements("row-select", select));
-		modal.add(Row.withElements("row-not-visible-xs", UiUtils.createLabel("Not visible on XS screen size")));
+		modal.add(Row.withElements("row-not-visible-xs", Column.withElements("col-not-visible-xs", "xs-0 sm-12", UiUtils.createLabel("Not visible on XS screen size"))));
 		
 		modal.add(Row.withElements("row-return-button", returnButton));
 		

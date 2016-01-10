@@ -12,6 +12,7 @@
 package org.mini2Dx.ui.render;
 
 import org.mini2Dx.ui.element.Column;
+import org.mini2Dx.ui.element.Visibility;
 import org.mini2Dx.ui.layout.LayoutState;
 import org.mini2Dx.ui.style.StyleRule;
 
@@ -74,6 +75,9 @@ public abstract class AbstractColumnRenderNode<S extends StyleRule> extends Pare
 
 	@Override
 	protected float determinePreferredHeight(LayoutState layoutState) {
+		if(preferredWidth <= 0f) {
+			return 0f;
+		}
 		float maxHeight = 0f;
 
 		for (int i = 0; i < children.size(); i++) {
@@ -89,7 +93,14 @@ public abstract class AbstractColumnRenderNode<S extends StyleRule> extends Pare
 
 	@Override
 	protected float determinePreferredWidth(LayoutState layoutState) {
-		return style.getMarginLeft() + element.getLayout().getPreferredWidth(layoutState) + style.getMarginRight();
+		float layoutRuleResult = element.getLayout().getPreferredWidth(layoutState);
+		if(layoutRuleResult <= 0f) {
+			element.setVisibility(Visibility.HIDDEN);
+			return 0f;
+		} else if(layoutState.isScreenSizeChanged() && element.getVisibility() == Visibility.HIDDEN) {
+			element.setVisibility(Visibility.VISIBLE);
+		}
+		return style.getMarginLeft() + layoutRuleResult + style.getMarginRight();
 	}
 
 	@Override

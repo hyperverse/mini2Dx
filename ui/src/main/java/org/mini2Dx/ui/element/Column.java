@@ -122,7 +122,12 @@ public class Column extends UiElement {
 	}
 	
 	public static Column withElements(String columnId, UiElement ...elements) {
+		return withElements(columnId, "xs-12", elements);
+	}
+	
+	public static Column withElements(String columnId, String layoutRuleset, UiElement ...elements) {
 		Column result = new Column(columnId);
+		result.setLayout(new LayoutRuleset(layoutRuleset));
 		for(int i = 0; i < elements.length; i++) {
 			result.add(elements[i]);
 		}
