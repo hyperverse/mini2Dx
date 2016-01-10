@@ -32,6 +32,7 @@ public abstract class UiElement implements Hoverable {
 	private List<HoverListener> hoverListeners;
 	protected Visibility visibility = Visibility.HIDDEN;
 	protected String styleId = UiTheme.DEFAULT_STYLE_ID;
+	private boolean debugEnabled = false;
 	
 	public UiElement() {
 		this(null);
@@ -127,5 +128,13 @@ public abstract class UiElement implements Hoverable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public boolean isDebugEnabled() {
+		return debugEnabled;
+	}
+
+	public void setDebugEnabled(boolean debugEnabled) {
+		this.debugEnabled = debugEnabled;
 	}
 }

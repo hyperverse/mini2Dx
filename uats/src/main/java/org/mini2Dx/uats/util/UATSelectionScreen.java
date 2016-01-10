@@ -128,6 +128,7 @@ public class UATSelectionScreen extends BasicGameScreen implements ScreenSizeLis
 	private void initialiseUi() {
 		uatsDialog = new Modal("UATs Dialog");
 		uatsDialog.setLayout(new LayoutRuleset("xs-12 sm-10 md-8 lg-6"));
+		uatsDialog.setDebugEnabled(true);
 
 		uatsDialog.add(Row.withElements("row-os", UiUtils.createHeader("Detected OS: " + Mdx.os)));
 		uatsDialog.add(Row.withElements(UiUtils.createHeader("")));

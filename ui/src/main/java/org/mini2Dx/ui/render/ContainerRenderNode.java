@@ -26,7 +26,6 @@ public abstract class ContainerRenderNode extends AbstractColumnRenderNode<Conta
 	
 	@Override
 	protected void renderElement(Graphics g) {
-		System.out.println("Rendering container");
 		g.drawNinePatch(style.getBackgroundNinePatch(), getRenderX(), getRenderY(),
 				getRenderWidth(), getRenderHeight());
 		super.renderElement(g);

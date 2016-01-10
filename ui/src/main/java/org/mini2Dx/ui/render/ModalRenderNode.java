@@ -50,10 +50,7 @@ public class ModalRenderNode extends ContainerRenderNode {
 
 	@Override
 	protected ContainerStyleRule determineStyleRule(LayoutState layoutState) {
-		System.out.println(layoutState);
-		ContainerStyleRule rule = layoutState.getTheme().getStyleRule(((Modal) element), layoutState.getScreenSize());
-		System.out.println(rule);
-		return rule;
+		return layoutState.getTheme().getStyleRule(((Modal) element), layoutState.getScreenSize());
 	}
 
 }

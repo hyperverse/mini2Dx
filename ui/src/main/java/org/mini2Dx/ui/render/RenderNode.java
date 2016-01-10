@@ -23,6 +23,8 @@ import org.mini2Dx.ui.element.Visibility;
 import org.mini2Dx.ui.layout.LayoutState;
 import org.mini2Dx.ui.style.StyleRule;
 
+import com.badlogic.gdx.Gdx;
+
 /**
  *
  */
@@ -57,15 +59,19 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 		element.pushEffectsToRenderNode();
 		
 		boolean visible = isIncludedInRender();
-		for(int i = 0; i < effects.size(); i++) {
-			UiEffect effect = effects.get(i);
-			if(effect.isFinished()) {
-				effects.remove(i);
-				i--;
-				continue;
+		if(effects.size() == 0) {
+			currentArea.set(targetArea);
+		} else {
+			for(int i = 0; i < effects.size(); i++) {
+				UiEffect effect = effects.get(i);
+				if(effect.isFinished()) {
+					effects.remove(i);
+					i--;
+					continue;
+				}
+				
+				visible |= effect.update(uiContainer, currentArea, targetArea, delta);
 			}
-			
-			visible |= effect.update(null, currentArea, targetArea, delta);
 		}
 		if(visible) {
 			element.setVisibility(Visibility.VISIBLE);
@@ -78,7 +84,13 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 	
 	public void render(Graphics g) {
 		if(!isIncludedInRender()) {
+			if(element.isDebugEnabled()) {
+				Gdx.app.log(element.getId(), "Element not visible");
+			}
 			return;
+		}
+		if(element.isDebugEnabled()) {
+			Gdx.app.log(element.getId(), toString());
 		}
 		
 		for(int i = 0; i < effects.size(); i++) {
@@ -268,5 +280,12 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 	
 	public String getId() {
 		return element.getId();
+	}
+
+	@Override
+	public String toString() {
+		return "RenderNode [currentArea=" + currentArea + ", targetArea=" + targetArea + ", parent=" + parent.getId()
+				+ ", style=" + style + ", preferredWidth=" + preferredWidth + ", preferredHeight=" + preferredHeight
+				+ ", xOffset=" + xOffset + ", yOffset=" + yOffset + "]";
 	}
 }
