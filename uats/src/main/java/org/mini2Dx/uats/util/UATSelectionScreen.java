@@ -127,10 +127,9 @@ public class UATSelectionScreen extends BasicGameScreen implements ScreenSizeLis
 
 	private void initialiseUi() {
 		uatsDialog = new Modal("uats-dialog");
-		uatsDialog.setLayout(new LayoutRuleset("xs-12 sm-10 md-8 lg-6"));
+		uatsDialog.setLayout(new LayoutRuleset("xs-12 sm-10 md-8 lg-6 sm-offset-1 md-offset-2 lg-offset-3"));
 
-		uatsDialog.add(Row.withElements("row-os", UiUtils.createHeader("Detected OS: " + Mdx.os)));
-		uatsDialog.add(Row.withElements(UiUtils.createHeader("")));
+		uatsDialog.add(Row.withElements("row-os", UiUtils.createLabel("Detected OS: " + Mdx.os)));
 		uatsDialog.add(Row.withElements("row-header", UiUtils.createHeader("User Acceptance Tests")));
 		uatsDialog.add(Row.withElements("row-blending", UiUtils.createButton("Blending", false, new ActionListener() {
 			@Override

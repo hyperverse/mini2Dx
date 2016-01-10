@@ -23,11 +23,11 @@ public abstract class ContainerRenderNode extends AbstractColumnRenderNode<Conta
 	public ContainerRenderNode(ParentRenderNode<?, ?> parent, Column column) {
 		super(parent, column);
 	}
-	
+
 	@Override
 	protected void renderElement(Graphics g) {
-		g.drawNinePatch(style.getBackgroundNinePatch(), getRenderX(), getRenderY(),
-				getRenderWidth(), getRenderHeight());
+		g.drawNinePatch(style.getBackgroundNinePatch(), getRenderX() + style.getMarginLeft(),
+				getRenderY() + style.getMarginTop(), getRenderWidth(), getRenderHeight());
 		super.renderElement(g);
 	}
 }

@@ -20,16 +20,17 @@ import com.badlogic.gdx.graphics.Color;
 public class UiUtils {
 
 	public static Label createHeader(String text) {
-		return createLabel(text, Label.COLOR_BLACK);
+		return createLabel(text, "header", Label.COLOR_BLACK);
 	}
 	
 	public static Label createLabel(String text) {
-		return createLabel(text, Label.COLOR_BLACK);
+		return createLabel(text, "default", Label.COLOR_BLACK);
 	}
 
-	private static Label createLabel(String text, Color color) {
+	private static Label createLabel(String text, String styleId, Color color) {
 		Label label = new Label("Label: " + text);
 		label.setText(text);
+		label.setStyleId(styleId);
 		label.setColor(color);
 		label.setVisibility(Visibility.VISIBLE);
 		return label;

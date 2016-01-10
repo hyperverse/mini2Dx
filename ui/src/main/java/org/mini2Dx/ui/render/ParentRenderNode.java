@@ -18,18 +18,20 @@ import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.ui.element.UiElement;
 import org.mini2Dx.ui.style.StyleRule;
 
+import com.sun.org.apache.xml.internal.serialize.ElementState;
+
 /**
  *
  */
 public abstract class ParentRenderNode<T extends UiElement, S extends StyleRule> extends RenderNode<T, S> {
 	protected final List<RenderNode<?, ?>> children = new ArrayList<RenderNode<?, ?>>(1);
-	
+
 	protected boolean childDirty = false;
 
 	public ParentRenderNode(ParentRenderNode<?, ?> parent, T element) {
 		super(parent, element);
 	}
-	
+
 	@Override
 	public void update(UiContainerRenderTree uiContainer, float delta) {
 		super.update(uiContainer, delta);
@@ -37,7 +39,7 @@ public abstract class ParentRenderNode<T extends UiElement, S extends StyleRule>
 			children.get(i).update(uiContainer, delta);
 		}
 	}
-	
+
 	@Override
 	public void interpolate(float alpha) {
 		super.interpolate(alpha);
@@ -45,79 +47,90 @@ public abstract class ParentRenderNode<T extends UiElement, S extends StyleRule>
 			children.get(i).interpolate(alpha);
 		}
 	}
-	
+
 	@Override
 	protected void renderElement(Graphics g) {
 		for (int i = 0; i < children.size(); i++) {
 			children.get(i).render(g);
 		}
 	}
-	
+
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		if(currentArea.contains(screenX, screenY)) {
+		if (currentArea.contains(screenX, screenY)) {
 			setState(NodeState.HOVER);
 			boolean result = false;
-			for(int i = children.size() - 1; i >= 0; i--) {
-				if(children.get(i).mouseMoved(screenX, screenY)) {
+			for (int i = children.size() - 1; i >= 0; i--) {
+				if (children.get(i).mouseMoved(screenX, screenY)) {
 					result = true;
 				}
 			}
 			return result;
-		} else if(getState() != NodeState.NORMAL) {
+		} else if (getState() != NodeState.NORMAL) {
 			setState(NodeState.NORMAL);
 		}
 		return false;
 	}
-	
+
 	@Override
 	public ActionableRenderNode mouseDown(int screenX, int screenY, int pointer, int button) {
-		if(!isIncludedInRender()) {
+		if (!isIncludedInRender()) {
 			return null;
 		}
-		for(int i = children.size() - 1; i >= 0; i--) {
+		for (int i = children.size() - 1; i >= 0; i--) {
 			ActionableRenderNode result = children.get(i).mouseDown(screenX, screenY, pointer, button);
-			if(result != null) {
+			if (result != null) {
 				return result;
 			}
 		}
 		return null;
 	}
-	
+
 	public void addChild(RenderNode<?, ?> child) {
 		children.add(child);
 		setDirty(true);
 	}
-	
+
 	public void removeChild(RenderNode<?, ?> child) {
 		children.remove(child);
 		setDirty(true);
 	}
-	
+
 	public void clearChildren() {
 		children.clear();
 		setDirty(true);
 	}
-	
+
 	@Override
 	public boolean isDirty() {
 		return childDirty || super.isDirty();
 	}
-	
+
 	public void setChildDirty(boolean childDirty) {
-		if(!childDirty) {
+		if (!childDirty) {
 			return;
 		}
 		this.childDirty = childDirty;
 	}
-	
+
+	@Override
+	public void setState(NodeState state) {
+		super.setState(state);
+		if (state != NodeState.NORMAL) {
+			return;
+		}
+		for (int i = children.size() - 1; i >= 0; i--) {
+			children.get(i).setState(NodeState.NORMAL);
+		}
+	}
+
 	public RenderNode<?, ?> getElementById(String id) {
-		if(element.getId().equals(id)) {
+		if (element.getId().equals(id)) {
 			return this;
 		}
-		for(RenderNode<?, ?> child : children) {
+		for (RenderNode<?, ?> child : children) {
 			RenderNode<?, ?> result = child.getElementById(id);
-			if(result != null) {
+			if (result != null) {
 				return result;
 			}
 		}

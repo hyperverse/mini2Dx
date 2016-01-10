@@ -50,9 +50,11 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 
 	public void update(UiContainerRenderTree uiContainer, float delta) {
 		if (parent == null) {
-			targetArea.set(relativeX, relativeY, preferredWidth, preferredHeight);
+			targetArea.set(relativeX + style.getMarginLeft(), relativeY + style.getMarginTop(), preferredWidth,
+					preferredHeight);
 		} else {
-			targetArea.set(parent.getX() + relativeX, parent.getY() + relativeY, preferredWidth, preferredHeight);
+			targetArea.set(parent.getX() + relativeX + style.getMarginLeft(),
+					parent.getY() + style.getMarginTop() + relativeY, preferredWidth, preferredHeight);
 		}
 		currentArea.preUpdate();
 
@@ -76,7 +78,7 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 		if (visible) {
 			element.setVisibility(Visibility.VISIBLE);
 		}
-		if(element.isDebugEnabled()) {
+		if (element.isDebugEnabled()) {
 			Gdx.app.log(element.getId(), "UPDATE - currentArea: " + currentArea + ", targetArea: " + targetArea);
 		}
 	}
@@ -93,8 +95,8 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 			return;
 		}
 		if (element.isDebugEnabled()) {
-			Gdx.app.log(element.getId(), "RENDER - x,y: " + getRenderX() + "," + getRenderY() + " width: " + getRenderWidth()
-					+ ", height: " + getRenderHeight());
+			Gdx.app.log(element.getId(), "RENDER - x,y: " + getRenderX() + "," + getRenderY() + " width: "
+					+ getRenderWidth() + ", height: " + getRenderHeight());
 		}
 
 		for (int i = 0; i < effects.size(); i++) {
@@ -219,13 +221,15 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 	public float getPreferredHeight() {
 		return preferredHeight;
 	}
-	
+
 	public float getPreferredContentWidth() {
-		return preferredWidth - style.getPaddingLeft() - style.getPaddingRight();
+		return preferredWidth - style.getPaddingLeft() - style.getPaddingRight() - style.getMarginLeft()
+				- style.getMarginRight();
 	}
-	
+
 	public float getPreferredContentHeight() {
-		return preferredHeight - style.getPaddingTop() - style.getPaddingBottom();
+		return preferredHeight - style.getPaddingTop() - style.getPaddingBottom() - style.getMarginTop()
+				- style.getMarginBottom();
 	}
 
 	public float getXOffset() {

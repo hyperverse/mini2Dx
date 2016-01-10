@@ -26,7 +26,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
  */
 public class LabelRenderNode extends RenderNode<Label, LabelStyleRule> {
 	private static GlyphLayout glyphLayout = new GlyphLayout();
-	
+
 	private BitmapFont font = new BitmapFont(true);
 	private Color color = new Color(1f / 255f, 1f / 255f, 1f / 255f, 1f);
 
@@ -38,10 +38,11 @@ public class LabelRenderNode extends RenderNode<Label, LabelStyleRule> {
 	protected void renderElement(Graphics g) {
 		BitmapFont tmpFont = g.getFont();
 		Color tmpColor = g.getColor();
-		
+
 		g.setFont(font);
 		g.setColor(color);
-		g.drawString(element.getText(), getRenderX(), getRenderY(), getRenderWidth(),
+		g.drawString(element.getText(), getRenderX() + style.getPaddingLeft(), getRenderY() + style.getPaddingTop(),
+				getRenderWidth() - style.getPaddingLeft() - style.getPaddingRight(),
 				element.getHorizontalAlignment().getAlignValue());
 		g.setColor(tmpColor);
 		g.setFont(tmpFont);
@@ -55,7 +56,8 @@ public class LabelRenderNode extends RenderNode<Label, LabelStyleRule> {
 	@Override
 	protected float determinePreferredHeight(LayoutState layoutState) {
 		glyphLayout.setText(font, element.getText());
-		return glyphLayout.height;
+		return glyphLayout.height + style.getMarginTop() + style.getMarginBottom() + style.getPaddingTop()
+				+ style.getPaddingBottom();
 	}
 
 	@Override
@@ -67,7 +69,7 @@ public class LabelRenderNode extends RenderNode<Label, LabelStyleRule> {
 	protected float determineYOffset(LayoutState layoutState) {
 		return 0f;
 	}
-	
+
 	@Override
 	protected LabelStyleRule determineStyleRule(LayoutState layoutState) {
 		return layoutState.getTheme().getStyleRule(element, layoutState.getScreenSize());
