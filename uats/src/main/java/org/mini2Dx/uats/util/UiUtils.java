@@ -28,7 +28,7 @@ public class UiUtils {
 	}
 
 	private static Label createLabel(String text, Color color) {
-		Label label = new Label();
+		Label label = new Label("Label: " + text);
 		label.setText(text);
 		label.setColor(color);
 		label.setVisibility(Visibility.VISIBLE);
@@ -36,9 +36,14 @@ public class UiUtils {
 	}
 
 	public static TextButton createButton(String text, ActionListener listener) {
-		TextButton button = new TextButton();
+		return createButton(text, false, listener);
+	}
+	
+	public static TextButton createButton(String text, boolean debug, ActionListener listener) {
+		TextButton button = new TextButton("TextButton: " + text);
 		button.setText(text);
 		button.addActionListener(listener);
+		button.setDebugEnabled(debug);
 		button.setVisibility(Visibility.VISIBLE);
 		return button;
 	}

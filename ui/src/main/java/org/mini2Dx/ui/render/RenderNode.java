@@ -34,123 +34,128 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 	protected final Rectangle targetArea = new Rectangle();
 	protected final ParentRenderNode<?, ?> parent;
 	protected final T element;
-	
+
 	protected S style;
 	protected float preferredWidth, preferredHeight;
 	protected float xOffset, yOffset;
 	private float relativeX, relativeY;
 	private boolean dirty;
 	private NodeState state = NodeState.NORMAL;
-	
+
 	public RenderNode(ParentRenderNode<?, ?> parent, T element) {
 		this.parent = parent;
 		this.element = element;
 		setDirty(true);
 	}
-	
+
 	public void update(UiContainerRenderTree uiContainer, float delta) {
-		if(parent == null) {
+		if (parent == null) {
 			targetArea.set(relativeX, relativeY, preferredWidth, preferredHeight);
 		} else {
 			targetArea.set(parent.getX() + relativeX, parent.getY() + relativeY, preferredWidth, preferredHeight);
 		}
 		currentArea.preUpdate();
-		
+
 		element.pushEffectsToRenderNode();
-		
+
 		boolean visible = isIncludedInRender();
-		if(effects.size() == 0) {
+		if (effects.size() == 0) {
 			currentArea.set(targetArea);
 		} else {
-			for(int i = 0; i < effects.size(); i++) {
+			for (int i = 0; i < effects.size(); i++) {
 				UiEffect effect = effects.get(i);
-				if(effect.isFinished()) {
+				if (effect.isFinished()) {
 					effects.remove(i);
 					i--;
 					continue;
 				}
-				
+
 				visible |= effect.update(uiContainer, currentArea, targetArea, delta);
 			}
 		}
-		if(visible) {
+		if (visible) {
 			element.setVisibility(Visibility.VISIBLE);
 		}
+		if(element.isDebugEnabled()) {
+			Gdx.app.log(element.getId(), "UPDATE - currentArea: " + currentArea + ", targetArea: " + targetArea);
+		}
 	}
-	
+
 	public void interpolate(float alpha) {
 		currentArea.interpolate(null, alpha);
 	}
-	
+
 	public void render(Graphics g) {
-		if(!isIncludedInRender()) {
-			if(element.isDebugEnabled()) {
-				Gdx.app.log(element.getId(), "Element not visible");
+		if (!isIncludedInRender()) {
+			if (element.isDebugEnabled()) {
+				Gdx.app.log(element.getId(), "RENDER - Element not visible");
 			}
 			return;
 		}
-		if(element.isDebugEnabled()) {
-			Gdx.app.log(element.getId(), toString());
+		if (element.isDebugEnabled()) {
+			Gdx.app.log(element.getId(), "RENDER - x,y: " + getRenderX() + "," + getRenderY() + " width: " + getRenderWidth()
+					+ ", height: " + getRenderHeight());
 		}
-		
-		for(int i = 0; i < effects.size(); i++) {
+
+		for (int i = 0; i < effects.size(); i++) {
 			effects.get(i).preRender(g);
 		}
 		renderElement(g);
-		for(int i = 0; i < effects.size(); i++) {
+		for (int i = 0; i < effects.size(); i++) {
 			effects.get(i).postRender(g);
 		}
 	}
-	
+
 	public boolean mouseMoved(int screenX, int screenY) {
-		if(currentArea.contains(screenX, screenY)) {
+		if (currentArea.contains(screenX, screenY)) {
 			beginHover();
 			return true;
-		} else if(state != NodeState.NORMAL) {
+		} else if (state != NodeState.NORMAL) {
 			endHover();
 		}
 		return false;
 	}
-	
+
 	public ActionableRenderNode mouseDown(int screenX, int screenY, int pointer, int button) {
 		return null;
 	}
-	
-	public void mouseUp(int screenX, int screenY, int pointer, int button) {}
-	
+
+	public void mouseUp(int screenX, int screenY, int pointer, int button) {
+	}
+
 	public boolean contains(float screenX, float screenY) {
 		return currentArea.contains(screenX, screenY);
 	}
-	
+
 	public void beginHover() {
 		state = NodeState.HOVER;
 		element.notifyHoverListenersOnBeginHover();
 	}
-	
+
 	public void endHover() {
 		state = NodeState.NORMAL;
 		element.notifyHoverListenersOnEndHover();
 	}
-	
+
 	protected abstract void renderElement(Graphics g);
-	
+
 	protected abstract S determineStyleRule(LayoutState layoutState);
-	
+
 	protected abstract float determinePreferredWidth(LayoutState layoutState);
-	
+
 	protected abstract float determinePreferredHeight(LayoutState layoutState);
-	
+
 	protected abstract float determineXOffset(LayoutState layoutState);
-	
+
 	protected abstract float determineYOffset(LayoutState layoutState);
-	
+
 	public void layout(LayoutState layoutState) {
-		if(!isDirty()) {
+		if (!isDirty()) {
 			return;
 		}
 		style = determineStyleRule(layoutState);
-		
-		switch(element.getVisibility()) {
+
+		switch (element.getVisibility()) {
 		case HIDDEN:
 			preferredWidth = 0f;
 			preferredHeight = 0f;
@@ -166,27 +171,27 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 		}
 		dirty = false;
 	}
-	
+
 	public boolean isIncludedInLayout() {
 		return element.getVisibility() != Visibility.HIDDEN;
 	}
-	
+
 	public boolean isIncludedInRender() {
 		return style != null && element.getVisibility() == Visibility.VISIBLE;
 	}
-	
+
 	public boolean isDirty() {
 		return dirty;
 	}
-	
+
 	public void setDirty(boolean dirty) {
 		this.dirty = dirty;
-		if(parent == null) {
+		if (parent == null) {
 			return;
 		}
 		parent.setChildDirty(dirty);
 	}
-	
+
 	public void applyEffect(UiEffect effect) {
 		effects.add(effect);
 	}
@@ -222,62 +227,62 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 	public float getYOffset() {
 		return yOffset;
 	}
-	
+
 	public float getX() {
 		return currentArea.getX();
 	}
-	
+
 	public float getY() {
 		return currentArea.getY();
 	}
-	
+
 	public float getWidth() {
 		return currentArea.getWidth();
 	}
-	
+
 	public float getHeight() {
 		return currentArea.getHeight();
 	}
-	
+
 	public int getRenderX() {
 		return currentArea.getRenderX();
 	}
-	
+
 	public int getRenderY() {
 		return currentArea.getRenderY();
 	}
-	
+
 	public int getRenderWidth() {
 		return currentArea.getRenderWidth();
 	}
-	
+
 	public int getRenderHeight() {
 		return currentArea.getRenderHeight();
 	}
-	
+
 	public NodeState getState() {
 		return state;
 	}
-	
+
 	public void setState(NodeState state) {
 		NodeState previousState = this.state;
 		this.state = state;
-		if(previousState != state) {
-			if(state == NodeState.HOVER) {
+		if (previousState != state) {
+			if (state == NodeState.HOVER) {
 				element.notifyHoverListenersOnBeginHover();
-			} else if(previousState == NodeState.HOVER) {
+			} else if (previousState == NodeState.HOVER) {
 				element.notifyHoverListenersOnEndHover();
 			}
 		}
 	}
-	
+
 	public RenderNode<?, ?> getElementById(String id) {
-		if(element.getId().equals(id)) {
+		if (element.getId().equals(id)) {
 			return this;
 		}
 		return null;
 	}
-	
+
 	public String getId() {
 		return element.getId();
 	}

@@ -31,6 +31,22 @@ public abstract class ParentRenderNode<T extends UiElement, S extends StyleRule>
 	}
 	
 	@Override
+	public void update(UiContainerRenderTree uiContainer, float delta) {
+		super.update(uiContainer, delta);
+		for (int i = 0; i < children.size(); i++) {
+			children.get(i).update(uiContainer, delta);
+		}
+	}
+	
+	@Override
+	public void interpolate(float alpha) {
+		super.interpolate(alpha);
+		for (int i = 0; i < children.size(); i++) {
+			children.get(i).interpolate(alpha);
+		}
+	}
+	
+	@Override
 	protected void renderElement(Graphics g) {
 		for (int i = 0; i < children.size(); i++) {
 			children.get(i).render(g);

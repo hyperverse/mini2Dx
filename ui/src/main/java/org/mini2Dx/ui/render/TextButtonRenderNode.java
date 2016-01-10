@@ -101,8 +101,7 @@ public class TextButtonRenderNode extends RenderNode<TextButton, ButtonStyleRule
 
 	@Override
 	protected float determinePreferredHeight(LayoutState layoutState) {
-		// TODO Auto-generated method stub
-		return 0;
+		return style.getPaddingTop() + style.getPaddingBottom() + style.getFontSize();
 	}
 
 	@Override

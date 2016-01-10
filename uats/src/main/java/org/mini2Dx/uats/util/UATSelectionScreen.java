@@ -126,14 +126,13 @@ public class UATSelectionScreen extends BasicGameScreen implements ScreenSizeLis
 	}
 
 	private void initialiseUi() {
-		uatsDialog = new Modal("UATs Dialog");
+		uatsDialog = new Modal("uats-dialog");
 		uatsDialog.setLayout(new LayoutRuleset("xs-12 sm-10 md-8 lg-6"));
-		uatsDialog.setDebugEnabled(true);
 
 		uatsDialog.add(Row.withElements("row-os", UiUtils.createHeader("Detected OS: " + Mdx.os)));
 		uatsDialog.add(Row.withElements(UiUtils.createHeader("")));
 		uatsDialog.add(Row.withElements("row-header", UiUtils.createHeader("User Acceptance Tests")));
-		uatsDialog.add(Row.withElements("row-blending", UiUtils.createButton("Blending", new ActionListener() {
+		uatsDialog.add(Row.withElements("row-blending", UiUtils.createButton("Blending", false, new ActionListener() {
 			@Override
 			public void onActionBegin(Actionable source) {
 			}
@@ -143,7 +142,7 @@ public class UATSelectionScreen extends BasicGameScreen implements ScreenSizeLis
 				nextScreenId = ScreenIds.getScreenId(BlendingUAT.class);
 			}
 		})));
-		uatsDialog.add(Row.withElements("row-clip", UiUtils.createButton("Graphics.clip()", new ActionListener() {
+		uatsDialog.add(Row.withElements("row-clip", UiUtils.createButton("Graphics.clip()", false, new ActionListener() {
 					@Override
 					public void onActionBegin(Actionable source) {
 					}

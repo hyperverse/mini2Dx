@@ -60,6 +60,7 @@ public abstract class AbstractColumnRenderNode<S extends StyleRule> extends Pare
 					}
 				}
 				startY += maxHeight;
+				startX = 0f;
 			}
 		}
 		layoutState.setParentWidth(parentWidth);
