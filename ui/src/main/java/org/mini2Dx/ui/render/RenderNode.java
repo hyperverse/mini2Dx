@@ -136,6 +136,8 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 		if(!isDirty()) {
 			return;
 		}
+		style = determineStyleRule(layoutState);
+		
 		switch(element.getVisibility()) {
 		case HIDDEN:
 			preferredWidth = 0f;
@@ -144,7 +146,6 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 			yOffset = 0f;
 			return;
 		default:
-			style = determineStyleRule(layoutState);
 			preferredWidth = determinePreferredWidth(layoutState);
 			preferredHeight = determinePreferredHeight(layoutState);
 			xOffset = determineXOffset(layoutState);
@@ -263,5 +264,9 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 			return this;
 		}
 		return null;
+	}
+	
+	public String getId() {
+		return element.getId();
 	}
 }

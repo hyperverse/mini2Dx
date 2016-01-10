@@ -9,6 +9,7 @@ import org.mini2Dx.ui.element.Row;
 import org.mini2Dx.ui.element.Select;
 import org.mini2Dx.ui.element.TextBox;
 import org.mini2Dx.ui.element.TextButton;
+import org.mini2Dx.ui.element.Visibility;
 import org.mini2Dx.ui.listener.ActionListener;
 
 import com.badlogic.gdx.graphics.Color;
@@ -30,6 +31,7 @@ public class UiUtils {
 		Label label = new Label();
 		label.setText(text);
 		label.setColor(color);
+		label.setVisibility(Visibility.VISIBLE);
 		return label;
 	}
 
@@ -37,18 +39,21 @@ public class UiUtils {
 		TextButton button = new TextButton();
 		button.setText(text);
 		button.addActionListener(listener);
+		button.setVisibility(Visibility.VISIBLE);
 		return button;
 	}
 	
 	public static TextBox createTextBox(ActionListener listener) {
 		TextBox textBox = new TextBox();
 		textBox.addActionListener(listener);
+		textBox.setVisibility(Visibility.VISIBLE);
 		return textBox;
 	}
 	
 	public static Select<String> createSelect(ActionListener listener) {
 		Select<String> select = new Select<String>();
 		select.addActionListener(listener);
+		select.setVisibility(Visibility.VISIBLE);
 		return select;
 	}
 }

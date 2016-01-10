@@ -122,6 +122,7 @@ public class Column extends UiElement {
 		for(int i = 0; i < elements.length; i++) {
 			result.add(elements[i]);
 		}
+		result.setVisibility(Visibility.VISIBLE);
 		return result;
 	}
 }

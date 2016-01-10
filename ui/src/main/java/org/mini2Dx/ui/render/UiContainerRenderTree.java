@@ -56,6 +56,7 @@ public class UiContainerRenderTree extends ParentRenderNode<UiContainer, StyleRu
 		if(!isDirty()) {
 			return;
 		}
+		style = determineStyleRule(layoutState);
 		preferredWidth = determinePreferredWidth(layoutState);
 		preferredHeight = determinePreferredHeight(layoutState);
 		xOffset = determineXOffset(layoutState);
@@ -139,6 +140,6 @@ public class UiContainerRenderTree extends ParentRenderNode<UiContainer, StyleRu
 	
 	@Override
 	protected StyleRule determineStyleRule(LayoutState layoutState) {
-		return null;
+		return new StyleRule();
 	}
 }

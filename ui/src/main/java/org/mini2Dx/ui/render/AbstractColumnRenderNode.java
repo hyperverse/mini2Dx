@@ -30,6 +30,7 @@ public abstract class AbstractColumnRenderNode<S extends StyleRule> extends Pare
 			return;
 		}
 		float parentWidth = layoutState.getParentWidth();
+		style = determineStyleRule(layoutState);
 		xOffset = determineXOffset(layoutState);
 		preferredWidth = determinePreferredWidth(layoutState);
 		layoutState.setParentWidth(preferredWidth);
