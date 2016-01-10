@@ -181,7 +181,7 @@
           "disabled": "default-mdx-theme/textbox_disabled.png",
           "fontSize": 12,
           "font": "default",
-          "textColor": "255,255,255",
+          "textColor": "1,1,1",
           "paddingTop": 12,
           "paddingBottom": 12,
           "paddingLeft": 12,

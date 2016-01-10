@@ -18,11 +18,11 @@ import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.ui.element.Container;
 import org.mini2Dx.ui.element.Modal;
+import org.mini2Dx.ui.element.TextInputable;
 import org.mini2Dx.ui.element.UiElement;
 import org.mini2Dx.ui.element.Visibility;
 import org.mini2Dx.ui.listener.ScreenSizeListener;
 import org.mini2Dx.ui.render.ActionableRenderNode;
-import org.mini2Dx.ui.render.ModalRenderNode;
 import org.mini2Dx.ui.render.ParentRenderNode;
 import org.mini2Dx.ui.render.TextInputableRenderNode;
 import org.mini2Dx.ui.render.UiContainerRenderTree;
@@ -166,7 +166,7 @@ public class UiContainer extends UiElement implements InputProcessor {
 		ActionableRenderNode result = renderTree.mouseDown(screenX, screenY, pointer, button);
 		if(result != null) {
 			result.beginAction();
-			activeAction = result;
+			setActiveAction(result);
 			return true;
 		}
 		return false;
@@ -245,7 +245,7 @@ public class UiContainer extends UiElement implements InputProcessor {
 		}
 		ActionableRenderNode hotkeyAction = activeModal.hotkey(keycode);
 		if(hotkeyAction == null) {
-			activeAction = activeModal.navigate(keycode);
+			setActiveAction(activeModal.navigate(keycode));
 		} else {
 			hotkeyAction.endAction();
 		}
@@ -283,6 +283,13 @@ public class UiContainer extends UiElement implements InputProcessor {
 			return true;
 		}
 		return false;
+	}
+	
+	private void setActiveAction(ActionableRenderNode actionable) {
+		if(actionable instanceof TextInputableRenderNode) {
+			activeTextInput = (TextInputableRenderNode) actionable;
+		}
+		activeAction = actionable;
 	}
 
 	public void setActiveModal(Modal activeModal) {

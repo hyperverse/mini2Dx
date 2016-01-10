@@ -20,7 +20,7 @@ import org.mini2Dx.ui.style.StyleRule;
 /**
  *
  */
-public class SelectRenderNode extends RenderNode<Select<?>, SelectStyleRule> {
+public class SelectRenderNode extends RenderNode<Select<?>, SelectStyleRule> implements ActionableRenderNode {
 
 	public SelectRenderNode(ParentRenderNode<?, ?> parent, Select<?> element) {
 		super(parent, element);
@@ -28,7 +28,16 @@ public class SelectRenderNode extends RenderNode<Select<?>, SelectStyleRule> {
 
 	@Override
 	protected void renderElement(Graphics g) {
-		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void beginAction() {
+		
+	}
+
+	@Override
+	public void endAction() {
 		
 	}
 
