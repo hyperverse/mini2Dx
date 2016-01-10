@@ -16,6 +16,8 @@ package org.mini2Dx.ui.render;
  */
 public interface HoverableRenderNode {
 
+	public String getId();
+	
 	public boolean contains(float screenX, float screenY);
 	
 	public void beginHover();

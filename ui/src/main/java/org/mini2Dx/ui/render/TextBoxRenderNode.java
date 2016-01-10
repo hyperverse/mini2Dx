@@ -94,7 +94,7 @@ public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule>impl
 		g.setColor(style.getColor());
 
 		g.drawString(element.getValue(), textRenderX, textRenderY);
-		if (cursorVisible) {
+		if (cursorVisible && isReceivingInput()) {
 			g.drawLineSegment(textRenderX + renderCursorX, textRenderY, textRenderX + renderCursorX,
 					textRenderY + renderCursorHeight);
 		}

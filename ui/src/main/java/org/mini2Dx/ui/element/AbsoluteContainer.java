@@ -45,6 +45,9 @@ public class AbsoluteContainer extends Container {
 	}
 
 	public void setX(float x) {
+		if(this.x == x) {
+			return;
+		}
 		this.x = x;
 		
 		if(renderNode == null) {
@@ -58,6 +61,9 @@ public class AbsoluteContainer extends Container {
 	}
 
 	public void setY(float y) {
+		if(this.y == y) {
+			return;
+		}
 		this.y = y;
 		
 		if(renderNode == null) {
@@ -67,6 +73,9 @@ public class AbsoluteContainer extends Container {
 	}
 	
 	public void set(float x, float y) {
+		if(this.x == x && this.y == y) {
+			return;
+		}
 		this.x = x;
 		this.y = y;
 		

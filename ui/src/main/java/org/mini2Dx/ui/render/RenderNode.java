@@ -156,7 +156,7 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 	protected abstract float determineYOffset(LayoutState layoutState);
 
 	public void layout(LayoutState layoutState) {
-		if (!isDirty()) {
+		if(!isDirty() && !layoutState.isScreenSizeChanged()) {
 			return;
 		}
 		style = determineStyleRule(layoutState);

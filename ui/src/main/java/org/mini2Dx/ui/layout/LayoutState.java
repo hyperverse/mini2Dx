@@ -25,16 +25,19 @@ public class LayoutState {
 	private final UiTheme theme;
 	private final ScreenSize screenSize;
 	private final int totalColumns;
+	private final boolean screenSizeChanged;
+	
 	private float parentWidth;
 	private float columnWidth;
 
 	public LayoutState(UiContainerRenderTree uiContainer, AssetManager assetManager, UiTheme theme,
-			ScreenSize screenSize, int totalColumns, float parentWidth) {
+			ScreenSize screenSize, int totalColumns, float parentWidth, boolean screenSizeChanged) {
 		this.uiContainer = uiContainer;
 		this.assetManager = assetManager;
 		this.theme = theme;
 		this.screenSize = screenSize;
 		this.totalColumns = totalColumns;
+		this.screenSizeChanged = screenSizeChanged;
 		setParentWidth(parentWidth);
 	}
 
@@ -69,6 +72,10 @@ public class LayoutState {
 
 	public UiContainerRenderTree getUiContainer() {
 		return uiContainer;
+	}
+
+	public boolean isScreenSizeChanged() {
+		return screenSizeChanged;
 	}
 
 	@Override

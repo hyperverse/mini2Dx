@@ -26,9 +26,10 @@ public abstract class AbstractColumnRenderNode<S extends StyleRule> extends Pare
 
 	@Override
 	public void layout(LayoutState layoutState) {
-		if (!isDirty()) {
+		if(!isDirty() && !layoutState.isScreenSizeChanged()) {
 			return;
 		}
+		
 		float parentWidth = layoutState.getParentWidth();
 		style = determineStyleRule(layoutState);
 		xOffset = determineXOffset(layoutState);

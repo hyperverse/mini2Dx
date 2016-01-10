@@ -31,6 +31,7 @@ import org.mini2Dx.ui.element.Modal;
 import org.mini2Dx.ui.element.Row;
 import org.mini2Dx.ui.element.Select;
 import org.mini2Dx.ui.element.TextBox;
+import org.mini2Dx.ui.element.TextButton;
 import org.mini2Dx.ui.element.Visibility;
 import org.mini2Dx.ui.layout.LayoutRuleset;
 import org.mini2Dx.ui.layout.VerticalAlignment;
@@ -131,6 +132,17 @@ public class UiUAT extends BasicGameScreen {
 		});
 		textBoxResult = UiUtils.createLabel("");
 		
+		TextButton returnButton = UiUtils.createButton("Return to UAT Selection Screen", new ActionListener() {
+			
+			@Override
+			public void onActionBegin(Actionable source) {}
+			
+			@Override
+			public void onActionEnd(Actionable source) {
+				nextScreenId = UATSelectionScreen.SCREEN_ID;
+			}
+		});
+		
 		select.addOption("Item 1", "1");
 		select.addOption("Item 2", "2");
 		select.addOption("Item 3", "3");
@@ -142,19 +154,11 @@ public class UiUAT extends BasicGameScreen {
 		modal.add(Row.withElements("row-select", select));
 		modal.add(Row.withElements("row-not-visible-xs", UiUtils.createLabel("Not visible on XS screen size")));
 		
-		modal.add(Row.withElements("row-return-button", UiUtils.createButton("Return to UAT Selection Screen", new ActionListener() {
-			
-			@Override
-			public void onActionBegin(Actionable source) {}
-			
-			@Override
-			public void onActionEnd(Actionable source) {
-				nextScreenId = UATSelectionScreen.SCREEN_ID;
-			}
-		})));
+		modal.add(Row.withElements("row-return-button", returnButton));
 		
 		modal.getNavigation().set(0, textBox);
 		modal.getNavigation().set(1, select);
+		modal.getNavigation().set(2, returnButton);
 		modal.setVisibility(Visibility.VISIBLE);
 		uiContainer.add(modal);
 		uiContainer.setActiveModal(modal);

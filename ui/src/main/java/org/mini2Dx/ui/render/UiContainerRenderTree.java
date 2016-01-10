@@ -36,6 +36,7 @@ public class UiContainerRenderTree extends ParentRenderNode<UiContainer, StyleRu
 	
 	private List<ScreenSizeListener> screenSizeListeners;
 	private ScreenSize currentScreenSize = ScreenSize.XS;
+	private boolean screenSizeChanged = false;
 
 	public UiContainerRenderTree(UiContainer uiContainer, GameContainer gc, AssetManager assetManager) {
 		super(null, uiContainer);
@@ -51,12 +52,12 @@ public class UiContainerRenderTree extends ParentRenderNode<UiContainer, StyleRu
 	}
 	
 	public void layout() {
-		layout(new LayoutState(this, assetManager, element.getTheme(), currentScreenSize, 12, gc.getWidth()));
+		layout(new LayoutState(this, assetManager, element.getTheme(), currentScreenSize, 12, gc.getWidth(), screenSizeChanged));
 	}
 	
 	@Override
 	public void layout(LayoutState layoutState) {
-		if(!isDirty()) {
+		if(!isDirty() && !layoutState.isScreenSizeChanged()) {
 			return;
 		}
 		if(element.isDebugEnabled()) {
@@ -72,6 +73,7 @@ public class UiContainerRenderTree extends ParentRenderNode<UiContainer, StyleRu
 		for (int i = 0; i < children.size(); i++) {
 			RenderNode<?, ?> node = children.get(i);
 			node.layout(layoutState);
+			
 			if(!node.isIncludedInLayout()) {
 				continue;
 			}
@@ -82,6 +84,7 @@ public class UiContainerRenderTree extends ParentRenderNode<UiContainer, StyleRu
 		
 		setDirty(false);
 		childDirty = false;
+		screenSizeChanged = false;
 	}
 
 	@Override
@@ -99,9 +102,7 @@ public class UiContainerRenderTree extends ParentRenderNode<UiContainer, StyleRu
 		if(width >= ScreenSize.XL.getMinSize()) {
 			screenSize = ScreenSize.XL;
 		}
-		if(screenSize != currentScreenSize) {
-			setDirty(true);
-		}
+		screenSizeChanged = true;
 		this.currentScreenSize = screenSize;
 		
 		if(screenSizeListeners == null) {
@@ -149,5 +150,10 @@ public class UiContainerRenderTree extends ParentRenderNode<UiContainer, StyleRu
 	@Override
 	protected StyleRule determineStyleRule(LayoutState layoutState) {
 		return new StyleRule();
+	}
+	
+	@Override
+	public boolean isDirty() {
+		return screenSizeChanged || super.isDirty();
 	}
 }
