@@ -27,11 +27,19 @@ import com.badlogic.gdx.utils.Array;
 /**
  *
  */
-public class StyleRuleset<T extends StyleRule> {
-	@Field
-	private Map<ScreenSize, T> rules;
+public abstract class StyleRuleset<T extends StyleRule> {
 	
-	public T getStyleRule(ScreenSize screenSize) {
+	public abstract T getStyleRule(ScreenSize screenSize);
+	
+	public abstract void putStyleRule(ScreenSize screenSize, T rule);
+	
+	public abstract void validate(UiTheme theme);
+	
+	public abstract void loadDependencies(UiTheme theme, Array<AssetDescriptor> dependencies);
+	
+	public abstract void prepareAssets(UiTheme theme, FileHandleResolver fileHandleResolver, AssetManager assetManager);
+	
+	protected T getStyleRule(ScreenSize screenSize, Map<ScreenSize, T> rules) {
 		Iterator<ScreenSize> screenSizes = ScreenSize.largestToSmallest();
 		while(screenSizes.hasNext()) {
 			ScreenSize nextSize = screenSizes.next();
@@ -46,14 +54,7 @@ public class StyleRuleset<T extends StyleRule> {
 		return null;
 	}
 	
-	public void putStyleRule(ScreenSize screenSize, T rule) {
-		if(rules == null) {
-			rules = new HashMap<ScreenSize, T>();
-		}
-		rules.put(screenSize, rule);
-	}
-	
-	public void validate(UiTheme theme) {
+	protected void validate(UiTheme theme, Map<ScreenSize, T> rules) {
 		if(!rules.containsKey(ScreenSize.XS)) {
 			throw new MdxException("XS screen size style required for all style rules");
 		}
@@ -62,13 +63,13 @@ public class StyleRuleset<T extends StyleRule> {
 		}
 	}
 	
-	public void loadDependencies(UiTheme theme, Array<AssetDescriptor> dependencies) {
+	protected void loadDependencies(UiTheme theme, Array<AssetDescriptor> dependencies, Map<ScreenSize, T> rules) {
 		for(T rule : rules.values()) {
 			rule.loadDependencies(theme, dependencies);
 		}
 	}
 	
-	public void prepareAssets(UiTheme theme, FileHandleResolver fileHandleResolver, AssetManager assetManager) {
+	protected void prepareAssets(UiTheme theme, FileHandleResolver fileHandleResolver, AssetManager assetManager, Map<ScreenSize, T> rules) {
 		for(T rule : rules.values()) {
 			rule.prepareAssets(theme, fileHandleResolver, assetManager);
 		}

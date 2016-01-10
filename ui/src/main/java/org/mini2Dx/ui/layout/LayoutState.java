@@ -63,4 +63,10 @@ public class LayoutState {
 	public UiTheme getTheme() {
 		return theme;
 	}
+
+	@Override
+	public String toString() {
+		return "LayoutState [theme=" + theme.getId() + ", screenSize=" + screenSize + ", totalColumns=" + totalColumns
+				+ ", parentWidth=" + parentWidth + ", columnWidth=" + columnWidth + "]";
+	}
 }

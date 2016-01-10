@@ -72,6 +72,9 @@ public class Label extends UiElement {
 	
 	@Override
 	public void setVisibility(Visibility visibility) {
+		if(this.visibility == visibility) {
+			return;
+		}
 		this.visibility = visibility;
 		
 		if(renderNode == null) {

@@ -7,8 +7,8 @@ import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.serialization.SerializationException;
 import org.mini2Dx.ui.layout.ScreenSize;
 import org.mini2Dx.ui.style.ButtonStyleRule;
-import org.mini2Dx.ui.style.StyleRuleset;
 import org.mini2Dx.ui.style.UiTheme;
+import org.mini2Dx.ui.style.ruleset.ButtonStyleRuleset;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglFiles;
@@ -25,7 +25,7 @@ public class UiThemeWriter {
 		theme.setId(UiTheme.DEFAULT_STYLE_ID);
 		theme.putFont("default", "example.ttf");
 		
-		StyleRuleset<ButtonStyleRule> buttonRuleset = new StyleRuleset<>();
+		ButtonStyleRuleset buttonRuleset = new ButtonStyleRuleset();
 		ButtonStyleRule styleRule = new ButtonStyleRule();
 		styleRule.setAction("");
 		styleRule.setDisabled("");

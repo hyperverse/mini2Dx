@@ -82,6 +82,9 @@ public class Column extends UiElement {
 	}
 	
 	public void setVisibility(Visibility visibility) {
+		if(this.visibility == visibility) {
+			return;
+		}
 		this.visibility = visibility;
 		
 		if(renderNode == null) {

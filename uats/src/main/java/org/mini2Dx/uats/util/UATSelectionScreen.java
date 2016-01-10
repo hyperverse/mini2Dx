@@ -248,6 +248,7 @@ public class UATSelectionScreen extends BasicGameScreen implements ScreenSizeLis
 						nextScreenId = ScreenIds.getScreenId(ControllerMapping.class);
 					}
 				})));
+		uatsDialog.setVisibility(Visibility.VISIBLE);
 
 		uiContainer.add(uatsDialog);
 	}

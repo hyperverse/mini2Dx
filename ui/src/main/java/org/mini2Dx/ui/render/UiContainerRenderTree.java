@@ -43,6 +43,10 @@ public class UiContainerRenderTree extends ParentRenderNode<UiContainer, StyleRu
 		onResize(gc.getWidth(), gc.getHeight());
 	}
 	
+	public void update(float delta) {
+		super.update(this, delta);
+	}
+	
 	public void layout() {
 		layout(new LayoutState(assetManager, element.getTheme(), currentScreenSize, 12, gc.getWidth()));
 	}

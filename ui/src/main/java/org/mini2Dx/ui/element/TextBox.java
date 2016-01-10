@@ -56,6 +56,9 @@ public class TextBox extends UiElement implements Actionable {
 	
 	@Override
 	public void setVisibility(Visibility visibility) {
+		if(this.visibility == visibility) {
+			return;
+		}
 		this.visibility = visibility;
 		
 		if(renderNode == null) {

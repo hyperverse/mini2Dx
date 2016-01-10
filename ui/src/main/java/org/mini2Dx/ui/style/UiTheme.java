@@ -25,6 +25,12 @@ import org.mini2Dx.ui.element.Select;
 import org.mini2Dx.ui.element.TextBox;
 import org.mini2Dx.ui.element.UiElement;
 import org.mini2Dx.ui.layout.ScreenSize;
+import org.mini2Dx.ui.style.ruleset.ButtonStyleRuleset;
+import org.mini2Dx.ui.style.ruleset.ContainerStyleRuleset;
+import org.mini2Dx.ui.style.ruleset.DefaultStyleRuleset;
+import org.mini2Dx.ui.style.ruleset.LabelStyleRuleset;
+import org.mini2Dx.ui.style.ruleset.SelectStyleRuleset;
+import org.mini2Dx.ui.style.ruleset.TextBoxStyleRuleset;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
@@ -44,21 +50,21 @@ public class UiTheme {
 	@Field
 	private String id;
 	@Field
-	private Map<String, StyleRuleset<ButtonStyleRule>> buttons;
+	private Map<String, ButtonStyleRuleset> buttons;
 	@Field
-	private Map<String, StyleRuleset<StyleRule>> columns;
+	private Map<String, DefaultStyleRuleset> columns;
 	@Field
-	private Map<String, StyleRuleset<ContainerStyleRule>> containers;
+	private Map<String, ContainerStyleRuleset> containers;
 	@Field
 	private Map<String, UiFont> fonts;
 	@Field
-	private Map<String, StyleRuleset<StyleRule>> images;
+	private Map<String, DefaultStyleRuleset> images;
 	@Field
-	private Map<String, StyleRuleset<LabelStyleRule>> labels;
+	private Map<String, LabelStyleRuleset> labels;
 	@Field
-	private Map<String, StyleRuleset<SelectStyleRule>> selects;
+	private Map<String, SelectStyleRuleset> selects;
 	@Field
-	private Map<String, StyleRuleset<TextBoxStyleRule>> textboxes;
+	private Map<String, TextBoxStyleRuleset> textboxes;
 
 	public void validate() {
 		if (!buttons.containsKey(DEFAULT_STYLE_ID)) {
@@ -110,37 +116,37 @@ public class UiTheme {
 		for (String id : buttons.keySet()) {
 			StyleRuleset<ButtonStyleRule> buttonRuleset = buttons.get(id);
 			buttonRuleset.loadDependencies(this, dependencies);
-			Gdx.app.log(LOGGING_TAG, "[Theme: " + id + ", Button Ruleset: " + id + "] Dependencies loaded");
+			Gdx.app.log(LOGGING_TAG, "[Theme: " + this.id + ", Button Ruleset: " + id + "] Dependencies loaded");
 		}
 		for (String id : columns.keySet()) {
 			StyleRuleset<StyleRule> columnRuleset = columns.get(id);
 			columnRuleset.loadDependencies(this, dependencies);
-			Gdx.app.log(LOGGING_TAG, "[Theme: " + id + ", Column Ruleset: " + id + "] Dependencies loaded");
+			Gdx.app.log(LOGGING_TAG, "[Theme: " + this.id + ", Column Ruleset: " + id + "] Dependencies loaded");
 		}
 		for (String id : containers.keySet()) {
 			StyleRuleset<ContainerStyleRule> containerRuleset = containers.get(id);
 			containerRuleset.loadDependencies(this, dependencies);
-			Gdx.app.log(LOGGING_TAG, "[Theme: " + id + ", Container Ruleset: " + id + "] Dependencies loaded");
+			Gdx.app.log(LOGGING_TAG, "[Theme: " + this.id + ", Container Ruleset: " + id + "] Dependencies loaded");
 		}
 		for (String id : images.keySet()) {
 			StyleRuleset<StyleRule> imageRuleset = images.get(id);
 			imageRuleset.loadDependencies(this, dependencies);
-			Gdx.app.log(LOGGING_TAG, "[Theme: " + id + ", Image Ruleset: " + id + "] Dependencies loaded");
+			Gdx.app.log(LOGGING_TAG, "[Theme: " + this.id + ", Image Ruleset: " + id + "] Dependencies loaded");
 		}
 		for (String id : labels.keySet()) {
 			StyleRuleset<LabelStyleRule> labelRuleset = labels.get(id);
 			labelRuleset.loadDependencies(this, dependencies);
-			Gdx.app.log(LOGGING_TAG, "[Theme: " + id + ", Label Ruleset: " + id + "] Dependencies loaded");
+			Gdx.app.log(LOGGING_TAG, "[Theme: " + this.id + ", Label Ruleset: " + id + "] Dependencies loaded");
 		}
 		for (String id : selects.keySet()) {
 			StyleRuleset<SelectStyleRule> selectRuleset = selects.get(id);
 			selectRuleset.loadDependencies(this, dependencies);
-			Gdx.app.log(LOGGING_TAG, "[Theme: " + id + ", Select Ruleset: " + id + "] Dependencies loaded");
+			Gdx.app.log(LOGGING_TAG, "[Theme: " + this.id + ", Select Ruleset: " + id + "] Dependencies loaded");
 		}
 		for (String id : textboxes.keySet()) {
 			StyleRuleset<TextBoxStyleRule> textboxRuleset = textboxes.get(id);
 			textboxRuleset.loadDependencies(this, dependencies);
-			Gdx.app.log(LOGGING_TAG, "[Theme: " + id + ", TextBox Ruleset: " + id + "] Dependencies loaded");
+			Gdx.app.log(LOGGING_TAG, "[Theme: " + this.id + ", TextBox Ruleset: " + id + "] Dependencies loaded");
 		}
 	}
 
@@ -220,7 +226,7 @@ public class UiTheme {
 	}
 
 	private StyleRule getStyleRule(UiElement element, ScreenSize screenSize,
-			Map<String, StyleRuleset<StyleRule>> rules) {
+			Map<String, DefaultStyleRuleset> rules) {
 		StyleRuleset<?> ruleset = rules.get(element.getStyleId());
 		if (ruleset == null) {
 			ruleset = rules.get(DEFAULT_STYLE_ID);
@@ -232,51 +238,51 @@ public class UiTheme {
 		return fonts.get(id);
 	}
 	
-	public void putButtonStyleRuleset(String rulesetId, StyleRuleset<ButtonStyleRule> ruleset) {
+	public void putButtonStyleRuleset(String rulesetId, ButtonStyleRuleset ruleset) {
 		if(buttons == null) {
-			buttons = new HashMap<String, StyleRuleset<ButtonStyleRule>>();
+			buttons = new HashMap<String, ButtonStyleRuleset>();
 		}
 		buttons.put(rulesetId, ruleset);
 	}
 	
-	public void putColumnStyleRuleset(String rulesetId, StyleRuleset<StyleRule> ruleset) {
+	public void putColumnStyleRuleset(String rulesetId, DefaultStyleRuleset ruleset) {
 		if(columns == null) {
-			columns = new HashMap<String, StyleRuleset<StyleRule>>();
+			columns = new HashMap<String, DefaultStyleRuleset>();
 		}
 		columns.put(rulesetId, ruleset);
 	}
 	
-	public void putContainerStyleRuleset(String rulesetId, StyleRuleset<ContainerStyleRule> ruleset) {
+	public void putContainerStyleRuleset(String rulesetId, ContainerStyleRuleset ruleset) {
 		if(containers == null) {
-			containers = new HashMap<String, StyleRuleset<ContainerStyleRule>>();
+			containers = new HashMap<String, ContainerStyleRuleset>();
 		}
 		containers.put(rulesetId, ruleset);
 	}
 	
-	public void putImageStyleRuleset(String rulesetId, StyleRuleset<StyleRule> ruleset) {
+	public void putImageStyleRuleset(String rulesetId,DefaultStyleRuleset ruleset) {
 		if(images == null) {
-			images = new HashMap<String, StyleRuleset<StyleRule>>();
+			images = new HashMap<String, DefaultStyleRuleset>();
 		}
 		images.put(rulesetId, ruleset);
 	}
 	
-	public void putLabelStyleRuleset(String rulesetId, StyleRuleset<LabelStyleRule> ruleset) {
+	public void putLabelStyleRuleset(String rulesetId, LabelStyleRuleset ruleset) {
 		if(labels == null) {
-			labels = new HashMap<String, StyleRuleset<LabelStyleRule>>();
+			labels = new HashMap<String, LabelStyleRuleset>();
 		}
 		labels.put(rulesetId, ruleset);
 	}
 	
-	public void putSelectStyleRuleset(String rulesetId, StyleRuleset<SelectStyleRule> ruleset) {
+	public void putSelectStyleRuleset(String rulesetId, SelectStyleRuleset ruleset) {
 		if(selects == null) {
-			selects = new HashMap<String, StyleRuleset<SelectStyleRule>>();
+			selects = new HashMap<String, SelectStyleRuleset>();
 		}
 		selects.put(rulesetId, ruleset);
 	}
 	
-	public void putTextBoxStyleRuleset(String rulesetId, StyleRuleset<TextBoxStyleRule> ruleset) {
+	public void putTextBoxStyleRuleset(String rulesetId, TextBoxStyleRuleset ruleset) {
 		if(textboxes == null) {
-			textboxes = new HashMap<String, StyleRuleset<TextBoxStyleRule>>();
+			textboxes = new HashMap<String, TextBoxStyleRuleset>();
 		}
 		textboxes.put(rulesetId, ruleset);
 	}

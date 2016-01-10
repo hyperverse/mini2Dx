@@ -103,6 +103,9 @@ public class Image extends UiElement {
 		if(visibility == null) {
 			return;
 		}
+		if(this.visibility == visibility) {
+			return;
+		}
 		this.visibility = visibility;
 		
 		if(renderNode == null) {

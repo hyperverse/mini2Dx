@@ -46,7 +46,7 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 		setDirty(true);
 	}
 	
-	public void update(float delta) {
+	public void update(UiContainerRenderTree uiContainer, float delta) {
 		if(parent == null) {
 			targetArea.set(relativeX, relativeY, preferredWidth, preferredHeight);
 		} else {
@@ -56,6 +56,7 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 		
 		element.pushEffectsToRenderNode();
 		
+		boolean visible = isIncludedInRender();
 		for(int i = 0; i < effects.size(); i++) {
 			UiEffect effect = effects.get(i);
 			if(effect.isFinished()) {
@@ -64,7 +65,10 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 				continue;
 			}
 			
-			effect.update(null, currentArea, targetArea, delta);
+			visible |= effect.update(null, currentArea, targetArea, delta);
+		}
+		if(visible) {
+			element.setVisibility(Visibility.VISIBLE);
 		}
 	}
 	
@@ -155,7 +159,7 @@ public abstract class RenderNode<T extends UiElement, S extends StyleRule> imple
 	}
 	
 	public boolean isIncludedInRender() {
-		return element.getVisibility() == Visibility.VISIBLE;
+		return style != null && element.getVisibility() == Visibility.VISIBLE;
 	}
 	
 	public boolean isDirty() {

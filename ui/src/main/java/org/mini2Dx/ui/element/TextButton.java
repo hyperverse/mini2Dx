@@ -68,6 +68,9 @@ public class TextButton extends Button {
 	
 	@Override
 	public void setVisibility(Visibility visibility) {
+		if(this.visibility == visibility) {
+			return;
+		}
 		this.visibility = visibility;
 		
 		if(renderNode == null) {

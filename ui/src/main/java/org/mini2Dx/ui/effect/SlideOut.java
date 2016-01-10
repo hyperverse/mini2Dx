@@ -15,6 +15,7 @@ import org.mini2Dx.core.engine.geom.CollisionBox;
 import org.mini2Dx.core.geom.Rectangle;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.ui.UiContainer;
+import org.mini2Dx.ui.render.UiContainerRenderTree;
 
 /**
  *
@@ -22,7 +23,8 @@ import org.mini2Dx.ui.UiContainer;
 public class SlideOut implements UiEffect {
 
 	@Override
-	public boolean update(UiContainer uiContainer, CollisionBox currentArea, Rectangle targetArea, float delta) {
+	public boolean update(UiContainerRenderTree uiContainer, CollisionBox currentArea, Rectangle targetArea,
+			float delta) {
 		// TODO Auto-generated method stub
 		return false;
 	}

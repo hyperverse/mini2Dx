@@ -45,8 +45,8 @@ public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule>impl
 	}
 
 	@Override
-	public void update(float delta) {
-		super.update(delta);
+	public void update(UiContainerRenderTree uiContainer, float delta) {
+		super.update(uiContainer, delta);
 
 		if (cursorTimer <= CURSOR_VISIBLE_DURATION) {
 			cursorVisible = true;

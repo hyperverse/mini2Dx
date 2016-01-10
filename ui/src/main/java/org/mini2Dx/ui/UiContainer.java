@@ -42,7 +42,7 @@ public class UiContainer extends UiElement implements InputProcessor {
 	private final List<Container> children = new ArrayList<Container>(1);
 	private final UiContainerRenderTree renderTree;
 	
-	private boolean themeWarningIssued;
+	private boolean themeWarningIssued, initialThemeLayoutComplete;
 	private UiTheme theme;
 	
 	private Modal activeModal;
@@ -51,6 +51,7 @@ public class UiContainer extends UiElement implements InputProcessor {
 	
 	public UiContainer(GameContainer gc, AssetManager assetManager) {
 		renderTree = new UiContainerRenderTree(this, gc, assetManager);
+		setVisibility(Visibility.VISIBLE);
 	}
 	
 	public void update(float delta) {
@@ -63,6 +64,7 @@ public class UiContainer extends UiElement implements InputProcessor {
 		}
 		if(renderTree.isDirty()) {
 			renderTree.layout();
+			initialThemeLayoutComplete = true;
 		}
 		renderTree.update(delta);
 	}
@@ -76,6 +78,9 @@ public class UiContainer extends UiElement implements InputProcessor {
 	
 	public void render(Graphics g) {
 		if(!isThemeApplied()) {
+			return;
+		}
+		if(!initialThemeLayoutComplete) {
 			return;
 		}
 		switch (visibility) {
@@ -142,6 +147,8 @@ public class UiContainer extends UiElement implements InputProcessor {
 		}
 		this.theme = theme;
 		renderTree.setDirty(true);
+		initialThemeLayoutComplete = false;
+		Gdx.app.log(LOGGING_TAG, "Applied theme - " + theme.getId());
 	}
 
 	@Override

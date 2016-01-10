@@ -12,6 +12,7 @@
 package org.mini2Dx.ui.layout;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -38,6 +39,7 @@ public class LayoutRuleset {
 				break;
 			}
 		}
+		finaliseRuleset();
 	}
 
 	private void storeWidthRule(String[] ruleDetails) {
@@ -49,7 +51,29 @@ public class LayoutRuleset {
 		ScreenSize screenSize = ScreenSize.fromString(ruleDetails[0]);
 		offsetRules.put(screenSize, new OffsetRule(Integer.parseInt(ruleDetails[2])));
 	}
-
+	
+	private void finaliseRuleset() {
+		Iterator<ScreenSize> screenSizes = ScreenSize.smallestToLargest();
+		SizeRule lastSizeRule = new SizeRule(12);
+		OffsetRule lastOffsetRule = new OffsetRule(0);
+		
+		while(screenSizes.hasNext()) {
+			ScreenSize nextSize = screenSizes.next();
+			
+			if(!sizeRules.containsKey(nextSize)) {
+				sizeRules.put(nextSize, lastSizeRule);
+			} else {
+				lastSizeRule = sizeRules.get(nextSize);
+			}
+			
+			if(!offsetRules.containsKey(nextSize)) {
+				offsetRules.put(nextSize, lastOffsetRule);
+			} else {
+				lastOffsetRule = offsetRules.get(nextSize);
+			}
+		}
+	}
+	
 	public float getPreferredWidth(LayoutState layoutState) {
 		return layoutState.getColumnWidth() * sizeRules.get(layoutState.getScreenSize()).getColumns();
 	}
