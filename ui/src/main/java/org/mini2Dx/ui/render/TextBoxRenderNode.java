@@ -383,4 +383,12 @@ public class TextBoxRenderNode extends RenderNode<TextBox, TextBoxStyleRule>impl
 		this.renderCursorX = renderX;
 		this.renderCursorHeight = renderHeight;
 	}
+	
+	@Override
+	public void setState(NodeState state) {
+		if(getState() == NodeState.ACTION) {
+			return;
+		}
+		super.setState(state);
+	}
 }
